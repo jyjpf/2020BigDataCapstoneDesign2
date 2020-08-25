@@ -36,7 +36,7 @@ Configutation:
         level: warn
         AppenderRef:
           - ref: Console_Appender
-      - name: jdbc.sqlonly
+      - name: jdbc.sqltiming
         additivity: false
         level: info
         AppenderRef:

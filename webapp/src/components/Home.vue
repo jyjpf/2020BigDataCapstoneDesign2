@@ -52,7 +52,7 @@
             :items="lectures"
             :search="search"
           >
-        <template v-slot:item.actions="{}">
+        <template v-slot:[`item.actions`]="{}">
           <v-btn class="mr-5" small color="primary" @click="gotmain()" >학습자료보기</v-btn>
         </template>
         </v-data-table>
@@ -114,6 +114,7 @@ import router from '../router'
         selected: [],
         searchs:["제목","선생님","학년"],
         search: '',
+        search2: '',
         courseTabs: ["강좌리스트", "개설강좌"],
         headers: [
           { text: '강좌코드', value: 'lecture_no' },

@@ -37,18 +37,14 @@
 
 <script>
 import {mapActions} from 'vuex';
+
 export default {
   name: 'SignIn',
   data: () => ({
-    user_id:"",
-    pw:""
+    user_id:'',
+    pw:''
   }),
   methods: {
-    signIn(){
-    //   if(signIn===null)
-    //   return null;
-    // },
-    },
     ...mapActions(['signIn'])
   }
 }
