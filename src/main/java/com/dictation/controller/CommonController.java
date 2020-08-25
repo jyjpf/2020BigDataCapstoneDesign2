@@ -73,26 +73,24 @@ public class CommonController {
 
 	@GetMapping(value = "login/{user_id}&{pw}")
 	public UserVO login(@PathVariable("user_id") String user_id, @PathVariable("pw") String pw,
-			HttpServletRequest request) throws Exception {
+	HttpSession session) throws Exception {
 
-		HttpSession session = request.getSession();
 		UserVO user = userService.getById(user_id);
 
-		if (user.equals(null) || user == null) {
+		if (user == null) {
+
+			user = new UserVO();
 			user.setLoginYn("0");
-			return user;
-		} else if (user.getPw().equals(pw)) {
+
+		} else {
 
 			session.setAttribute("user", user);
-
 			user.setLoginYn("1");
-			return user;
-		} else {
-			session.setAttribute("login_fail", pw);
-			user.setLoginYn("0");
 
-			return user;
-		}
+		} 
+
+		return user;
+
 	}
 
 	// according to id delete
@@ -107,7 +105,6 @@ public class CommonController {
 	}
 
 	// modify
-	// lecture_no�� ���ƾ� ��
 	@PostMapping(value = "/course/update")
 	public void update(@RequestBody CourseVO course) {
 		courseService.update(course);
@@ -159,7 +156,7 @@ public class CommonController {
 	@PostMapping(value = "/course/fileupload_list")
 	public String upload_list(HttpServletRequest request, @RequestPart List<MultipartFile> file) throws Exception {
 
-		if (file.isEmpty()) { // ���ε��� ������ ���� ��
+		if (file.isEmpty()) { 
 			return "";
 		} else {
 
@@ -178,12 +175,12 @@ public class CommonController {
 
 		}
 
-		return "����";
+		return "";
 	}
 
 	// modify
 	@PostMapping(value = "/enroll/update")
-	public void update(@RequestBody EnrollVO enroll) { // user_id, lecture_no�� �ʼ�
+	public void update(@RequestBody EnrollVO enroll) {
 		enrollService.update(enroll);
 	}
 

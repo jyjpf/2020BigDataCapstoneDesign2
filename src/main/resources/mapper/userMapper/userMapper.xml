@@ -59,7 +59,8 @@
  
 	<!-- according to id query -->
 	<select id="getById" parameterType="String" resultType="UserVO">
-		select
+
+		SELECT
 			user_id,
 			pw,
 			school_cd,
@@ -73,10 +74,12 @@
 			hom_phone_no,
 			gender_cd,
 			email
-		from
+		FROM
 			users
-		where
-			user_id=#{user_id}
+		WHERE 1=1
+			AND user_id=#{user_id}
+			AND pw=#{pw}
+
 	</select>
 	
 	
