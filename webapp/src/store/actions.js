@@ -6,20 +6,17 @@ const actions = {
    
     this.$http.post('/api/common/signup',signUpObj).then((res) => {
       router.push({name:'SignIn'});
-      console.log(res)
     }).catch((err) => {
-      console.log(err,commit); 
+      console.log(err); 
     })
   },
   //로그인
   signIn({commit},signInObj) {
     this.$http.get(`/api/common/login/${signInObj.user_id}&${signInObj.pw}`).then((res)=> {
       
-      
       if(res.data.loginYn === '0'){
-        alert("hello world22222: " + res.data.loginYn);
+        alert("로그인 실패");
         location.reload(true);
-        //router.push({name:'signIn'});
       }else{
         commit("signInSuccess");
         if(res.data.position_cd === '003003') {
