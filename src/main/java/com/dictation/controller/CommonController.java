@@ -51,6 +51,8 @@ public class CommonController {
 	@PostMapping(produces = "application/json;charset=UTF-8", value = "/signup")
 	public void insert(@RequestBody UserVO user) {
 
+		logger.info("Position_cd : " + user.getPosition_cd());
+
 		// position_cd
 		user.setDae_p("003");
 		if (user.getPosition_cd().equals("Student")) {
