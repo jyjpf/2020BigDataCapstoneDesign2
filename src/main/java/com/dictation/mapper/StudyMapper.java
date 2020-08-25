@@ -1,6 +1,5 @@
 package com.dictation.mapper;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -10,7 +9,7 @@ import com.dictation.vo.StudyVO;
 
 @Repository
 @Mapper
-public interface StudyMapper {	//studyMapper.xml에서 이름,명령어 지정	
+public interface StudyMapper {
 	
 	//insert
 	public void insert(StudyVO study);

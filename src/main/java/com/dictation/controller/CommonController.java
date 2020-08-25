@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mybatis.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,17 +53,16 @@ public class CommonController {
 
 		// position_cd
 		user.setDae_p("003");
-		if (user.getPosition_cd().equals("������")) {
+		if (user.getPosition_cd().equals("Student")) {
 			user.setSo_p("001");
-		} else if (user.getPosition_cd().equals("������")) {
+		} else if (user.getPosition_cd().equals("Teacher")) {
 			user.setSo_p("002");
-		} else if (user.getPosition_cd().equals("�л�")) {
+		} else if (user.getPosition_cd().equals("Admin")) {
 			user.setSo_p("003");
 		}
 
 		// gender_cd
 		user.setDae_g("002");
-		System.out.println(user.getPosition_cd());
 		if (user.getGender_cd().equals("G01")) {
 			user.setSo_g("001");
 		} else if (user.getGender_cd().equals("G02")) {
@@ -87,7 +85,6 @@ public class CommonController {
 
 			session.setAttribute("user", user);
 
-			UserVO user_session = (UserVO) session.getAttribute("user");
 			user.setLoginYn("1");
 			return user;
 		} else {
@@ -137,22 +134,14 @@ public class CommonController {
 
 	@CrossOrigin("*")
 	@PostMapping(value = "/course/fileupload")
-	// @ResponseStatus(HttpStatus.CREATED)//@RequestParam("file")
 	public String upload(HttpServletRequest request, @RequestPart MultipartFile file) throws Exception {
 
-		if (file.isEmpty()) { // ���ε��� ������ ���� ��
-			System.out.println("���Ͼ���");
+		if (file.isEmpty()) {
+
 			return "";
 		} else {
-			System.out.println("file ���� !!");
 
-			// ���� �̸�������(FILE_NM)
 			String originalfileName = file.getOriginalFilename();
-
-			/*
-			 * String fileUrl=ServletUriComponentsBuilder.fromCurrentContextPath()
-			 * .path("/downloadFile/") .path(originalfileName) .toUriString();
-			 */
 
 			// SAVE_FILE_NM
 			UUID uuid = UUID.randomUUID();
@@ -168,7 +157,6 @@ public class CommonController {
 
 	@CrossOrigin("*")
 	@PostMapping(value = "/course/fileupload_list")
-	// @ResponseStatus(HttpStatus.CREATED)//@RequestParam("file")
 	public String upload_list(HttpServletRequest request, @RequestPart List<MultipartFile> file) throws Exception {
 
 		if (file.isEmpty()) { // ���ε��� ������ ���� ��
@@ -179,16 +167,10 @@ public class CommonController {
 
 				String originalfileName = file.get(i).getOriginalFilename();
 
-				/*
-				 * String fileUrl=ServletUriComponentsBuilder.fromCurrentContextPath()
-				 * .path("/downloadFile/") .path(originalfileName) .toUriString();
-				 */
-
 				// SAVE_FILE_NM
 				UUID uuid = UUID.randomUUID();
 				String save_file_nm = uuid.toString() + "_" + originalfileName;
 
-				// ���� ������ ��η� ����(save_file_nm �����̸����� ����)
 				File dest = new File("C:/Temp/" + save_file_nm);
 				file.get(i).transferTo(dest);
 
@@ -200,7 +182,6 @@ public class CommonController {
 	}
 
 	// modify
-	// user_id�� ���ƾ� ��
 	@PostMapping(value = "/enroll/update")
 	public void update(@RequestBody EnrollVO enroll) { // user_id, lecture_no�� �ʼ�
 		enrollService.update(enroll);
@@ -220,8 +201,6 @@ public class CommonController {
 	}
 
 	// according to id delete
-	// lecture�� ����� DB�� �ش�lecture_no�� �����ϴ� ��� �����͸� ��������(board,
-	// course, enroll, study, lecture)
 	@GetMapping(value = "/lecture/delete/{lecture_no}")
 	public void delete(@PathVariable("lecture_no") int lecture_no) {
 
@@ -232,7 +211,6 @@ public class CommonController {
 	}
 
 	// modify
-	// lecture_no�� ���ƾ� ��
 	@PostMapping(value = "/lecture/update")
 	public void update(@RequestBody LectureVO lecture) {
 		lectureService.update(lecture);
@@ -254,26 +232,17 @@ public class CommonController {
 		return lectureService.list();
 	}
 
-	// ���µ��� lecture_no ���ǰ� ����
-	// ���߿��� post�� lecture_no �� �ٰ�
 	@GetMapping(value = "/lecture/lecture_no/{lecture_no}")
 	public String lecture_no(@PathVariable("lecture_no") int lecture_no, HttpServletRequest request) throws Exception {
 
-		System.out.println("lecture_no�� ���� ���ǰ��� ��");
-
 		HttpSession session = request.getSession();
 		session.setAttribute("lecture_no", lecture_no);
-		int lecture_session = (int) session.getAttribute("lecture_no");
-		System.out.println("lecture_no ���ǰ� :" + lecture_session);
-
+		
 		return "lecture_no";
 	}
 
-	// ���ǰ� Ȯ���� ����� �޼ҵ�(test��)
 	@GetMapping(value = "/lecture/session")
 	public String session(HttpServletRequest request) throws Exception {
-
-		HttpSession session = request.getSession();
 
 		return "login/user_id&lecture_no";
 

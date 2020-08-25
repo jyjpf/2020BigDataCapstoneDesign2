@@ -60,9 +60,7 @@ public class StudentController {
 	public List<LectureVO> student_lec_list(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession();
 		UserVO user_session=(UserVO)session.getAttribute("user");
-	
-		System.out.println("student_lec_list���� user_id ���ǰ� : "+user_session.getUser_id());
-				
+
 		return lectureService.student_lec_list(user_session.getUser_id());
 	}
 
@@ -70,9 +68,7 @@ public class StudentController {
 	public List<LectureVO> student_mylec(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession();
 		UserVO user_session=(UserVO)session.getAttribute("user");
-	
-		System.out.println("student_mylec���� user_id ���ǰ� : "+user_session.getUser_id());
-				
+
 		return lectureService.student_mylec(user_session.getUser_id());
 	}
 	
@@ -96,7 +92,7 @@ public class StudentController {
 		HttpSession session = request.getSession();
 		UserVO user_session = (UserVO)session.getAttribute("user");
 		int lecture_session=(int)session.getAttribute("lecture_no");
-		Integer pass_course;//����� �ܰ��ȣ
+		Integer pass_course;
 		
 		EnrollVO enroll=new EnrollVO();
 		enroll.setUser_id(user_session.getUser_id());

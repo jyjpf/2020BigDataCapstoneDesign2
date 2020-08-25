@@ -16,7 +16,6 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.dictation.service.CourseService;
-import com.dictation.service.EnrollService;
 import com.dictation.service.StudyService;
 import com.dictation.vo.CourseVO;
 import com.dictation.vo.EnrollVO;
@@ -78,17 +77,15 @@ public class DictationController {
             answer[i]=false;
          }
       }
-      
-      System.out.println("�л����̵� : "+student_id);
-      
+
       EnrollVO enroll=new EnrollVO();
       enroll.setLecture_no(courseList[1].getLecture_no());
       enroll.setUser_id(student_id);
 
       int score=0;
       for(int i=0; i<answer.length; i++) {
-         if(answer[i]==true) {
-            score+=10;
+         if(answer[i] == true) {
+            score += 10;
          }
       }
 
@@ -202,53 +199,4 @@ public class DictationController {
       }
    }
    
-   /*
-   //�������� �ٷ� ����ٶ� ����    
-    @GetMapping(path = "/course/download/{save_file_nm}")
-    public ResponseEntity download_file(@PathVariable("save_file_nm") String save_file_nm) { 
-       String file_path="C:/Temp/";
-       String file_name= save_file_nm;
-       
-       
-        File file = new File(file_path+File.separator+file_name);
-        HttpHeaders header = new HttpHeaders();
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+file_name);
-        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        header.add("Pragma", "no-cache");
-        header.add("Expires", "0");
-        Path path = Paths.get(file.getAbsolutePath());
-        ByteArrayResource resource = null;
-
-        try {
-            resource = new ByteArrayResource(Files.readAllBytes(path));
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        
-        return ResponseEntity.ok()
-            .headers(header)
-            .contentLength(file.length())
-            .contentType(MediaType.parseMediaType("application/octet-stream"))
-            .body(resource);
-    }*/
-   
-   /*
-   @PostMapping("/upload")
-   public ResponseEntity uploadToLocalFileSystem(@RequestParam("file") MultipartFile file) {
-      String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-      Path path = Paths.get(fileBasePath + fileName);
-      try {
-         Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
-      String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/files/download/")
-            .path(fileName)
-            .toUriString();
-      return ResponseEntity.ok(fileDownloadUri);
-   }
-
-   */
-
 }

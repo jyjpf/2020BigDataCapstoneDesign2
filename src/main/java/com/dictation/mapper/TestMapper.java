@@ -9,9 +9,8 @@ import com.dictation.vo.TestVO;
 
 @Repository
 @Mapper
-public interface TestMapper {	//testMapper.xml에서 이름,명령어 지정
+public interface TestMapper {	
 	public List<TestVO> selectTest();
-	
 	
 	//##insert,delete,update,getById,list##
 	//insert

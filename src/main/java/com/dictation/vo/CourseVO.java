@@ -21,8 +21,6 @@ public class CourseVO implements Comparable<CourseVO>{
 	private Date input_date;
 	private String update_id;
 	private Date update_date;
-	
-	//�޾ƾ��� �����Ҷ� file�� �����ƴ��� �˱����� ����
 	private boolean change_file;
 	
 	//private MultipartFile file;

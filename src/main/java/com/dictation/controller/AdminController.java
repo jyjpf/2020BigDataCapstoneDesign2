@@ -24,7 +24,7 @@ import com.dictation.vo.Term_cdVO;
 @CrossOrigin("*")
 @RestController
 @RequestMapping(value="/api/admin")
-public class AdminController {//������ ��Ʈ�ѷ�
+public class AdminController {
 
 	@Autowired
 	private Term_cdService term_cdService;
@@ -40,7 +40,7 @@ public class AdminController {//������ ��Ʈ�ѷ�
 	}
 	
 	//according to id delete
-	@GetMapping(value="/term_cd/delete/{year}/{term}")//���� �̿ϼ�(test����)
+	@GetMapping(value="/term_cd/delete/{year}/{term}")
 	public void term_delete(@PathVariable("year") String year, @PathVariable("term") String term) {
 		term_cdService.delete(year,term);
 	}
@@ -52,7 +52,7 @@ public class AdminController {//������ ��Ʈ�ѷ�
 	}
 
 	//according to id Query students
-	@GetMapping(value="/term_cd/get/{year&term}")//���� �̿ϼ�(test����)
+	@GetMapping(value="/term_cd/get/{year&term}")
 	public Term_cdVO term_getById(@PathVariable("year") String year, @PathVariable("term") String term) {
 		Term_cdVO term_cd = term_cdService.getById(year,term);
 		return term_cd;
@@ -77,8 +77,8 @@ public class AdminController {//������ ��Ʈ�ѷ�
 	public void dae_delete(@PathVariable("dae_cd") String dae_cd) {
 		dae_cdService.delete(dae_cd);
 	}
+	
 	//modify
-	//dae_cd�� ���ƾ� ��
 	@PostMapping(value="/dae_cd/update")
 	public void dae_update(@RequestBody Dae_cdVO dae_cd) {
 		dae_cdService.update(dae_cd);

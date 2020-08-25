@@ -9,7 +9,7 @@ import com.dictation.vo.Dae_cdVO;
 
 @Repository
 @Mapper
-public interface Dae_cdMapper {	//userMapper.xml에서 이름,명령어 지정	
+public interface Dae_cdMapper {	
 	
 	//insert
 	public void insert(Dae_cdVO dae_cd);

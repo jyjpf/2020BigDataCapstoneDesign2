@@ -22,7 +22,6 @@ public class TestController {
 	@Autowired
 	private TestService testService;
 	
-	//��ü����Ʈ ������
 	@GetMapping(value="/test")
 	public List<TestVO> select() {
 		return testService.select();

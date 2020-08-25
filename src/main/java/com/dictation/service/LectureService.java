@@ -36,17 +36,14 @@ public class LectureService {
 		return lectureMapper.lecture_no_search(lecture_no);
 	}
 	
-	//선생님 본인이 개설한 강좌목록 띄우기 위한 코드
 	public List<LectureVO> teacher_mylec(String user_id) {
 		return lectureMapper.teacher_mylec(user_id);
 	}
 	
-	//학생화면 전체강좌 리스트에 강좌신청여부
 	public List<LectureVO> student_lec_list(String user_id) {
 		return lectureMapper.student_lec_list(user_id);
 	}
 	
-	//학생 본인이 수강신청해서 승인된 강좌목록 띄우기 위한 코드
 	public List<LectureVO> student_mylec(String user_id){
 		return lectureMapper.student_mylec(user_id);
 	}

@@ -7,8 +7,6 @@ import lombok.Setter;
 @Setter
 public class UserVO {
 	
-
-	
 	private String user_id;
 	private String pw;
 	private String school_cd;

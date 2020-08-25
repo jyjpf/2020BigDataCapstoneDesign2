@@ -1,6 +1,5 @@
 package com.dictation.domain;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

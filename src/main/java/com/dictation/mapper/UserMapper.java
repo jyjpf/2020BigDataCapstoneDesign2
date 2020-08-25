@@ -9,7 +9,7 @@ import com.dictation.vo.UserVO;
 
 @Repository
 @Mapper
-public interface UserMapper {	//userMapper.xml에서 이름,명령어 지정	
+public interface UserMapper {	
 	
 	//insert
 	public void insert(UserVO user);

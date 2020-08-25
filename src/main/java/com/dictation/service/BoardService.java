@@ -28,7 +28,6 @@ public class BoardService {
 		boardMapper.delete(map);
 	}
 	
-	//선생님이 강좌 삭제했을때
 	public void lecture_delete(int lecture_no) {
 		boardMapper.lecture_delete(lecture_no);
 	}
@@ -38,14 +37,10 @@ public class BoardService {
 		boardMapper.after_delete(map); 
 	}
 	
-	
-
-	//게시판 글 수정(파일 있을때)
 	public void update(BoardVO board) {
 		boardMapper.update(board);
 	}
 	
-	//게시판 글 수정(파일 없을때)
 	public void update_nofile(BoardVO board) {
 		boardMapper.update_nofile(board);
 	}
@@ -64,6 +59,5 @@ public class BoardService {
 	public String getFileNm(String save_file_nm) {
 		return boardMapper.getFileNm(save_file_nm);
 	}
-	
 
 }

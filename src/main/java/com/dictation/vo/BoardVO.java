@@ -23,9 +23,6 @@ public class BoardVO {
 	private Date input_date;
 	private String update_id;
 	private Date update_date;
-	
-	
-	//board_cd에서 dae_cd와 so_cd값을 합치기 위한 변수
 	private String dae_b;
 	private String so_b;
 	

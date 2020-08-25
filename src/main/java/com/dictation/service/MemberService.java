@@ -8,7 +8,7 @@ public class MemberService implements UserMapper {
 
     @Transactional
     public Long joinUser(MemberDto memberDto) {
-        // 비밀번호 암호화 - 일단은 생략
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 

@@ -16,7 +16,6 @@ public class EnrollService {
 	@Autowired
 	private EnrollMapper enrollMapper;
 	
-	
 	//##insert,delete,update,getById,list##
 	//insert
 	public void insert(EnrollVO enroll) {
@@ -28,7 +27,6 @@ public class EnrollService {
 		enrollMapper.delete(enroll);
 	}
 
-	//선생님이 강좌삭제했을때
 	public void lecture_delete(int lecture_no) {
 		enrollMapper.lecture_delete(lecture_no);
 	}
@@ -38,7 +36,6 @@ public class EnrollService {
 		enrollMapper.update(enroll);
 	}
 	
-	//선생님이 학생을 승인시켜줌
 	public void update_request(int lecture_no, String user_id) {
 		EnrollVO enroll = new EnrollVO();
 		enroll.setLecture_no(lecture_no);
@@ -52,7 +49,6 @@ public class EnrollService {
 		return enrollMapper.getById(user_id);
 	}
 	
-	//해당 강좌에 대해 학생이 통과한 단계번호 알기위함
 	public int what_pass_course(EnrollVO enroll) {
 		return enrollMapper.what_pass_course(enroll);
 	}
@@ -62,7 +58,6 @@ public class EnrollService {
 		return enrollMapper.list();
 	}
 	
-	//신청현황 리스트
 	public List<UserVO> list_request(int lecture_no){
 		return enrollMapper.list_request(lecture_no);
 	}
