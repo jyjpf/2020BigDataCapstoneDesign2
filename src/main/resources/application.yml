@@ -1,0 +1,78 @@
+spring:
+  profiles: local
+  datasource:
+    url: jdbc:log4jdbc:postgresql://210.115.230.166:10654/mydb
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    username: dictation
+    password: dic123
+
+server:
+  port: 3003
+
+logging:
+  config: classpath:log4j2_local.yml  
+
+servlet:
+  multipart:
+    enabled: true
+    file-size-threshold: 1MB
+    location: C:/Temp
+    max-file-size: 100MB
+    max-request-size: 100MB    
+
+mybatis:
+ mapper-locations: classpath:mapper/**/*.xml
+ type-aliases-package: com.dictation.vo
+
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:log4jdbc:postgresql://localhost:5432/mydb
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    username: dictation
+    password: dic123
+
+server:
+  port: 80
+
+logging:
+  config: classpath:log4j2_dev.yml
+
+servlet:
+  multipart:
+    enabled: true
+    file-size-threshold: 1MB
+    location: C:/Temp
+    max-file-size: 100MB
+    max-request-size: 100MB    
+
+mybatis:
+ mapper-locations: classpath:mapper/**/*.xml
+ type-aliases-package: com.dictation.vo
+---
+spring:
+  profiles: service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mydb
+    driver-class-name: org.postgresql.Driver
+    username: dictation
+    password: dic123
+
+server:
+  port: 80
+
+logging:
+  config: classpath:log4j2_service.yml
+
+servlet:
+  multipart:
+    enabled: true
+    file-size-threshold: 1MB
+    location: C:/Temp
+    max-file-size: 100MB
+    max-request-size: 100MB    
+
+mybatis:
+ mapper-locations: classpath:mapper/**/*.xml
+ type-aliases-package: com.dictation.vo
