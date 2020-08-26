@@ -7,7 +7,6 @@
       flat
     >
     
-
       <template v-slot:extension>
         <v-tabs
           v-model="tabs"
@@ -23,8 +22,6 @@
       </template>
     </v-toolbar>
  
-          
-       
     <v-tabs-items v-model="tabs">
       
       <v-tab-item>
@@ -53,9 +50,18 @@
             :items="lectures"
             :search="search"
           >
-        <template v-slot:[`item.actions`]="{}">
-          <v-btn class="mr-5" small color="primary" @click="gotmain()" >학습자료보기</v-btn>
-        </template>
+        <template v-slot:item="row"><!--이렇게 해야td안에 들어감-->
+          <tr>
+            <td>{{row.item.lecture_no}}</td>
+            <td>{{row.item.lecture_nm}}</td>
+            <td>{{row.item.grade}}</td>
+            <td>{{row.item.teacher_nm}}</td>
+            <td>{{row.item.enroll_ed_dt}}</td>
+            <td>
+              <v-btn small color="primary" dark class="ml-5" @click="goothert(row.item)">학습자료보기</v-btn>
+            </td>
+          </tr>
+        </template> 
         </v-data-table>
         </v-card>
       </v-tab-item>
@@ -73,7 +79,7 @@
     </v-card-title>
     <v-btn small color="primary" dark class="ml-5" @click="gonewstudy()">강좌개설하기</v-btn>
     <v-btn small color="primary" dark class="ml-6" @click="lecture_rd()">수정/삭제</v-btn>
-    <v-btn small color="primary" dark class="ml-5" @click="gotest()">공지사항테스트</v-btn>
+    <v-btn small color="primary" dark class="ml-5" @click="gomypage()">마이페이지</v-btn>
     <!-- 개설 강좌-->
     <v-data-table
       :headers="headers2"
@@ -160,8 +166,8 @@ import router from '../router'
       gonewstudy(){
         router.push({name: 'stwr'});
       },
-      gotest(){
-        router.push({name: 'test'});
+      gomypage() {
+        router.push({name: 'mypage'});
       },
       gotmain(item){
         this.$http.get(`/api/common/lecture/lecture_no/${item.lecture_no}`).then(res =>{
@@ -169,6 +175,12 @@ import router from '../router'
         })
         //console.log(item.lecture_no);
         router.push({name: 'tmain'});
+      },
+      goothert(item){
+        this.$http.get(`/api/common/lecture/lecture_no/${item.lecture_no}`).then(res =>{
+          console.log(res);
+        })
+        router.push({name: 'othert'});
       },
       //강좌 수정/삭제 버튼
       lecture_rd(){
