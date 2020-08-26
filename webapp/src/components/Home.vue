@@ -146,14 +146,12 @@ import router from '../router'
     this.$http.get('/api/common/lecture/list').then(res =>{
           console.log('status code: ${res.ban}');
           this.lectures=res.data;
-          //console.log(res);
-          //alert(JSON.stringify(this.lectures));
+
     })
     this.$http.get('/api/teacher/lecture/teach_mylec').then(res =>{
           //console.log('status code: ${res.ban}');
           this.mylectures=res.data;
-          //console.log(res);
-          //alert(JSON.stringify(this.lectures));
+
     })
   },
     methods: {

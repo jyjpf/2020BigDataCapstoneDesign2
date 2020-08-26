@@ -12,7 +12,7 @@ const actions = {
   },
   //로그인
   signIn( {commit}, signInObj ) {
-    console.log(signInObj);
+
     this.$http.get(`/api/common/login/${signInObj.user_id}&${signInObj.pw}`).then((res)=> {
       if(res.data.loginYn === '0'){
         alert("로그인 실패");
