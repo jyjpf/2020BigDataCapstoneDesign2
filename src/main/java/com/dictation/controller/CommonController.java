@@ -95,6 +95,19 @@ public class CommonController {
 
 	}
 
+	@PostMapping(value = "/user/update")
+	public void user_update(@RequestBody UserVO user) throws Exception {
+		System.out.println("this is common/user/update");
+		//gender_cd
+		if(user.getGender_cd().equals("����")) {//����Ʈ���� �����̸� "002001"���� ������ ���� �ѱ�  
+			user.setGender_cd("002001");
+		}else if(user.getGender_cd().equals("����")) {//����Ʈ���� �����̸� "002002"���� ������ ���� �ѱ�
+			user.setGender_cd("002002");
+		}
+		
+		userService.update(user);
+	}
+
 	// according to id delete
 	@GetMapping(value = "/course/delete/{lecture_no}&{course_no}&{question_no}")
 	public void delete(@PathVariable("lecture_no") int lecture_no, @PathVariable("course_no") int course_no,
@@ -215,6 +228,13 @@ public class CommonController {
 		lectureService.update(lecture);
 	}
 
+	@GetMapping(value="/lecture/get/{lecture_no}")
+	public LectureVO getById_nosession(@PathVariable("lecture_no") int lecture_no) {
+
+		LectureVO lecture = lectureService.getById(lecture_no);
+		return lecture;
+	}
+
 	// according to id Query students
 	@GetMapping(value = "/lecture/get")
 	public LectureVO getById(HttpServletRequest request) {
@@ -232,9 +252,9 @@ public class CommonController {
 	}
 
 	@GetMapping(value = "/lecture/lecture_no/{lecture_no}")
-	public String lecture_no(@PathVariable("lecture_no") int lecture_no, HttpServletRequest request) throws Exception {
+	public String lecture_no(@PathVariable("lecture_no") int lecture_no, HttpSession session) throws Exception {
 
-		HttpSession session = request.getSession();
+		logger.info("lecture No : " + lecture_no);
 		session.setAttribute("lecture_no", lecture_no);
 		
 		return "lecture_no";

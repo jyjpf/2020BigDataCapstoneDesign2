@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.dictation.service.BoardService;
+import com.dictation.service.CommentService;
 import com.dictation.vo.BoardVO;
+import com.dictation.vo.CommentVO;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.logging.log4j.LogManager;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +42,8 @@ public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	private CommentService commentService;
 
 	@PostMapping(produces = "application/json;charset=UTF-8")
 	public void insert(@RequestParam Map<String, Object> map, @Param(value = "file") MultipartFile file,
@@ -140,6 +145,12 @@ public class BoardController {
 		board.setNo(Long.valueOf(no));
 
 		boardService.insert(board);
+	}
+
+	@PostMapping(value="/insert_comment")
+	public void insert_comment(@RequestBody CommentVO comment, HttpServletRequest request) {
+	    
+		commentService.insert(comment);
 	}
 
 	// according to id delete

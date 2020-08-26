@@ -48,7 +48,7 @@
     </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="notice2"
+      :items="notice"
       :loading="loading"
       sort-by="title"
       :single-expand="singleExpand"
@@ -73,7 +73,7 @@
     <v-tab-item>
        <v-data-table
             :headers="headers3"
-            :items="notice"
+            :items="notice2"
             :loading="loading"
             sort-by="title"
             class="elevation-1"
@@ -352,11 +352,11 @@
       })
       //공지사항 들고오기
       this.$http.get(`/api/board/list/${"006001"}`).then(res =>{
-          this.notice2=res.data;
+          this.notice=res.data;
         })
       //QNA 들고오기
       this.$http.get(`/api/board/list/${"006003"}`).then(res =>{
-          this.notice=res.data;
+          this.notice2=res.data;
       })
     },
       computed: {
@@ -378,7 +378,7 @@
         this.notice = [
         ]
       },
-      //QNA 수정
+      // 공지사항 수정
       editItem (item) {
         this.editedIndex = this.notice.indexOf(item)
         this.editedItem = Object.assign({}, item)
@@ -388,13 +388,13 @@
           router.push({name: 'tmain'});
         })
       },
-      // QNA 삭제
+      // 공지사항 삭제
       deleteItem (item) {
         const index = this.notice.indexOf(item)
         confirm('정말로 삭제하시겠습니까?') && this.notice.splice(index, 1)
         this.$http.get(`/api/board/delete/${item.no}/${item.seq_no}`).then(res =>{
           console.log(res);
-          router.push({name: 'studentlc'});
+          router.push({name: 'tmain'});
         })
       },
       close () {
@@ -404,7 +404,7 @@
           this.editedIndex = -1
         })
       },
-      //QNA저장
+      // 공지사항 저장
       save () {
         if (this.editedIndex > -1) {
           Object.assign(this.notice[this.editedIndex], this.editedItem)
@@ -501,6 +501,9 @@
         answer.course_no=this.step_value;
         answer.question = "";
       }
+      if(this.step_value > this.pass_course_no+1){
+        alert("제출할 수 없는 단계입니다.");
+      }
     },
     plus_step(){
       
@@ -508,6 +511,9 @@
       for(let answer of this.answers){
         answer.course_no=this.step_value;
         answer.question = "";
+      }
+      if(this.step_value > this.pass_course_no+1){
+        alert("제출할 수 없는 단계입니다.");
       }
     }
   }
