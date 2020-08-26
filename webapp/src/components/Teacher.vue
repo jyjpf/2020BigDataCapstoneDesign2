@@ -1,4 +1,5 @@
 <template>
+  <v-container fluid :grid-list-md="!$vuetify.breakpoint.xs" :class="$vuetify.breakpoint.xs ? 'pa-0' : ''">
   <v-container align-center>
     <div id="choice">
       <v-layout wrap align-center>
@@ -30,6 +31,7 @@
     </v-flex>
  </v-form>
 </v-container>
+  </v-container>
 </template>
 <script>
 import router from '../router'

@@ -1,4 +1,5 @@
 <template>
+<v-container fluid :grid-list-md="!$vuetify.breakpoint.xs" :class="$vuetify.breakpoint.xs ? 'pa-0' : ''">
   <v-card class="mx-auto">
     <v-toolbar
       color="purple"
@@ -163,6 +164,7 @@
     </v-tab-item>
     </v-tabs-items>
   </v-card>
+</v-container>
 </template>
 <script lang="javascript" src="dist/xlsx.full.min.js"></script>
 <script>
