@@ -1,4 +1,5 @@
 <template>
+  <v-container fluid :grid-list-md="!$vuetify.breakpoint.xs" :class="$vuetify.breakpoint.xs ? 'pa-0' : ''">
 <!-- 받아쓰기 단계는 이거 사용하기 stepper
 <template>
   <v-stepper v-model="e1">
@@ -84,7 +85,7 @@
     </v-card>
   </v-dialog>
 </v-container>
-
+  </v-container>
 </template>
 <script>
 import router from '../router'

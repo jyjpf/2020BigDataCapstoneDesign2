@@ -1,4 +1,5 @@
 <template>
+  <v-container fluid :grid-list-md="!$vuetify.breakpoint.xs" :class="$vuetify.breakpoint.xs ? 'pa-0' : ''">
   <v-card class="mx-auto">
     <v-card-title>
       수강하기
@@ -21,6 +22,7 @@
       </template>
     </v-data-table>
   </v-card>
+  </v-container>
 </template>
 
 <script>
