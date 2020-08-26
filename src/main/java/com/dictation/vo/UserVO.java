@@ -33,5 +33,7 @@ public class UserVO {
 
 	private String dae_g;
 	private String so_g;
+
+	private String input_id;
 		
 }
