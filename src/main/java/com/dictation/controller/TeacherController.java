@@ -81,7 +81,7 @@ public class TeacherController {
 			UUID uuid = UUID.randomUUID();
 			save_file_nm = uuid.toString() + "_" + originalfileName;
 
-			File dest = new File("C:/Temp/" + save_file_nm);
+			File dest = new File("/home/dictation/audio" + save_file_nm);
 			file.transferTo(dest);
 
 		}
@@ -125,7 +125,7 @@ public class TeacherController {
 				UUID uuid = UUID.randomUUID();
 				save_file_nm = uuid.toString() + "_" + originalfileName;
 
-				File dest = new File("C:/Temp/" + save_file_nm);
+				File dest = new File("/home/dictation/audio" + save_file_nm);
 				file_nm.transferTo(dest);
 
 			}
@@ -137,7 +137,7 @@ public class TeacherController {
 			course2.setSave_file_nm(save_file_nm);
 
 			String delete_filenm = courseService.getById(course2).getSave_file_nm();
-			File delete_file = new File("C:/Temp/" + delete_filenm);
+			File delete_file = new File("/home/dictation/audio" + delete_filenm);
 			delete_file.delete();
 
 			courseService.dic_modify_file(course2);
@@ -240,144 +240,144 @@ public class TeacherController {
 		return lectureService.teacher_mylec(user_session.getUser_id());
 	}
 
-	@PostMapping(value = "/excelup")
-	public int excelup(@Param(value = "file") MultipartFile file, HttpServletRequest request) throws Exception {
-
-		int error_yn = 0;
-
-		UUID uuid = UUID.randomUUID();
-		String save_file_path = "" + uuid;
-		// user
-		HttpSession session = request.getSession();
-		UserVO user_session = (UserVO) session.getAttribute("user");
-
-		try {
-			File dest = new File(save_file_path);
-			file.transferTo(dest);
-
-			long start = System.currentTimeMillis();
-			FileInputStream inputStream = new FileInputStream(save_file_path);
-			Workbook workbook = new XSSFWorkbook(inputStream);
-			Sheet firstSheet = workbook.getSheetAt(0);
-			Iterator<Row> rowIterator = firstSheet.iterator();
-			Date date = new Date();
-
-			// connection = DriverManager.getConnection(jdbcURL, username, password);
-			// connection.setAutoCommit(false);
-
-			// String sql = "INSERT INTO students (name, enrolled, progress) VALUES (?, ?,
-			// ?)";
-			// PreparedStatement statement = connection.prepareStatement(sql);
-
-			int count = 0;
-
-			rowIterator.next(); // skip the header row
-
-			while (rowIterator.hasNext()) {
-				UserVO user = new UserVO();
-				EnrollVO enroll = new EnrollVO();
-				Row nextRow = rowIterator.next();
-				Iterator<Cell> cellIterator = nextRow.cellIterator();
-				String name = "";
-
-				// insert users
-				while (cellIterator.hasNext()) {
-					Cell nextCell = cellIterator.next();
-
-					int columnIndex = nextCell.getColumnIndex();
-
-					switch (columnIndex) {
-						case 0:
-							name = getStringValue(nextCell);
-							user.setUser_id(name);
-							// statement.setString(1, name);
-							break;
-						case 1:
-							String pw = getStringValue(nextCell);
-							user.setPw(pw);
-							// int progress = (int) nextCell.getNumericCellValue();
-							// statement.setInt(3, progress);
-						case 2:
-							String school_cd = getStringValue(nextCell);
-							user.setSchool_cd(school_cd);
-						case 3:
-							String kor_nm = getStringValue(nextCell);
-							user.setKor_nm(kor_nm);
-						case 4:
-							String end_nm = getStringValue(nextCell);
-							user.setEnd_nm(end_nm);
-						case 5:
-							int grade = getIntValue(nextCell);
-							user.setGrade(grade);
-						case 6:
-							String ban = getStringValue(nextCell);
-							user.setBan(ban);
-						case 7:
-							String cel_phone_no = getStringValue(nextCell);
-							user.setCel_phone_no(cel_phone_no);
-						case 8:
-							String hom_phone_no = getStringValue(nextCell);
-							user.setHom_phone_no(hom_phone_no);
-						case 9:
-							String gender_cd = getStringValue(nextCell);
-							if (gender_cd.equals("0")) {
-								user.setGender_cd("002001");
-							} else if (gender_cd.equals("1")) {
-								user.setGender_cd("002002");
-							}
-						case 10:
-							String email = getStringValue(nextCell);
-							user.setEmail(email);
-
-					}
-
-				}
-				user.setPosition_cd("003003");
-				user.setInput_id(user_session.getUser_id());
-				userService.insert(user);
-
-				// enroll insert
-				enroll.setLecture_no((int) session.getAttribute("lecture_no"));
-				enroll.setUser_id(name);
-				enroll.setApproval_cd("����");
-				enroll.setApproval_dt(date);
-				enroll.setInput_id(user_session.getUser_id());
-				enrollService.insert(enroll);
-
-				// statement.addBatch();
-
-				/*
-				 * if (count % batchSize == 0) { statement.executeBatch(); }
-				 */
-
-			}
-
-			workbook.close();
-
-			// execute the remaining queries
-			// statement.executeBatch();
-
-			// connection.commit();
-			// connection.close();
-
-			long end = System.currentTimeMillis();
-			System.out.printf("Import done in %d ms\n", (end - start));
-			error_yn = 0;
-
-		} catch (Exception ex1) {
-			System.out.println("Error reading file");
-			ex1.printStackTrace();
-			error_yn = 1;
-		} /*
-			 * catch (SQLException ex2) { System.out.println("Database error");
-			 * ex2.printStackTrace(); }
-			 */
-
-		File delete_file = new File(save_file_path);
-		delete_file.delete();
-
-		return error_yn;
-	}
+//	@PostMapping(value = "/excelup")
+//	public int excelup(@Param(value = "file") MultipartFile file, HttpServletRequest request) throws Exception {
+//
+//		int error_yn = 0;
+//
+//		UUID uuid = UUID.randomUUID();
+//		String save_file_path = "" + uuid;
+//		// user
+//		HttpSession session = request.getSession();
+//		UserVO user_session = (UserVO) session.getAttribute("user");
+//
+//		try {
+//			File dest = new File(save_file_path);
+//			file.transferTo(dest);
+//
+//			long start = System.currentTimeMillis();
+//			FileInputStream inputStream = new FileInputStream(save_file_path);
+//			Workbook workbook = new XSSFWorkbook(inputStream);
+//			Sheet firstSheet = workbook.getSheetAt(0);
+//			Iterator<Row> rowIterator = firstSheet.iterator();
+//			Date date = new Date();
+//
+//			// connection = DriverManager.getConnection(jdbcURL, username, password);
+//			// connection.setAutoCommit(false);
+//
+//			// String sql = "INSERT INTO students (name, enrolled, progress) VALUES (?, ?,
+//			// ?)";
+//			// PreparedStatement statement = connection.prepareStatement(sql);
+//
+//			int count = 0;
+//
+//			rowIterator.next(); // skip the header row
+//
+//			while (rowIterator.hasNext()) {
+//				UserVO user = new UserVO();
+//				EnrollVO enroll = new EnrollVO();
+//				Row nextRow = rowIterator.next();
+//				Iterator<Cell> cellIterator = nextRow.cellIterator();
+//				String name = "";
+//
+//				// insert users
+//				while (cellIterator.hasNext()) {
+//					Cell nextCell = cellIterator.next();
+//
+//					int columnIndex = nextCell.getColumnIndex();
+//
+//					switch (columnIndex) {
+//						case 0:
+//							name = getStringValue(nextCell);
+//							user.setUser_id(name);
+//							// statement.setString(1, name);
+//							break;
+//						case 1:
+//							String pw = getStringValue(nextCell);
+//							user.setPw(pw);
+//							// int progress = (int) nextCell.getNumericCellValue();
+//							// statement.setInt(3, progress);
+//						case 2:
+//							String school_cd = getStringValue(nextCell);
+//							user.setSchool_cd(school_cd);
+//						case 3:
+//							String kor_nm = getStringValue(nextCell);
+//							user.setKor_nm(kor_nm);
+//						case 4:
+//							String end_nm = getStringValue(nextCell);
+//							user.setEnd_nm(end_nm);
+//						case 5:
+//							int grade = getIntValue(nextCell);
+//							user.setGrade(grade);
+//						case 6:
+//							String ban = getStringValue(nextCell);
+//							user.setBan(ban);
+//						case 7:
+//							String cel_phone_no = getStringValue(nextCell);
+//							user.setCel_phone_no(cel_phone_no);
+//						case 8:
+//							String hom_phone_no = getStringValue(nextCell);
+//							user.setHom_phone_no(hom_phone_no);
+//						case 9:
+//							String gender_cd = getStringValue(nextCell);
+//							if (gender_cd.equals("0")) {
+//								user.setGender_cd("002001");
+//							} else if (gender_cd.equals("1")) {
+//								user.setGender_cd("002002");
+//							}
+//						case 10:
+//							String email = getStringValue(nextCell);
+//							user.setEmail(email);
+//
+//					}
+//
+//				}
+//				user.setPosition_cd("003003");
+//				user.setInput_id(user_session.getUser_id());
+//				userService.insert(user);
+//
+//				// enroll insert
+//				enroll.setLecture_no((int) session.getAttribute("lecture_no"));
+//				enroll.setUser_id(name);
+//				enroll.setApproval_cd("����");
+//				enroll.setApproval_dt(date);
+//				enroll.setInput_id(user_session.getUser_id());
+//				enrollService.insert(enroll);
+//
+//				// statement.addBatch();
+//
+//				/*
+//				 * if (count % batchSize == 0) { statement.executeBatch(); }
+//				 */
+//
+//			}
+//
+//			workbook.close();
+//
+//			// execute the remaining queries
+//			// statement.executeBatch();
+//
+//			// connection.commit();
+//			// connection.close();
+//
+//			long end = System.currentTimeMillis();
+//			System.out.printf("Import done in %d ms\n", (end - start));
+//			error_yn = 0;
+//
+//		} catch (Exception ex1) {
+//			System.out.println("Error reading file");
+//			ex1.printStackTrace();
+//			error_yn = 1;
+//		} /*
+//			 * catch (SQLException ex2) { System.out.println("Database error");
+//			 * ex2.printStackTrace(); }
+//			 */
+//
+//		File delete_file = new File(save_file_path);
+//		delete_file.delete();
+//
+//		return error_yn;
+//	}
 
 	/**
 	 * 

@@ -51,9 +51,6 @@
             sort-by="title"
             class="elevation-1"
           >
-         <template slot="items" slot-scope="props">
-            <td :class="headers[0].class"><a small flat class="text-capitalize" left @click="read(props.item)"> {{ props.item.title }}</a></td>
-        </template>
           <template v-slot:top>
       <v-toolbar flat color="white">
         <v-toolbar-title>공지 사항</v-toolbar-title>
@@ -132,39 +129,11 @@
         mdi-delete
       </v-icon>
     </template>
-        <!-- 공지사항 읽기 팝업 --> 
-     <v-dialog v-model="dlRead" persistent max-width="500px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">{{rd.title}}</span>
-        </v-card-title>
-        <v-card-text>
-          {{rd.content}}
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red darken-1" flat @click.native="dlRead = false">닫기</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <!-- 팝업 끝-->
         </v-data-table>
         </v-card>
       </v-tab-item>
      <v-tab-item>
           <v-card class="mx-auto">
-              <!--
-    <div id="choice">
-      <v-layout wrap align-center>
-        <v-flex xs12 sm6 d-flex>
-          <v-select
-            :items="items"
-            label="단계를 선택하세요."
-          ></v-select>
-        </v-flex>`
-      </v-layout>
-    </div>
-    -->
     <!-- 받아쓰기 등록-->
     <v-card-text class="pt-0">
       <div style="max-height: 40px; margin-top: 50px;">
@@ -598,7 +567,7 @@ import router from '../router'
       },
       //공지사항 수정
 
-excel_save(item){
+      excel_save(item){
         if(item==null){
           alert("엑셀 파일을 업로드 해주세요");
         }else{
