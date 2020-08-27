@@ -67,16 +67,7 @@
             <br>
         <v-flex class="text-right">
         <v-btn width="100" color="#FSFSFS" x-medium @click="submit()">엑셀업로드</v-btn>
-        <v-btn width="100" color="primary" x-medium @click="removeRow(row)">추가</v-btn>
-        <v-btn width="100" color="primary" x-medium @click="removeRow(row)">삭제</v-btn>
-        <v-btn width="100" color="primary" x-medium @click="submit()">저장</v-btn>
         <v-btn width="100" color="#FSFSFS" x-medium @click="submit()">승인</v-btn>
-    </v-flex>
-    <v-flex class="text-left">
-    <v-btn width="100" color="primary" x-medium @click="selectAll">모두 선택</v-btn>
-    <v-btn width="100" color="#FSFSFS" x-medium @click="reset">모두 해제</v-btn>
-    
-
     </v-flex>
           <!-- 회원관리-->
           <v-data-table
@@ -87,8 +78,94 @@
           :single-select="singleSelect"
           item-key="user_id"
           show-select
+          sort-by="title"
           class="elevation-1"
           >
+        <template v-slot:top>
+      <v-toolbar flat color="white">
+        <v-toolbar-title>회원관리</v-toolbar-title>
+        <v-divider
+          class="mx-4"
+          inset
+          vertical
+        ></v-divider>
+        <v-spacer></v-spacer>
+        <v-dialog v-model="dialog" max-width="500px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              dark
+              class="mb-2"
+              v-bind="attrs"
+              v-on="on"
+            >추가하기</v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline">{{ formTitle }}</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.position_cd" label="신분구분코드"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.user_id" label="유저 아이디"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.kor_nm" label="한국이름"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem. gender_cd" label="성별"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.birth_dt" label="생년월일"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.grade" label="학년"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.ban" label="반"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.cel_phone_no" label="전화번호"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem. register_dt" label="가입일"></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-toolbar>
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-pencil
+      </v-icon>
+      <v-icon
+        small
+        @click="deleteItem(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template>
+    <template v-slot:no-data>
+      <v-btn color="primary" @click="initialize">Reset</v-btn>
+    </template>
     </v-data-table>
         </v-card>
       </v-tab-item>
@@ -105,10 +182,6 @@
       ></v-text-field>
     </v-card-title>
     <!-- 년도/학기-->
-     <v-flex class="text-right">
-    <v-btn small color="primary" dark class="ml-5" @click="addRow">추가</v-btn>
-    <v-btn small color="primary" dark class="ml-5" @click="yearsave()">저장</v-btn>
-     </v-flex>
     <v-data-table
       v-model="selected"
       :headers="headers2"
@@ -119,16 +192,96 @@
       show-select
       class="elevation-1"
     >
+    <template v-slot:top>
+      <v-toolbar flat color="white">
+        <v-toolbar-title>년도/학기</v-toolbar-title>
+        <v-divider
+          class="mx-4"
+          inset
+          vertical
+        ></v-divider>
+        <v-spacer></v-spacer>
+        <v-dialog v-model="dialog" max-width="500px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              dark
+              class="mb-2"
+              v-bind="attrs"
+              v-on="on"
+            >추가하기</v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline">{{ formTitle }}</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.position_cd" label="신분구분코드"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.user_id" label="유저 아이디"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.kor_nm" label="한국이름"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem. gender_cd" label="성별"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.birth_dt" label="생년월일"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.grade" label="학년"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.ban" label="반"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.cel_phone_no" label="전화번호"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem. register_dt" label="가입일"></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-toolbar>
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-pencil
+      </v-icon>
+      <v-icon
+        small
+        @click="deleteItem(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template>
+    <template v-slot:no-data>
+      <v-btn color="primary" @click="initialize">Reset</v-btn>
+    </template>
     </v-data-table>
     </v-card>
     </v-tab-item>
          <v-tab-item>
            <!-- 대코드-->
-           <v-flex class="text-right">
-    <button class="button btn-primary" @click="addRow2">추가하기</button>
-    <v-btn small color="primary" dark class="ml-5" @click="gonewstudy()">삭제</v-btn>
-    <v-btn small color="primary" dark class="ml-5" @click="daecodesave()">저장</v-btn>
-     </v-flex>
      <v-card class="mx-auto">
       <v-spacer></v-spacer>
        <v-data-table
@@ -140,15 +293,84 @@
         show-select
         class="elevation-1"
        >
+       <template v-slot:top>
+      <v-toolbar flat color="white">
+        <v-toolbar-title>대코드</v-toolbar-title>
+        <v-divider
+          class="mx-4"
+          inset
+          vertical
+        ></v-divider>
+        <v-spacer></v-spacer>
+        <v-dialog v-model="dialog" max-width="500px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              dark
+              class="mb-2"
+              v-bind="attrs"
+              v-on="on"
+            >추가하기</v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline">{{ formTitle }}</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.position_cd" label="신분구분코드"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.user_id" label="유저 아이디"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.kor_nm" label="한국이름"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem. gender_cd" label="성별"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.birth_dt" label="생년월일"></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-toolbar>
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-pencil
+      </v-icon>
+      <v-icon
+        small
+        @click="deleteItem(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template>
+    <template v-slot:no-data>
+      <v-btn color="primary" @click="initialize">Reset</v-btn>
+    </template>
        </v-data-table>
      </v-card>
     </v-tab-item>
          <v-tab-item>
            <!-- 소코드-->
-           <v-flex class="text-right">
-    <v-btn small color="primary" dark class="ml-5" @click="gonewstudy()">삭제</v-btn>
-    <v-btn small color="primary" dark class="ml-5" @click="socodesave()">저장</v-btn>
-     </v-flex>
      <v-card class="mx-auto">
       <v-spacer></v-spacer>
        <v-data-table
@@ -159,7 +381,93 @@
         item-key="user_id"
         show-select
         class="elevation-1"        
-       ></v-data-table>
+       >
+       <template v-slot:top>
+      <v-toolbar flat color="white">
+        <v-toolbar-title>소코드</v-toolbar-title>
+        <v-divider
+          class="mx-4"
+          inset
+          vertical
+        ></v-divider>
+        <v-spacer></v-spacer>
+        <v-dialog v-model="dialog" max-width="500px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              dark
+              class="mb-2"
+              v-bind="attrs"
+              v-on="on"
+            >추가하기</v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline">{{ formTitle }}</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.position_cd" label="신분구분코드"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.user_id" label="유저 아이디"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.kor_nm" label="한국이름"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem. gender_cd" label="성별"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.birth_dt" label="생년월일"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.grade" label="학년"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.ban" label="반"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.cel_phone_no" label="전화번호"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem. register_dt" label="가입일"></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-toolbar>
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-pencil
+      </v-icon>
+      <v-icon
+        small
+        @click="deleteItem(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template>
+    <template v-slot:no-data>
+      <v-btn color="primary" @click="initialize">Reset</v-btn>
+    </template>
+       </v-data-table>
      </v-card>
     </v-tab-item>
     </v-tabs-items>
@@ -174,6 +482,31 @@ import router from '../router'
     data () {
       return {
         tabs: null,
+        dialog: false,
+        editedIndex: -1,
+        desserts: [],
+        editedItem: {
+        position_cd: '',
+        user_id: '',
+        kor_nm: '',
+        gender_cd: '',
+        birth_dt: '',
+        grade:0,
+        ban:'',
+        cel_phone_no:'',
+        register_dt:'',
+        },
+      defaultItem: {
+        position_cd: '',
+        user_id: '',
+        kor_nm: '',
+        gender_cd: '',
+        birth_dt: '',
+        grade:0,
+        ban:'',
+        cel_phone_no:'',
+        register_dt:'',
+        },
         sign:["신청", "대기중", "승인완료"],
         identi:["학생", "선생님", "관리자"],
         sex:["남", "여"],
@@ -182,7 +515,6 @@ import router from '../router'
         search: '',
         courseTabs: ["회원관리", "년도/학기", "대코드", "소코드"],
         headers: [
-          { text: '승인구분', value: 'grade' },
           { text: '신분', value: 'position_cd' },
           { text: '아이디', value: 'user_id' },
           { text: '이름', value: 'kor_nm', sortable: false },
@@ -192,6 +524,7 @@ import router from '../router'
           { text: '반', value: 'ban' },
           { text: '연락처', value: 'cel_phone_no' },
           { text: '가입일', value: 'register_dt' },
+          { text: 'Actions', value: 'actions', sortable: false },
         ],
         headers2: [
           { text: '년도', value: 'grade' },
@@ -203,12 +536,12 @@ import router from '../router'
         headers3: [
           {text: '대코드', value: 'daecode'},
           {text: '대코드명', value: 'daecodename'},
-          {text: '비고', value: 'note'},
+          {text: '비고', value: 'bigo'},
         ],
         headers4: [
           {text: '소코드', value: 'socode'},
           {text: '소코드명', value: 'socodename'},
-          {text: '비고', value: 'name'},
+          {text: '비고', value: 'bigo'},
         ],
         lectures:[
           
@@ -216,8 +549,25 @@ import router from '../router'
         selected: [],
       }
     },
+    //관리자 페이지 편집기능
+    computed: {
+      formTitle () {
+        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      },
+    },
+    watch: {
+      dialog (val) {
+        val || this.close()
+      },
+    },
+    created () {
+      this.initialize()
+    },
+    //관리자 페이지 편집 기능여기까지
+    
+    //회원목록 불러오기
     created(){
-    this.$http.get('/api/common/lecture/list').then(res =>{
+    this.$http.get('/api/admin/user/list').then(res =>{
           console.log('status code: ${res.ban}');
           this.lectures=res.data;
           //console.log(res);
@@ -226,6 +576,34 @@ import router from '../router'
     )
   },
     methods: {
+      initialize () {
+        this.notice = [
+        ]
+      },
+      editItem (item) {
+        this.editedIndex = this.desserts.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true
+      },
+      deleteItem (item) {
+        const index = this.desserts.indexOf(item)
+        confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
+      },
+      close () {
+        this.dialog = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+      save () {
+        if (this.editedIndex > -1) {
+          Object.assign(this.lectures[this.editedIndex], this.editedItem)
+        } else {
+          this.lectures.push(this.editedItem)
+        }
+        this.close()
+      },
       //회원관리 저장
       gonewstudy(){
         router.push({name: 'stwr'});

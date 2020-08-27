@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dictation.mapper.UserMapper"> 
+<mapper namespace="com.dictation.mapper.AdminMapper"> 
 	
 	<!-- Insert a user -->
-	<insert id="insert" parameterType="com.dictation.vo.UserVO">
+	<insert id="insert" parameterType="com.dictation.vo.AdminVO">
 		insert into users(
 			user_id,
-			pw,
 			school_cd,
 			position_cd,
 			kor_nm,
@@ -24,7 +23,6 @@
 			
 		) values(
 			#{user_id},
-			#{pw},
 			#{school_cd},
 			#{position_cd},
 			#{kor_nm},
@@ -51,10 +49,9 @@
  
  
 	<!-- according to id Modifying Student Information-->
-	<update id="update" parameterType="UserVO">
+	<update id="update" parameterType="AdminVO">
 		update users
 		set
-			pw=#{pw},
 			school_cd=#{school_cd},
 			kor_nm=#{kor_nm},
 			end_nm=#{end_nm},
@@ -74,10 +71,9 @@
 	
  
 	<!-- according to id query -->
-	<select id="getById" parameterType="String" resultType="UserVO">
+	<select id="getById" parameterType="String" resultType="AdminVO">
 		select
 			user_id,
-			pw,
 			school_cd,
 			position_cd,
 			kor_nm,
@@ -102,10 +98,9 @@
 	
  
 	<!-- Query all -->
-	<select id="list" parameterType="int" resultType="com.dictation.vo.UserVO" >
+	<select id="list" parameterType="int" resultType="com.dictation.vo.AdminVO" >
 		select
 			user_id,
-			pw,
 			school_cd,
 			position_cd,
 			kor_nm,

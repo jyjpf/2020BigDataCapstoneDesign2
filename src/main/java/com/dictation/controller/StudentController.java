@@ -34,7 +34,7 @@ public class StudentController {
 	public void insert_student(@PathVariable("lecture_no") int lecture_no, HttpServletRequest request) {
 		EnrollVO enroll = new EnrollVO();
 		enroll.setLecture_no(lecture_no);
-		enroll.setApproval_cd("ï¿½Ì½ï¿½ï¿½ï¿½");
+		enroll.setApproval_cd("½ÂÀÎ");
 		
 		//user_id
 		HttpSession session = request.getSession();

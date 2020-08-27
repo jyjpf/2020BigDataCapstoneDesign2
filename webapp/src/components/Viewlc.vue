@@ -171,7 +171,7 @@ import router from '../router'
           console.log(res);
         })
       },
-      //신청완료 버튼
+      //신청 버튼
       request(item){
         this.$http.get(`/api/student/enroll/insert/${item.lecture_no}`).then(res =>{
           console.log(res);
