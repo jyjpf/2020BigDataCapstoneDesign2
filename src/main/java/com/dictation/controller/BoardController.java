@@ -187,7 +187,6 @@ public class BoardController {
 		String originalfileName = null;
 		String save_file_nm = null;
 
-		// boardï¿½ï¿½ set
 		BoardVO board = new BoardVO();
 		board.setLecture_no(lecture_session);
 		board.setBoard_cd(board_cd);
@@ -209,9 +208,9 @@ public class BoardController {
 			File dest = new File("C:/Temp/" + save_file_nm);
 			file.transferTo(dest);
 
-			String delete_filenm = boardService.getById(board).getSave_file_nm();// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
-			File delete_file = new File("C:/Temp/" + delete_filenm);// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-			delete_file.delete();// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			String delete_filenm = boardService.getById(board).getSave_file_nm();
+			File delete_file = new File("C:/Temp/" + delete_filenm);
+			delete_file.delete();
 		}
 
 		board.setFile_nm(originalfileName);
@@ -252,15 +251,12 @@ public class BoardController {
 		board.setBoard_cd(board_cd);
 		board.setLecture_no(lecture_session);
 
-		//Á¤·Ä
 		List<BoardVO> board_sort=boardService.list(board);
-		System.out.println("Á¤·ÄÀü");
 		for(int i=0; i<board_sort.size(); i++) {
 		System.out.println(board_sort.get(i).getSeq_no());
 		}
 
 		Collections.sort(board_sort);
-		System.out.println("Á¤·ÄÈÄ");
 		for(int i=0; i<board_sort.size(); i++) {
 		System.out.println(board_sort.get(i).getSeq_no());
 		}		
