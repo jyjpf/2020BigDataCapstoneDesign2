@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import com.dictation.service.BoardService;
 import com.dictation.service.CommentService;
+import com.dictation.vo.CourseVO;
 import com.dictation.vo.BoardVO;
 import com.dictation.vo.CommentVO;
 
@@ -250,7 +252,19 @@ public class BoardController {
 		board.setBoard_cd(board_cd);
 		board.setLecture_no(lecture_session);
 
-		return boardService.list(board);
+		//정렬
+		List<BoardVO> board_sort=boardService.list(board);
+		System.out.println("정렬전");
+		for(int i=0; i<board_sort.size(); i++) {
+		System.out.println(board_sort.get(i).getSeq_no());
+		}
+
+		Collections.sort(board_sort);
+		System.out.println("정렬후");
+		for(int i=0; i<board_sort.size(); i++) {
+		System.out.println(board_sort.get(i).getSeq_no());
+		}		
+		return board_sort;
 	}
 
 	@PostMapping("/upload")
