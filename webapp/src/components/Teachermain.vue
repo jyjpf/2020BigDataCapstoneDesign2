@@ -484,7 +484,6 @@ import router from '../router'
           { text: '받아쓰기 점수', value: 'pass_course_no' },
         ],
         headers4: [
-          { text: '선택', value: 'checkbox'},
           { text: '승인구분', value: 'approval_cd' },
           { text: '아이디', value: 'user_id' },
           { text: '이름', value: 'kor_nm', sortable: false },
