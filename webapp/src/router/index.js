@@ -66,18 +66,7 @@ const routes = [
     path: '/Mypage',
     name: 'mypage',
     component: () => import('../components/Mypage.vue')
-  },{
-    path: '/crud',
-    name: 'crud',
-    component: () => import('../components/Crud.vue')
-  },{
-    path: '/crud2',
-    name: 'crud2',
-    component: () => import('../components/Crud2.vue')
   }
-  
-
-
 ]
 
 const router = new VueRouter({
