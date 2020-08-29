@@ -299,74 +299,6 @@
           >
             <template v-slot:top>
         </template>
-        <template v-slot:expanded-item="{ headers, item }">
-            <td :colspan="headers.length">{{ item.content }}</td>
-
-        </template>
-
-          <template v-slot:top>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>질문게시판</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
-            <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              v-bind="attrs"
-              v-on="on"
-            >글 작성하기</v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem003.title" label="제목"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem003.content" label="내용"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                      <v-file-input @change="boardFile1($event, editedItem003)" label="업로드"></v-file-input>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">취소</v-btn>
-              <v-btn color="blue darken-1" text @click="save(editedItem003)">저장</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="dlRead" persistent max-width="500px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">{{formTitle}}</span>
-        </v-card-title>
-        <v-card-text>
-          {{formTitle}}
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red darken-1" flat @click.native="dlRead = false">닫기</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-      </v-toolbar>
-    </template>
         </v-data-table>
     </v-tab-item>
     </v-tabs-items>
@@ -436,12 +368,6 @@ import router from '../router'
           content: '',
           file:null,
           board_cd:'001',
-        },
-        editedItem003: {
-          title: '',
-          content: '',
-          file:null,
-          board_cd:'003',
         },
         defaultItem: {
           title: '',
@@ -630,7 +556,7 @@ import router from '../router'
         }
 
         this.close()
-        location.reload(true);
+        //location.reload(true);
       },
       //받아쓰기 단계가 바뀌면 해당단계를 lecture2에 적용(등록일때)
       isdictation(value){

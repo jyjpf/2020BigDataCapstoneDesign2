@@ -55,7 +55,7 @@
         <v-list-item v-if="!isSignIn" @click="$store.dispatch('logout')" >
             <v-list-item-content>
               <v-list-item-title>
-              Logout
+              로그아웃
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -160,7 +160,7 @@ export default {
         this.items[0].isOpen = true;
 
         this.items[5].isOpen = false;
-        this.items[1].isOpen = false;
+        this.items[1].isOpen = true;
         this.items[2].isOpen = false;
         this.items[3].isOpen = false;
       } else if(data === "학생") {
@@ -169,8 +169,8 @@ export default {
 
         this.items[5].isOpen = false;
         this.items[1].isOpen = true;
-        this.items[2].isOpen = true;
-        this.items[3].isOpen = true;
+        this.items[2].isOpen = false;
+        this.items[3].isOpen = false;
       }
     }
     
