@@ -29,12 +29,14 @@ public class StudentController {
 	private EnrollService enrollService;
 	@Autowired
 	private LectureService lectureService;
-
+	//학생들이 수강신청버튼 눌렀을때
+		//세션값user_id받아와서  enroll테이블에 insert
+		//lecture_no, user_id만 있으면 됨
 	@GetMapping(value="/enroll/insert/{lecture_no}")
 	public void insert_student(@PathVariable("lecture_no") int lecture_no, HttpServletRequest request) {
 		EnrollVO enroll = new EnrollVO();
 		enroll.setLecture_no(lecture_no);
-		enroll.setApproval_cd("����");
+		enroll.setApproval_cd("미승인");
 		
 		//user_id
 		HttpSession session = request.getSession();

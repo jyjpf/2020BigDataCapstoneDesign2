@@ -82,7 +82,8 @@ public class TeacherController {
 			UUID uuid = UUID.randomUUID();
 			save_file_nm = uuid.toString() + "_" + originalfileName;
 
-			File dest = new File("/home/dictation/audio" + save_file_nm);
+			File dest = new File("C:\\Users\\jyj\\Desktop\\audiotest" + save_file_nm);
+			//File dest = new File("/home/dictation/audio" + save_file_nm);
 			file.transferTo(dest);
 
 		}
@@ -126,7 +127,8 @@ public class TeacherController {
 				UUID uuid = UUID.randomUUID();
 				save_file_nm = uuid.toString() + "_" + originalfileName;
 
-				File dest = new File("/home/dictation/audio" + save_file_nm);
+				File dest = new File("C:\\Users\\jyj\\Desktop\\audiotest" + save_file_nm);
+				//File dest = new File("/home/dictation/audio" + save_file_nm);
 				file_nm.transferTo(dest);
 
 			}
@@ -138,7 +140,7 @@ public class TeacherController {
 			course2.setSave_file_nm(save_file_nm);
 
 			String delete_filenm = courseService.getById(course2).getSave_file_nm();
-			File delete_file = new File("/home/dictation/audio" + delete_filenm);
+			File delete_file = new File("C:\\Users\\jyj\\Desktop\\audiotest" + delete_filenm);
 			delete_file.delete();
 
 			courseService.dic_modify_file(course2);
@@ -333,7 +335,7 @@ public class TeacherController {
 				// enroll insert
 				enroll.setLecture_no((int) session.getAttribute("lecture_no"));
 				enroll.setUser_id(name);
-				enroll.setApproval_cd("����");
+				enroll.setApproval_cd("승인");
 				enroll.setApproval_dt(date);
 				enroll.setInput_id(user_session.getUser_id());
 				enrollService.insert(enroll);
@@ -418,7 +420,7 @@ public class TeacherController {
 			EnrollVO enroll = new EnrollVO();
 			enroll.setLecture_no(lecture_no);
 			enroll.setUser_id(ad.getUser_id());
-			enroll.setApproval_cd("����");
+			enroll.setApproval_cd("승인");
 			enrollService.insert(enroll);
 		}
 		
