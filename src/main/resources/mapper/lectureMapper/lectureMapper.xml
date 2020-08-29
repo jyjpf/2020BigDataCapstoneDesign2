@@ -34,7 +34,7 @@
 			#{teacher_id},
 			#{teacher_nm},
 			#{input_id},
-			now()::TIME WITH TIME ZONE
+			now()::TIMESTAMP
 		)
 	</insert>
  
@@ -62,7 +62,7 @@
 			teacher_id=#{teacher_id},
 			teacher_nm=#{teacher_nm},
 			update_id=#{teacher_id},
-			update_date=now()::TIME WITH TIME ZONE
+			update_date=now()::TIMESTAMP
 			
 		where
 			lecture_no=#{lecture_no}

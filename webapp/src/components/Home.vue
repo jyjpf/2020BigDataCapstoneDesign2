@@ -123,7 +123,7 @@ import router from '../router'
         searchs:["제목","선생님","학년"],
         search: '',
         search2: '',
-        courseTabs: ["강좌리스트", "개설강좌"],
+        courseTabs: ["전체 강좌", "내 강좌"],
         headers: [
           { text: '강좌코드', value: 'lecture_no' },
           { text: '강좌명', value: 'lecture_nm' },

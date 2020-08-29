@@ -114,13 +114,13 @@ export default {
     items: [
   
       {  text: '홈' ,path:'/home', isOpen: false},
-      { text: '개설강좌', path:'/viewlc',isOpen: false},
+      { text: '홈', path:'/viewlc',isOpen: false},
       { text: '수강강좌', path:'/readlc',isOpen: false},
       { text: '학생강좌화면', path:'/studentlc',isOpen:false},
       { text: '받아쓰기등록', path:'/write',isOpen:false},
       { text: '받아쓰기', path:'/s_write', isOpen:false},
-      { icon: 'mdi-account-arrow-left', text: 'SignIn', path:'/',isOpen: false},
-      { icon: 'mdi-account-plus', text: 'SignUp', path:'/sign-up', isOpen:false},
+      { icon: 'mdi-account-arrow-left', text: '로그인', path:'/',isOpen: false},
+      { icon: 'mdi-account-plus', text: '회원가입', path:'/sign-up', isOpen:false},
         // { icon: 'mdi-content-copy', text: 'Duplicates' },
         // {
         //   icon: 'mdi-chevron-up',
@@ -160,7 +160,7 @@ export default {
         this.items[0].isOpen = true;
 
         this.items[5].isOpen = false;
-        this.items[1].isOpen = true;
+        this.items[1].isOpen = false;
         this.items[2].isOpen = false;
         this.items[3].isOpen = false;
       } else if(data === "학생") {
