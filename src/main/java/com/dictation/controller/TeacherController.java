@@ -24,11 +24,6 @@ import com.dictation.vo.LectureVO;
 import com.dictation.vo.UserVO;
 
 import org.apache.ibatis.annotations.Param;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -243,148 +238,120 @@ public class TeacherController {
 		return lectureService.teacher_mylec(user_session.getUser_id());
 	}
 
-	@PostMapping(value = "/excelup")
-	public int excelup(@Param(value = "file") MultipartFile file, HttpServletRequest request) throws Exception {
+	// @PostMapping(value = "/excelup")
+	// public int excelup(@Param(value = "file") MultipartFile file, HttpServletRequest request) throws Exception {
 
-		int error_yn = 0;
+	// 	int error_yn = 0;
 
-		UUID uuid = UUID.randomUUID();
-		String save_file_path = "" + uuid;
-		// user
-		HttpSession session = request.getSession();
-		UserVO user_session = (UserVO) session.getAttribute("user");
+	// 	UUID uuid = UUID.randomUUID();
+	// 	String save_file_path = "" + uuid;
+	// 	// user
+	// 	HttpSession session = request.getSession();
+	// 	UserVO user_session = (UserVO) session.getAttribute("user");
 
-		try {
-			File dest = new File(save_file_path);
-			file.transferTo(dest);
+	// 	try {
+	// 		File dest = new File(save_file_path);
+	// 		file.transferTo(dest);
 
-			long start = System.currentTimeMillis();
-			FileInputStream inputStream = new FileInputStream(save_file_path);
-			Workbook workbook = new XSSFWorkbook(inputStream);
-			Sheet firstSheet = workbook.getSheetAt(0);
-			Iterator<Row> rowIterator = firstSheet.iterator();
-			Date date = new Date();
+	// 		long start = System.currentTimeMillis();
+	// 		FileInputStream inputStream = new FileInputStream(save_file_path);
+	// 		Workbook workbook = new XSSFWorkbook(inputStream);
+	// 		Sheet firstSheet = workbook.getSheetAt(0);
+	// 		Iterator<Row> rowIterator = firstSheet.iterator();
+	// 		Date date = new Date();
 
-			int count = 0;
+	// 		int count = 0;
 
-			rowIterator.next(); // skip the header row
+	// 		rowIterator.next(); // skip the header row
 
-			while (rowIterator.hasNext()) {
-				UserVO user = new UserVO();
-				EnrollVO enroll = new EnrollVO();
-				Row nextRow = rowIterator.next();
-				Iterator<Cell> cellIterator = nextRow.cellIterator();
-				String name = "";
+	// 		while (rowIterator.hasNext()) {
+	// 			UserVO user = new UserVO();
+	// 			EnrollVO enroll = new EnrollVO();
+	// 			Row nextRow = rowIterator.next();
+	// 			Iterator<Cell> cellIterator = nextRow.cellIterator();
+	// 			String name = "";
 
-				// insert users
-				while (cellIterator.hasNext()) {
-					Cell nextCell = cellIterator.next();
+	// 			// insert users
+	// 			while (cellIterator.hasNext()) {
+	// 				Cell nextCell = cellIterator.next();
 
-					int columnIndex = nextCell.getColumnIndex();
+	// 				int columnIndex = nextCell.getColumnIndex();
 
-					switch (columnIndex) {
-						case 0:
-							name = getStringValue(nextCell);
-							user.setUser_id(name);
-							// statement.setString(1, name);
-							break;
-						case 1:
-							String pw = getStringValue(nextCell);
-							user.setPw(pw);
-							// int progress = (int) nextCell.getNumericCellValue();
-							// statement.setInt(3, progress);
-						case 2:
-							String school_cd = getStringValue(nextCell);
-							user.setSchool_cd(school_cd);
-						case 3:
-							String kor_nm = getStringValue(nextCell);
-							user.setKor_nm(kor_nm);
-						case 4:
-							String end_nm = getStringValue(nextCell);
-							user.setEnd_nm(end_nm);
-						case 5:
-							int grade = getIntValue(nextCell);
-							user.setGrade(grade);
-						case 6:
-							String ban = getStringValue(nextCell);
-							user.setBan(ban);
-						case 7:
-							String cel_phone_no = getStringValue(nextCell);
-							user.setCel_phone_no(cel_phone_no);
-						case 8:
-							String hom_phone_no = getStringValue(nextCell);
-							user.setHom_phone_no(hom_phone_no);
-						case 9:
-							String gender_cd = getStringValue(nextCell);
-							if (gender_cd.equals("0")) {
-								user.setGender_cd("002001");
-							} else if (gender_cd.equals("1")) {
-								user.setGender_cd("002002");
-							}
-						case 10:
-							String email = getStringValue(nextCell);
-							user.setEmail(email);
+	// 				switch (columnIndex) {
+	// 					case 0:
+	// 						name = getStringValue(nextCell);
+	// 						user.setUser_id(name);
+	// 						// statement.setString(1, name);
+	// 						break;
+	// 					case 1:
+	// 						String pw = getStringValue(nextCell);
+	// 						user.setPw(pw);
+	// 						// int progress = (int) nextCell.getNumericCellValue();
+	// 						// statement.setInt(3, progress);
+	// 					case 2:
+	// 						String school_cd = getStringValue(nextCell);
+	// 						user.setSchool_cd(school_cd);
+	// 					case 3:
+	// 						String kor_nm = getStringValue(nextCell);
+	// 						user.setKor_nm(kor_nm);
+	// 					case 4:
+	// 						String end_nm = getStringValue(nextCell);
+	// 						user.setEnd_nm(end_nm);
+	// 					case 5:
+	// 						int grade = getIntValue(nextCell);
+	// 						user.setGrade(grade);
+	// 					case 6:
+	// 						String ban = getStringValue(nextCell);
+	// 						user.setBan(ban);
+	// 					case 7:
+	// 						String cel_phone_no = getStringValue(nextCell);
+	// 						user.setCel_phone_no(cel_phone_no);
+	// 					case 8:
+	// 						String hom_phone_no = getStringValue(nextCell);
+	// 						user.setHom_phone_no(hom_phone_no);
+	// 					case 9:
+	// 						String gender_cd = getStringValue(nextCell);
+	// 						if (gender_cd.equals("0")) {
+	// 							user.setGender_cd("002001");
+	// 						} else if (gender_cd.equals("1")) {
+	// 							user.setGender_cd("002002");
+	// 						}
+	// 					case 10:
+	// 						String email = getStringValue(nextCell);
+	// 						user.setEmail(email);
 
-					}
+	// 				}
 
-				}
-				user.setPosition_cd("003003");
-				user.setInput_id(user_session.getUser_id());
-				userService.insert(user);
+	// 			}
+	// 			user.setPosition_cd("003003");
+	// 			user.setInput_id(user_session.getUser_id());
+	// 			userService.insert(user);
 
-				// enroll insert
-				enroll.setLecture_no((int) session.getAttribute("lecture_no"));
-				enroll.setUser_id(name);
-				enroll.setApproval_cd("승인");
-				enroll.setApproval_dt(date);
-				enroll.setInput_id(user_session.getUser_id());
-				enrollService.insert(enroll);
+	// 			// enroll insert
+	// 			enroll.setLecture_no((int) session.getAttribute("lecture_no"));
+	// 			enroll.setUser_id(name);
+	// 			enroll.setApproval_cd("승인");
+	// 			enroll.setApproval_dt(date);
+	// 			enroll.setInput_id(user_session.getUser_id());
+	// 			enrollService.insert(enroll);
 
-			}
+	// 		}
 
-			workbook.close();
+	// 		workbook.close();
 
-			long end = System.currentTimeMillis();
-			error_yn = 0;
+	// 		long end = System.currentTimeMillis();
+	// 		error_yn = 0;
 
-		} catch (Exception ex1) {
-			ex1.printStackTrace();
-			error_yn = 1;
-		} 
+	// 	} catch (Exception ex1) {
+	// 		ex1.printStackTrace();
+	// 		error_yn = 1;
+	// 	} 
 
-		File delete_file = new File(save_file_path);
-		delete_file.delete();
+	// 	File delete_file = new File(save_file_path);
+	// 	delete_file.delete();
 
-		return error_yn;
-	}
-
-	/**
-	 * 
-	 * 
-	 * @param cell
-	 * @return
-	 */
-	public static String getStringValue(Cell cell) {
-		String rtnValue = "";
-		try {
-			rtnValue = cell.getStringCellValue();
-		} catch (IllegalStateException e) {
-			rtnValue = Integer.toString((int) cell.getNumericCellValue());
-		}
-
-		return rtnValue;
-	}
-
-	public static int getIntValue(Cell cell) {
-		int rtnValue = 0;
-		try {
-			rtnValue = (int) cell.getNumericCellValue();
-		} catch (IllegalStateException e) {
-			rtnValue = 0;
-		}
-
-		return rtnValue;
-	}
+	// 	return error_yn;
+	// }
 
 	@PostMapping(value="/users/list_request_save")
 	public void list_request_save(@RequestBody List<UserVO> user, HttpServletRequest request) throws Exception {

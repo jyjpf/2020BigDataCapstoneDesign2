@@ -19,13 +19,13 @@ public class BoardVO implements Comparable<BoardVO>{
 	private int read_cnt;
 	private String file_nm;
 	private String save_file_nm;
-	private String input_id;
+	private String input_id; 
 	private Date input_date;
 	private String update_id;
 	private Date update_date;
 	
 	
-	//board_cd¿¡¼­ dae_cd¿Í so_cd°ªÀ» ÇÕÄ¡±â À§ÇÑ º¯¼ö
+	//board_cdì—ì„œ dae_cdì™€ so_cdê°’ì„ í•©ì¹˜ê¸° ìœ„í•œ ë³€ìˆ˜
 	private String dae_b;
 	private String so_b;
 	

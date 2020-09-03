@@ -21,7 +21,7 @@ servlet:
     max-request-size: 100MB    
 
 mybatis:
- mapper-locations: classpath:mapper/**/*.xml
+ mapper-locations: classpath:mapper/*.xml
  type-aliases-package: com.dictation.vo
 
 ---
@@ -48,7 +48,7 @@ servlet:
     max-request-size: 100MB    
 
 mybatis:
- mapper-locations: classpath:mapper/**/*.xml
+ mapper-locations: classpath:mapper/*.xml
  type-aliases-package: com.dictation.vo
 ---
 spring:
@@ -74,5 +74,5 @@ servlet:
     max-request-size: 100MB    
 
 mybatis:
- mapper-locations: classpath:mapper/**/*.xml
+ mapper-locations: classpath:mapper/*.xml
  type-aliases-package: com.dictation.vo

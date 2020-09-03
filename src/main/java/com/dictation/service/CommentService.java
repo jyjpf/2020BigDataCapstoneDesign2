@@ -26,7 +26,6 @@ public class CommentService {
 		commentMapper.delete(map);
 	}
 	
-	//´ñ±Û ¼öÁ¤
 	public void update(CommentVO comment) {
 		commentMapper.update(comment);
 	}

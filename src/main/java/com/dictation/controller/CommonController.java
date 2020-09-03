@@ -32,7 +32,7 @@ import com.dictation.vo.UserVO;
 @CrossOrigin("*")
 @RestController
 @RequestMapping(value="/api/common")
-public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
+public class CommonController {//ê³µí†µì»¨íŠ¸ë¡¤ëŸ¬
 	@Autowired
 	private CourseService courseService;
 	@Autowired
@@ -44,16 +44,16 @@ public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
 	@Autowired
 	private BoardService boardService;
 	
-	//È¸¿ø°¡ÀÔ
-	@PostMapping(produces = "application/json;charset=UTF-8",value="/signup")
+	//íšŒì›ê°€ì…
+	@PostMapping(value="/signup")
 	public void insert(@RequestBody UserVO user) {
 		
 		//position_cd
-		if(user.getPosition_cd().equals("°ü¸®ÀÚ")) {  
+		if(user.getPosition_cd().equals("ê´€ë¦¬ì")) {  
 			user.setPosition_cd("003001");
-		}else if(user.getPosition_cd().equals("¼±»ı´Ô")) {//ÇÁ·ĞÆ®¿¡¼­ ¼±»ı´ÔÀÌ¸é "¼±»ı´Ô"À¸·Î µ¥ÀÌÅÍ °ªÀ» ³Ñ±è
+		}else if(user.getPosition_cd().equals("ì„ ìƒë‹˜")) { //í”„ë¡ íŠ¸ì—ì„œ ì„ ìƒë‹˜ì´ë©´ "ì„ ìƒë‹˜"ìœ¼ë¡œ ë°ì´í„° ê°’ì„ ë„˜ê¹€
 			user.setPosition_cd("003002");
-		}else if(user.getPosition_cd().equals("ÇĞ»ı")) {//ÇÁ·ĞÆ®¿¡¼­ ÇĞ»ıÀÌ¸é "ÇĞ»ı"À¸·Î µ¥ÀÌÅÍ °ªÀ» ³Ñ±è
+		}else if(user.getPosition_cd().equals("í•™ìƒ")) { //í”„ë¡ íŠ¸ì—ì„œ í•™ìƒì´ë©´ "í•™ìƒ"ìœ¼ë¡œ ë°ì´í„° ê°’ì„ ë„˜ê¹€
 			user.setPosition_cd("003003");
 		}
 		
@@ -61,8 +61,8 @@ public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
 		
 	}
 	
-	//·Î±×ÀÎ(¼º°ø½Ã UserVO°ª ¼¼¼Ç°ªÀ¸·Î ÀúÀåÇÏ°í, position_cd°ª ¹İÈ¯)
-	//³ªÁß¿¡´Â post·Î user_id °ª ÁÙ°Í
+	//ë¡œê·¸ì¸(ì„±ê³µì‹œ UserVOê°’ ì„¸ì…˜ê°’ìœ¼ë¡œ ì €ì¥í•˜ê³ , position_cdê°’ ë°˜í™˜)
+	//ë‚˜ì¤‘ì—ëŠ” postë¡œ user_id ê°’ ì¤„ê²ƒ
 	@GetMapping(value = "login/{user_id}&{pw}")
 	public UserVO login(@PathVariable("user_id") String user_id,@PathVariable("pw") String pw, HttpServletRequest request) throws Exception {
 
@@ -72,26 +72,26 @@ public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
 		if(user.equals(null) || user == null) {
 		    user.setLoginYn("0");
 		    return user;
-		}else if(user.getPw().equals(pw)) {//·Î±×ÀÎ¼º°ø &¼¼¼Ç°ª ÁÜ
-			//if() °ü¸®ÀÚÄÚµå, ¼±»ı´ÔÄÚµå ·Î±×ÀÎ½Ã ¼¼¼ÇÈ®ÀÎ°ª »ı¼º ÇÊ¿ä
+		}else if(user.getPw().equals(pw)) {//ë¡œê·¸ì¸ì„±ê³µ &ì„¸ì…˜ê°’ ì¤Œ
+			//if() ê´€ë¦¬ìì½”ë“œ, ì„ ìƒë‹˜ì½”ë“œ ë¡œê·¸ì¸ì‹œ ì„¸ì…˜í™•ì¸ê°’ ìƒì„± í•„ìš”
 			
-			session.setAttribute("user", user);//¼¼¼Ç¿¡ UserVO°ªÁÜ
+			session.setAttribute("user", user);//ì„¸ì…˜ì— UserVOê°’ì¤Œ
 			
 			UserVO user_session=(UserVO)session.getAttribute("user");
-			System.out.println("¾ÆÀÌµğ ¼¼¼Ç°ª :" +user_session.getUser_id());
-			System.out.println("ºñ¹Ğ¹øÈ£ ¼¼¼Ç°ª :" +user_session.getPw());
-			System.out.println("½ÅºĞÄÚµå ¼¼¼Ç°ª :" +user_session.getPosition_cd());
+			System.out.println("ì•„ì´ë”” ì„¸ì…˜ê°’ :" +user_session.getUser_id());
+			System.out.println("ë¹„ë°€ë²ˆí˜¸ ì„¸ì…˜ê°’ :" +user_session.getPw());
+			System.out.println("ì‹ ë¶„ì½”ë“œ ì„¸ì…˜ê°’ :" +user_session.getPosition_cd());
 			user.setLoginYn("1");
 			return user;
 		}else {
-			System.out.println("¸®ÅÏ°ªÈ®ÀÎ¿Ï·á");
+			System.out.println("ë¦¬í„´ê°’í™•ì¸ì™„ë£Œ");
 			session.setAttribute("login_fail", pw);
 			user.setLoginYn("0");
 			return user;
 		}
 	}
 	
-	//mypage(È¸¿øÁ¤º¸¸¦ ¹İÈ¯)
+	//mypage(íšŒì›ì •ë³´ë¥¼ ë°˜í™˜)
 	@GetMapping(value = "/user/get")
 	public UserVO user_getById(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession();
@@ -101,14 +101,14 @@ public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
 		return user;
 	}
 	
-	//È¸¿øÁ¤º¸ ¼öÁ¤(mypage)
+	//íšŒì›ì •ë³´ ìˆ˜ì •(mypage)
 	@PostMapping(value = "/user/update")
 	public void user_update(@RequestBody UserVO user) throws Exception {
 		System.out.println("this is common/user/update");
 		//gender_cd
-		if(user.getGender_cd().equals("³²ÀÚ")) {//ÇÁ·ĞÆ®¿¡¼­ ³²ÀÚÀÌ¸é "002001"À¸·Î µ¥ÀÌÅÍ °ªÀ» ³Ñ±è  
+		if(user.getGender_cd().equals("ë‚¨ì")) {//í”„ë¡ íŠ¸ì—ì„œ ë‚¨ìì´ë©´ "002001"ìœ¼ë¡œ ë°ì´í„° ê°’ì„ ë„˜ê¹€  
 			user.setGender_cd("002001");
-		}else if(user.getGender_cd().equals("¿©ÀÚ")) {//ÇÁ·ĞÆ®¿¡¼­ ¿©ÀÚÀÌ¸é "002002"À¸·Î µ¥ÀÌÅÍ °ªÀ» ³Ñ±è
+		}else if(user.getGender_cd().equals("ì—¬ì")) {//í”„ë¡ íŠ¸ì—ì„œ ì—¬ìì´ë©´ "002002"ìœ¼ë¡œ ë°ì´í„° ê°’ì„ ë„˜ê¹€
 			user.setGender_cd("002002");
 		}
 		
@@ -126,7 +126,7 @@ public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
 	}
 	
 	//modify
-	//lecture_no´Â °°¾Æ¾ß ÇÔ
+	//lecture_noëŠ” ê°™ì•„ì•¼ í•¨
 	@PostMapping(value="/course/update")
 	public void update(@RequestBody CourseVO course) {
 		courseService.update(course);
@@ -151,19 +151,19 @@ public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
 	}	
 	
 	
-	//ÆÄÀÏ ¾÷·Îµå¸¦ À§ÇÔ(1°³ÀÇ ÆÄÀÏ)
+	//íŒŒì¼ ì—…ë¡œë“œë¥¼ ìœ„í•¨(1ê°œì˜ íŒŒì¼)
 	@CrossOrigin("*")
 	@PostMapping(value="/course/fileupload")
 	//@ResponseStatus(HttpStatus.CREATED)//@RequestParam("file") 
 	public String upload(HttpServletRequest request, @RequestPart MultipartFile file) throws Exception {
 		
-		if(file.isEmpty()){ //¾÷·ÎµåÇÒ ÆÄÀÏÀÌ ¾øÀ» ½Ã
-            System.out.println("ÆÄÀÏ¾øÀ½");
+		if(file.isEmpty()){ //ì—…ë¡œë“œí•  íŒŒì¼ì´ ì—†ì„ ì‹œ
+            System.out.println("íŒŒì¼ì—†ìŒ");
             return "";
         }else {
-        	System.out.println("file ½ÇÇà !!");
+        	System.out.println("file ì‹¤í–‰ !!");
     		
-    		//ÆÄÀÏ ÀÌ¸§°¡Á®¿È(FILE_NM)
+    		//íŒŒì¼ ì´ë¦„ê°€ì ¸ì˜´(FILE_NM)
     		String originalfileName = file.getOriginalFilename();
     	
     		/*
@@ -178,13 +178,13 @@ public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
     		UUID uuid =UUID.randomUUID();
     		String save_file_nm=uuid.toString() +"_" +originalfileName;
     				
-    		//ÆÄÀÏ ÁöÁ¤ÇÑ °æ·Î·Î ÀúÀå(save_file_nm ÆÄÀÏÀÌ¸§À¸·Î ÀúÀå)
+    		//íŒŒì¼ ì§€ì •í•œ ê²½ë¡œë¡œ ì €ì¥(save_file_nm íŒŒì¼ì´ë¦„ìœ¼ë¡œ ì €ì¥)
     		File dest = new File("C:/Temp/" + save_file_nm);
     		file.transferTo(dest);
     		
-    		System.out.println("ÆÄÀÏÀÌ¸§ : "+originalfileName);
-    		System.out.println("»õ·Î¿î ÆÄÀÏÀÌ¸§ : "+save_file_nm);
-    		//System.out.println("ÆÄÀÏ°æ·Î : "+fileUrl);
+    		System.out.println("íŒŒì¼ì´ë¦„ : "+originalfileName);
+    		System.out.println("ìƒˆë¡œìš´ íŒŒì¼ì´ë¦„ : "+save_file_nm);
+    		//System.out.println("íŒŒì¼ê²½ë¡œ : "+fileUrl);
     		
     		return save_file_nm;
 
@@ -192,21 +192,21 @@ public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
 	}
 	
 	
-	//ÆÄÀÏ ¾÷·Îµå¸¦ À§ÇÔ(¿©·¯°³ÀÇ ÆÄÀÏ)
+	//íŒŒì¼ ì—…ë¡œë“œë¥¼ ìœ„í•¨(ì—¬ëŸ¬ê°œì˜ íŒŒì¼)
 	@CrossOrigin("*")
 	@PostMapping(value="/course/fileupload_list")
 	//@ResponseStatus(HttpStatus.CREATED)//@RequestParam("file") 
 	public String upload_list(HttpServletRequest request, @RequestPart List<MultipartFile> file) throws Exception {
 		
-		if(file.isEmpty()){ //¾÷·ÎµåÇÒ ÆÄÀÏÀÌ ¾øÀ» ½Ã
-            System.out.println("ÆÄÀÏ¾øÀ½");
+		if(file.isEmpty()){ //ì—…ë¡œë“œí•  íŒŒì¼ì´ ì—†ì„ ì‹œ
+            System.out.println("íŒŒì¼ì—†ìŒ");
             return "";
         }else {
         	
         	for(int i=0; i<file.size(); i++) {
-        		System.out.println("file ½ÇÇà !!");
+        		System.out.println("file ì‹¤í–‰ !!");
 	    		
-	    		//ÆÄÀÏ ÀÌ¸§°¡Á®¿È(FILE_NM)
+	    		//íŒŒì¼ ì´ë¦„ê°€ì ¸ì˜´(FILE_NM)
 	    		String originalfileName = file.get(i).getOriginalFilename();
 	    	
 	    		/*
@@ -221,26 +221,26 @@ public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
 	    		UUID uuid =UUID.randomUUID();
 	    		String save_file_nm=uuid.toString() +"_" +originalfileName;
 	    				
-	    		//ÆÄÀÏ ÁöÁ¤ÇÑ °æ·Î·Î ÀúÀå(save_file_nm ÆÄÀÏÀÌ¸§À¸·Î ÀúÀå)
+	    		//íŒŒì¼ ì§€ì •í•œ ê²½ë¡œë¡œ ì €ì¥(save_file_nm íŒŒì¼ì´ë¦„ìœ¼ë¡œ ì €ì¥)
 	    		File dest = new File("C:/Temp/" + save_file_nm);
 	    		file.get(i).transferTo(dest);
 	    		
-	    		System.out.println("ÆÄÀÏÀÌ¸§ : "+originalfileName);
-	    		System.out.println("»õ·Î¿î ÆÄÀÏÀÌ¸§ : "+save_file_nm);
-	    		//System.out.println("ÆÄÀÏ°æ·Î : "+fileUrl);
+	    		System.out.println("íŒŒì¼ì´ë¦„ : "+originalfileName);
+	    		System.out.println("ìƒˆë¡œìš´ íŒŒì¼ì´ë¦„ : "+save_file_nm);
+	    		//System.out.println("íŒŒì¼ê²½ë¡œ : "+fileUrl);
 	    		
 
         	}
         	
         }
 		
-		return "¼º°ø";
+		return "ì„±ê³µ";
 	}
 	
 	//modify
-	//user_id´Â °°¾Æ¾ß ÇÔ
+	//user_idëŠ” ê°™ì•„ì•¼ í•¨
 	@PostMapping(value="/enroll/update")
-	public void update(@RequestBody EnrollVO enroll) { //user_id, lecture_no°ª ÇÊ¼ö
+	public void update(@RequestBody EnrollVO enroll) { //user_id, lecture_noê°’ í•„ìˆ˜
 		enrollService.update(enroll);
 	}
 
@@ -259,7 +259,7 @@ public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
 	}
 	
 	//according to id delete
-	//lecture¸¦ Áö¿ì¸é DB¿¡ ÇØ´çlecture_noÀÌ Á¸ÀçÇÏ´Â ¸ğµç µ¥ÀÌÅÍ¸¦ Áö¿ö¾ßÇÔ(board, course, enroll, study, lecture) 
+	//lectureë¥¼ ì§€ìš°ë©´ DBì— í•´ë‹¹lecture_noì´ ì¡´ì¬í•˜ëŠ” ëª¨ë“  ë°ì´í„°ë¥¼ ì§€ì›Œì•¼í•¨(board, course, enroll, study, lecture) 
 	@GetMapping(value="/lecture/delete/{lecture_no}")
 	public void delete(@PathVariable("lecture_no") int lecture_no) {
 
@@ -269,7 +269,7 @@ public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
 		lectureService.delete(lecture_no);
 	}
 	//modify
-	//lecture_no´Â °°¾Æ¾ß ÇÔ
+	//lecture_noëŠ” ê°™ì•„ì•¼ í•¨
 	@PostMapping(value="/lecture/update")
 	public void update(@RequestBody LectureVO lecture) {
 		lectureService.update(lecture);
@@ -299,29 +299,29 @@ public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
 		return lectureService.list();
 	}
 	
-	//°­ÁÂµé¾î°¥¶§ lecture_no ¼¼¼Ç°ª »ı¼º
-	//³ªÁß¿¡´Â post·Î lecture_no °ª ÁÙ°Í
+	//ê°•ì¢Œë“¤ì–´ê°ˆë•Œ lecture_no ì„¸ì…˜ê°’ ìƒì„±
+	//ë‚˜ì¤‘ì—ëŠ” postë¡œ lecture_no ê°’ ì¤„ê²ƒ
 	@GetMapping(value = "/lecture/lecture_no/{lecture_no}")
 	public String lecture_no(@PathVariable("lecture_no") int lecture_no, HttpServletRequest request) throws Exception {
 		
-		System.out.println("lecture_no¿¡ ´ëÇÑ ¼¼¼Ç°ªÀ» ÁÜ");
+		System.out.println("lecture_noì— ëŒ€í•œ ì„¸ì…˜ê°’ì„ ì¤Œ");
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("lecture_no", lecture_no);
 		int lecture_session=(int)session.getAttribute("lecture_no");
-		System.out.println("lecture_no ¼¼¼Ç°ª :" +lecture_session);
+		System.out.println("lecture_no ì„¸ì…˜ê°’ :" +lecture_session);
 
 	    return "lecture_no";
 	}
-	//¼¼¼Ç°ª È®ÀÎÈÄ Áö¿ì´Â ¸Ş¼Òµå(test¿ë)
+	//ì„¸ì…˜ê°’ í™•ì¸í›„ ì§€ìš°ëŠ” ë©”ì†Œë“œ(testìš©)
 	@GetMapping(value = "/lecture/session")
 	public String session(HttpServletRequest request) throws Exception {
 
 		HttpSession session = request.getSession();
 
-	    System.out.println("lecture_no ¼¼¼Ç°ª :" +(int)session.getAttribute("lecture_no"));
+	    System.out.println("lecture_no ì„¸ì…˜ê°’ :" +(int)session.getAttribute("lecture_no"));
 	    
-	    //¸ğµç ¼¼¼Ç°ª È®ÀÎ
+	    //ëª¨ë“  ì„¸ì…˜ê°’ í™•ì¸
 	    Enumeration se = session.getAttributeNames();
 	    while(se.hasMoreElements()){
 	    	String getse = se.nextElement()+"";
@@ -329,18 +329,18 @@ public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
 	    }
 
 
-	    // ¼¼¼Ç¿¡¼­ Áö¿î´Ù.
+	    // ì„¸ì…˜ì—ì„œ ì§€ìš´ë‹¤.
 	    //session.invalidate();
-	    //System.out.println("Áö¿îÈÄ user_id ¼¼¼Ç°ª :" +session.getAttribute("user_id"));
-	    //System.out.println("Áö¿îÈÄ lecture_no ¼¼¼Ç°ª :" +session.getAttribute("lecture_no"));
+	    //System.out.println("ì§€ìš´í›„ user_id ì„¸ì…˜ê°’ :" +session.getAttribute("user_id"));
+	    //System.out.println("ì§€ìš´í›„ lecture_no ì„¸ì…˜ê°’ :" +session.getAttribute("lecture_no"));
 	    return "login/user_id&lecture_no";
 	    
 	}
 	/*
-	¼¼¼Ç°ª »ı¼º  session.setAttribute("ÀÌ¸§", "°ª");
-	°¡Á®¿À±â  session.getAttribute("ÀÌ¸§");
-	ÇÑ°³»èÁ¦  session.removeAttribute("ÀÌ¸§");
-	ÃÊ±âÈ­    session.invalidate();
+	ì„¸ì…˜ê°’ ìƒì„±  session.setAttribute("ì´ë¦„", "ê°’");
+	ê°€ì ¸ì˜¤ê¸°  session.getAttribute("ì´ë¦„");
+	í•œê°œì‚­ì œ  session.removeAttribute("ì´ë¦„");
+	ì´ˆê¸°í™”    session.invalidate();
 	*/
 	
 

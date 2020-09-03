@@ -3,26 +3,25 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dictation.mapper.UserMapper"> 
 	
-	<!-- Insert a user -->
 	<insert id="insert" parameterType="com.dictation.vo.UserVO">
-		insert into users(
-			user_id,
-			pw,
-			school_cd,
-			position_cd,
-			kor_nm,
-			end_nm,
-			grade,
-			ban,
-			birth_dt,
-			cel_phone_no,
-			hom_phone_no,
-			gender_cd,
-			email,
-			input_id,
-			input_date
-			
-		) values(
+
+		INSERT INTO USERS (
+			USER_ID,
+			PW,
+			SCHOOL_CD,
+			POSITION_CD,
+			KOR_NM,
+			END_NM,
+			GRADE,
+			BAN,
+			BIRTH_DT,
+			CEL_PHONE_NO,
+			HOM_PHONE_NO,
+			GENDER_CD,
+			EMAIL,
+			INPUT_ID,
+			INPUT_DATE
+		) VALUES (
 			#{user_id},
 			#{pw},
 			#{school_cd},
@@ -37,12 +36,10 @@
 			#{gender_cd},
 			#{email},
 			#{input_id},
-			now()::TIME WITH TIME ZONE
+			NOW()
 		)
+
 	</insert>
- 
- 
- 
  
 	<!-- according to id Delete students -->
 	<delete id="delete" parameterType="String">

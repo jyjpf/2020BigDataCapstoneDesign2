@@ -35,10 +35,8 @@ dependencies {
 
 	// jdbc
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	// mariadb
-	//implementation 'org.mariadb.jdbc:mariadb-java-client:2.0.3'
 	
-	// https://mvnrepository.com/artifact/org.postgresql/postgresql
+	// postgresql
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
 
 	// log4j2
@@ -48,11 +46,9 @@ dependencies {
 	// log4jdbc
 	compile group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4', version: '1.16'
 
-	// poi
-	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.9'
-
 	// mybatis
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.0'
+
 	// lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
