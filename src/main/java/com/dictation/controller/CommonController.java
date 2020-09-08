@@ -1,13 +1,27 @@
 package com.dictation.controller;
 
 import java.io.File;
-import java.util.Enumeration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+// import com.dictation.Security.JWTTokenProvider;
+import com.dictation.service.BoardService;
+import com.dictation.service.CommonService;
+import com.dictation.service.CourseService;
+import com.dictation.service.EnrollService;
+import com.dictation.service.LectureService;
+import com.dictation.vo.CourseVO;
+import com.dictation.vo.EnrollVO;
+import com.dictation.vo.LectureVO;
+import com.dictation.vo.UserVO;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,20 +33,16 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dictation.service.BoardService;
-import com.dictation.service.CourseService;
-import com.dictation.service.EnrollService;
-import com.dictation.service.LectureService;
-import com.dictation.service.UserService;
-import com.dictation.vo.CourseVO;
-import com.dictation.vo.EnrollVO;
-import com.dictation.vo.LectureVO;
-import com.dictation.vo.UserVO;
+import lombok.RequiredArgsConstructor;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping(value="/api/common")
-public class CommonController {//공통컨트롤러
+@RequestMapping(value = "/api/common")
+// @RequiredArgsConstructor
+public class CommonController {
+
+	private Logger logger = LogManager.getLogger(CommonController.class);
+
 	@Autowired
 	private CourseService courseService;
 	@Autowired
@@ -40,80 +50,25 @@ public class CommonController {//공통컨트롤러
 	@Autowired
 	private LectureService lectureService;
 	@Autowired
-	private UserService userService;
-	@Autowired
 	private BoardService boardService;
-	
-	//회원가입
-	@PostMapping(value="/signup")
-	public void insert(@RequestBody UserVO user) {
-		
-		//position_cd
-		if(user.getPosition_cd().equals("관리자")) {  
-			user.setPosition_cd("003001");
-		}else if(user.getPosition_cd().equals("선생님")) { //프론트에서 선생님이면 "선생님"으로 데이터 값을 넘김
-			user.setPosition_cd("003002");
-		}else if(user.getPosition_cd().equals("학생")) { //프론트에서 학생이면 "학생"으로 데이터 값을 넘김
-			user.setPosition_cd("003003");
-		}
-		
-		userService.insert(user);
-		
-	}
-	
-	//로그인(성공시 UserVO값 세션값으로 저장하고, position_cd값 반환)
-	//나중에는 post로 user_id 값 줄것
-	@GetMapping(value = "login/{user_id}&{pw}")
-	public UserVO login(@PathVariable("user_id") String user_id,@PathVariable("pw") String pw, HttpServletRequest request) throws Exception {
+	@Autowired
+	private CommonService commonService;
 
-		HttpSession session = request.getSession();
-		UserVO user = userService.getById(user_id);
-		
-		if(user.equals(null) || user == null) {
-		    user.setLoginYn("0");
-		    return user;
-		}else if(user.getPw().equals(pw)) {//로그인성공 &세션값 줌
-			//if() 관리자코드, 선생님코드 로그인시 세션확인값 생성 필요
-			
-			session.setAttribute("user", user);//세션에 UserVO값줌
-			
-			UserVO user_session=(UserVO)session.getAttribute("user");
-			System.out.println("아이디 세션값 :" +user_session.getUser_id());
-			System.out.println("비밀번호 세션값 :" +user_session.getPw());
-			System.out.println("신분코드 세션값 :" +user_session.getPosition_cd());
-			user.setLoginYn("1");
-			return user;
-		}else {
-			System.out.println("리턴값확인완료");
-			session.setAttribute("login_fail", pw);
-			user.setLoginYn("0");
-			return user;
-		}
-	}
-	
-	//mypage(회원정보를 반환)
-	@GetMapping(value = "/user/get")
-	public UserVO user_getById(HttpServletRequest request) throws Exception {
-		HttpSession session = request.getSession();
-		UserVO user_session=(UserVO)session.getAttribute("user");
-		
-		UserVO user = userService.getById(user_session.getUser_id());
-		return user;
-	}
-	
-	//회원정보 수정(mypage)
-	@PostMapping(value = "/user/update")
-	public void user_update(@RequestBody UserVO user) throws Exception {
-		System.out.println("this is common/user/update");
-		//gender_cd
-		if(user.getGender_cd().equals("남자")) {//프론트에서 남자이면 "002001"으로 데이터 값을 넘김  
-			user.setGender_cd("002001");
-		}else if(user.getGender_cd().equals("여자")) {//프론트에서 여자이면 "002002"으로 데이터 값을 넘김
-			user.setGender_cd("002002");
-		}
-		
-		userService.update(user);
-	}
+	// private final JWTTokenProvider jwtTokenProvider;
+
+
+	@CrossOrigin("*") 
+	@PostMapping(value = "/login")
+	public String signin(@RequestBody Map<String, Object> params, HttpSession session) {
+
+		logger.info("login");
+		UserVO user = commonService.login(params);
+
+		// ArrayList<String> role = new ArrayList<String>();
+		// role.add("ADMIN");
+		// return jwtTokenProvider.createToken(user.getUser_id(), role);
+		return null;
+	} 
 	
     //according to id delete
 	@GetMapping(value="/course/delete/{lecture_no}&{course_no}&{question_no}")
@@ -182,10 +137,6 @@ public class CommonController {//공통컨트롤러
     		File dest = new File("C:/Temp/" + save_file_nm);
     		file.transferTo(dest);
     		
-    		System.out.println("파일이름 : "+originalfileName);
-    		System.out.println("새로운 파일이름 : "+save_file_nm);
-    		//System.out.println("파일경로 : "+fileUrl);
-    		
     		return save_file_nm;
 
         }
@@ -224,12 +175,7 @@ public class CommonController {//공통컨트롤러
 	    		//파일 지정한 경로로 저장(save_file_nm 파일이름으로 저장)
 	    		File dest = new File("C:/Temp/" + save_file_nm);
 	    		file.get(i).transferTo(dest);
-	    		
-	    		System.out.println("파일이름 : "+originalfileName);
-	    		System.out.println("새로운 파일이름 : "+save_file_nm);
-	    		//System.out.println("파일경로 : "+fileUrl);
-	    		
-
+	    	
         	}
         	
         }
@@ -303,45 +249,21 @@ public class CommonController {//공통컨트롤러
 	//나중에는 post로 lecture_no 값 줄것
 	@GetMapping(value = "/lecture/lecture_no/{lecture_no}")
 	public String lecture_no(@PathVariable("lecture_no") int lecture_no, HttpServletRequest request) throws Exception {
-		
-		System.out.println("lecture_no에 대한 세션값을 줌");
-		
+
 		HttpSession session = request.getSession();
 		session.setAttribute("lecture_no", lecture_no);
 		int lecture_session=(int)session.getAttribute("lecture_no");
-		System.out.println("lecture_no 세션값 :" +lecture_session);
 
 	    return "lecture_no";
 	}
+
 	//세션값 확인후 지우는 메소드(test용)
 	@GetMapping(value = "/lecture/session")
 	public String session(HttpServletRequest request) throws Exception {
 
 		HttpSession session = request.getSession();
 
-	    System.out.println("lecture_no 세션값 :" +(int)session.getAttribute("lecture_no"));
-	    
-	    //모든 세션값 확인
-	    Enumeration se = session.getAttributeNames();
-	    while(se.hasMoreElements()){
-	    	String getse = se.nextElement()+"";
-	    	System.out.println("@@@@@@@ session : "+getse+" : "+session.getAttribute(getse));
-	    }
-
-
-	    // 세션에서 지운다.
-	    //session.invalidate();
-	    //System.out.println("지운후 user_id 세션값 :" +session.getAttribute("user_id"));
-	    //System.out.println("지운후 lecture_no 세션값 :" +session.getAttribute("lecture_no"));
-	    return "login/user_id&lecture_no";
-	    
-	}
-	/*
-	세션값 생성  session.setAttribute("이름", "값");
-	가져오기  session.getAttribute("이름");
-	한개삭제  session.removeAttribute("이름");
-	초기화    session.invalidate();
-	*/
-	
+	  return "login/user_id&lecture_no";  
+	}	
 
 }

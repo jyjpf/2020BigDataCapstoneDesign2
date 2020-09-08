@@ -20,20 +20,12 @@ public class UserVO {
 	private String hom_phone_no;
 	private String gender_cd;
 	private String email;
-	private String loginYn;
-
 	private String register_dt;
-	private String approval_cd;
-	private String approval_dt;
-	private int pass_course_no;
-	private int study_time;
-
-	private String dae_p;
-	private String so_p;
-
-	private String dae_g;
-	private String so_g;
-
+	private String login_date;
+	private String logout_date;
 	private String input_id;
-		
+	private String input_date;
+	private String update_id;
+	private String update_date;	
+	
 }

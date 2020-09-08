@@ -1,6 +1,7 @@
 package com.dictation.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -11,17 +12,35 @@ import com.dictation.vo.UserVO;
 @Mapper
 public interface UserMapper {	
 	
-	//insert
-	public void insert(UserVO user);
+	/**
+	 * 내 정보 조회
+	 * @param id
+	 * @return UserVO
+	 */
+	public UserVO get(String id);
+
+	/**
+	 * 회원가입
+	 * @param user
+	 * @return int
+	 * @throws Exception
+	 */
+	public int insert(UserVO user) throws Exception;
+
+	
+	/**
+	 * 내 정보 변경
+	 * @param UserVO
+	 * @return int
+	 * @throws Exception
+	 */	
+	public int update(UserVO user) throws Exception;
 
 	//according to id delete
 	public void delete(String user_id);
 
-	//according to user Of id modify
-	public void update(UserVO user);
 
-	//according to id query
-	public UserVO getById(String user_id);
+	
 
 	//All queries
 	public List<UserVO> list();
