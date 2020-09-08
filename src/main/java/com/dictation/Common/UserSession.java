@@ -10,7 +10,7 @@ public class UserSession {
 	private static String school_cd = "school_cd";
 	private static String position_cd = "position_cd";
   private static String kor_nm = "kor_nm";
-  
+   
   public static void setUserSession(UserVO user, HttpSession session) {
     session.setAttribute(user_id, user.getUser_id());
     session.setAttribute(school_cd, user.getSchool_cd());
