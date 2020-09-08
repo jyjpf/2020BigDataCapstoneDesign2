@@ -234,7 +234,7 @@
 
 <script>
   import router from '../router'
-  
+  // Modified
 
   export default {
     data () {
