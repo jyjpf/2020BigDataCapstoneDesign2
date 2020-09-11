@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.dictation.service.AdminService;
 import com.dictation.service.Dae_cdService;
-import com.dictation.service.So_cdService;
+import com.dictation.service.SoService;
 import com.dictation.vo.AdminVO;
 import com.dictation.vo.DaeVO;
-import com.dictation.vo.So_cdVO;
+import com.dictation.vo.SoVO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;

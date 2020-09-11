@@ -29,14 +29,12 @@ public class DaeCodeController {
   
 	@GetMapping(value="/{code}")
 	public DaeVO get(@PathVariable("code") String code) {
-		DaeVO dae_cd = daeService.get(code);
-		return dae_cd;
+		return daeService.get(code);
 	}
 
 	@GetMapping
 	public List<DaeVO> getList() {
-		List<DaeVO> dae = daeService.getList();
-		return dae;
+		return daeService.getList();
 	}
 	
 	@PostMapping

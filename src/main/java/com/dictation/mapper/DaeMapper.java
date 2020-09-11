@@ -11,14 +11,14 @@ import com.dictation.vo.DaeVO;
 @Mapper
 public interface DaeMapper {	
 	
-	public DaeVO get(String dae_cd);
+	public DaeVO get(String code);
 
 	public List<DaeVO> list();
 
-	public void insert(DaeVO dae_cd);
+	public void insert(DaeVO dae);
 
-	public void update(DaeVO dae_cd);
+	public void update(DaeVO dae);
 
-	public void delete(String dae_cd);
+	public void delete(String code);
 
 }

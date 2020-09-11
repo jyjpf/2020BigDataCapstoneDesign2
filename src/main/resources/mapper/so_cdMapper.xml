@@ -1,76 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dictation.mapper.So_cdMapper"> 
+<mapper namespace="com.dictation.mapper.SoMapper"> 
+
+	<select id="get" parameterType="Map" resultType="SoVO">
+
+		SELECT
+			DAE_CD,
+			SO_CD,
+			SO_NM,
+			USE_YN,
+			BIGO
+		FROM
+			SO_CD
+		WHERE 1=1
+			DAE_CD = #{dae_cd}
+			SO_CD = #{so_cd}
+
+	</select>
+	
+	<select id="getList" parameterType="Map" resultType="SoVO">
+
+		SELECT
+			DAE_CD,
+			SO_CD,
+			SO_NM,
+			USE_YN,
+			BIGO
+		FROM
+			SO_CD
+		WHERE 1=1
+			DAE_CD = #{dae_cd}
+
+	</select> 
 	
 	<!-- Insert a so_cd -->
-	<insert id="insert" parameterType="com.dictation.vo.So_cdVO">
-		insert into so_cd(
-			dae_cd,
-			so_cd,
-			so_nm,
-			use_yn,
-			bigo	
-		) values(
+	<insert id="insert" parameterType="SoVO">
+
+		INSERT INTO SO_CD (
+			DAE_CD,
+			SO_CD,
+			SO_NM,
+			USE_YN,
+			BIGO	
+		) VALUES (
 			#{dae_cd},
 			#{so_cd},
 			#{so_nm},
 			#{use_yn},
 			#{bigo}
 		)
+
 	</insert>
- 
- 
- 
- 
-	<!-- according to id Delete students -->
-	<delete id="delete" parameterType="String">
-		delete from so_cd where so_cd=#{so_cd}
-	</delete>
- 
-	<!-- according to id Modifying Student Information-->
-	<update id="update" parameterType="So_cdVO">
-		update so_cd
-		set
-			dae_cd=#{dae_cd},
-			so_cd=#{so_cd},
-			so_nm=#{so_nm},
-			use_yn=#{use_yn},
-			bigo=#{bigo}
-			
-		where
-			so_cd=#{so_cd}
+
+	<update id="update" parameterType="SoVO">
+
+		UPDATE
+			SO_CD
+		SET
+			DAE_CD = #{dae_cd},
+			SO_CD = #{so_cd},
+			SO_NM = #{so_nm},
+			USE_YN = #{use_yn},
+			BIGO = #{bigo}
+		WHERE
+			sO_CD = #{so_cd}
 	</update>
-	
-	
- 
-	<!-- according to id query -->
-	<select id="getById" parameterType="String" resultType="So_cdVO">
-		select
-			dae_cd,
-			so_cd,
-			so_nm,
-			use_yn,
-			bigo
-		from
-			so_cd
-		where
-			so_cd=#{so_cd}
-	</select>
-	
-	
- 
-	<!-- Query all -->
-	<select id="list" parameterType="int" resultType="com.dictation.vo.So_cdVO">
-		select
-			dae_cd,
-			so_cd,
-			so_nm,
-			use_yn,
-			bigo
-		from
-			so_cd
-	</select> 
-	
+
+	<delete id="delete" parameterType="String">
+
+		DELETE FROM 
+			SO_CD 
+		WHERE
+			SO_CD = #{so_cd}
+			
+	</delete>
+
 </mapper>
 
