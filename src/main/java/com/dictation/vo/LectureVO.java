@@ -1,13 +1,12 @@
 package com.dictation.vo;
 
-import java.util.Date;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class LectureVO {
+	
 	private String year;
 	private String term;
 	private int lecture_no;
@@ -20,11 +19,5 @@ public class LectureVO {
 	private int max_cnt;
 	private String teacher_id;
 	private String teacher_nm;
-	private String input_id;
-	private Date input_date;
-	private String update_id;
-	private Date update_date;
 	
-	private String approval_cd;
-	
-}
+} 

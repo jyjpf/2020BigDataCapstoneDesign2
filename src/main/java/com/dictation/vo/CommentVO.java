@@ -20,4 +20,4 @@ public class CommentVO {
 	private Date input_date;
 	private String update_id;
 	private Date update_date;
-}
+} 

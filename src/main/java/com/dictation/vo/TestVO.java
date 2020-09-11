@@ -20,5 +20,5 @@ public class TestVO {
 	private String gender_cd;
 	private String email;
 	
-	
+	 
 }

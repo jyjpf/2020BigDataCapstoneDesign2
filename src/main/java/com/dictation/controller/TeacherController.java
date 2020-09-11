@@ -1,11 +1,8 @@
 package com.dictation.controller;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -17,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import com.dictation.service.CourseService;
 import com.dictation.service.EnrollService;
 import com.dictation.service.LectureService;
-import com.dictation.service.UserService;
 import com.dictation.vo.CourseVO;
 import com.dictation.vo.EnrollVO;
 import com.dictation.vo.LectureVO;
@@ -45,10 +41,8 @@ public class TeacherController {
 	private EnrollService enrollService;
 	@Autowired
 	private LectureService lectureService;
-	@Autowired
-	private UserService userService;
 
-	@PostMapping(produces = "application/json;charset=UTF-8", value = "/course")
+	@PostMapping(value = "/course")
 	public void insert(@RequestParam Map<String, Object> map, @Param(value = "file") MultipartFile file,
 			HttpServletRequest request) throws Exception {
 
@@ -77,8 +71,7 @@ public class TeacherController {
 			UUID uuid = UUID.randomUUID();
 			save_file_nm = uuid.toString() + "_" + originalfileName;
 
-			File dest = new File("C:\\Users\\jyj\\Desktop\\audiotest" + save_file_nm);
-			//File dest = new File("/home/dictation/audio" + save_file_nm);
+			File dest = new File("/home/dictation/audio" + save_file_nm);
 			file.transferTo(dest);
 
 		}
@@ -137,7 +130,7 @@ public class TeacherController {
 			String delete_filenm = courseService.getById(course2).getSave_file_nm();
 			File delete_file = new File("C:\\Users\\jyj\\Desktop\\audiotest" + delete_filenm);
 			delete_file.delete();
-
+ 
 			courseService.dic_modify_file(course2);
 		}
 	}
@@ -195,27 +188,8 @@ public class TeacherController {
 		return enrollService.list_request(lecture_no);
 	}
 
-	@CrossOrigin("*")
-	@PostMapping(produces = "application/json;charset=UTF-8", value = "/lecture")
-	public void insert(@RequestBody LectureVO lecture, HttpServletRequest request) throws Exception {
 
-		HttpSession session = request.getSession();
-		UserVO user_session = (UserVO) session.getAttribute("user");
 
-		lecture.setTeacher_id(user_session.getUser_id());
-
-		int lecture_no = rand(7);
-		Object db_lec_no = lectureService.lecture_no_search(lecture_no);
-
-		while (db_lec_no != null) {
-			lecture_no = rand(7);
-			db_lec_no = lectureService.lecture_no_search(lecture_no);
-
-		}
-		lecture.setLecture_no(lecture_no);
-		lectureService.insert(lecture);
-
-	}
 
 	public int rand(int num) {
 		Random random = new Random();

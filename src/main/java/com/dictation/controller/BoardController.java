@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 
 import com.dictation.service.BoardService;
 import com.dictation.service.CommentService;
-import com.dictation.vo.CourseVO;
 import com.dictation.vo.BoardVO;
 import com.dictation.vo.CommentVO;
 
@@ -38,7 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping(value = "/api/board")
+@RequestMapping(value = "/api/lecture/{lecture_no}/board")
 public class BoardController {
 
 	private static final Logger logger = LogManager.getLogger(BoardController.class);
@@ -46,11 +45,22 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	@Autowired
-	private CommentService commentService;
+	private CommentService commentService; 
 
-	@PostMapping(produces = "application/json;charset=UTF-8")
+	@GetMapping
+	public List<BoardVO> list(@PathVariable("lecture_no") String lecture_no) {
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		params.put("lecture_no", lecture_no);
+
+		List<BoardVO> board_sort = boardService.list(params);
+
+		return board_sort;
+	}
+
+	@PostMapping(value = "/{lecture_no}")
 	public void insert(@RequestParam Map<String, Object> map, @Param(value = "file") MultipartFile file,
-			HttpServletRequest request) throws Exception {
+		@PathVariable("lecture_no") String lecture_no) throws Exception {
 
 		// map(BoardVO)
 		String board_cd = (String) map.get("board_cd");
@@ -65,13 +75,10 @@ public class BoardController {
 		board.setContent(content);
 		board.setTitle(title);
 
-		int lecture_no;
 		String so_b = null;
 		String no = null;
 
-		// lecture_no
-		HttpSession session = request.getSession();
-		lecture_no = (int) session.getAttribute("lecture_no");
+
 		board.setLecture_no(lecture_no);
 
 		// board_cd, no
@@ -171,7 +178,7 @@ public class BoardController {
 		map.put("seq_no", seq_no);
 		boardService.delete(map);
 		boardService.after_delete(map);
-	}
+	} 
 
 	@PostMapping(value = "/update")
 	public void update(@RequestParam Map<String, Object> map, @Param(value = "file") MultipartFile file,
@@ -243,26 +250,7 @@ public class BoardController {
 		boardService.update_nofile(board);
 	}
 
-	@GetMapping(value = "/list/{board_cd}")
-	public List<BoardVO> list(@PathVariable("board_cd") String board_cd, HttpServletRequest request) throws Exception {
-		HttpSession session = request.getSession();
-		int lecture_session = (int) session.getAttribute("lecture_no");
 
-		BoardVO board = new BoardVO();
-		board.setBoard_cd(board_cd);
-		board.setLecture_no(lecture_session);
-
-		List<BoardVO> board_sort=boardService.list(board);
-		for(int i=0; i<board_sort.size(); i++) {
-		System.out.println(board_sort.get(i).getSeq_no());
-		}
-
-		Collections.sort(board_sort);
-		for(int i=0; i<board_sort.size(); i++) {
-		System.out.println(board_sort.get(i).getSeq_no());
-		}		
-		return board_sort;
-	}
 
 	@PostMapping("/upload")
 	public String uploadToLocalFileSystem(@RequestParam("file") MultipartFile file, HttpServletRequest request)

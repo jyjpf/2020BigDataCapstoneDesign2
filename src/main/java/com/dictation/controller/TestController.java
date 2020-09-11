@@ -27,11 +27,11 @@ public class TestController {
 		return testService.select();
 	}
 	
-	@PostMapping(produces = "application/json;charset=UTF-8")
+	@PostMapping
 	public void insert(@RequestBody TestVO user) {
 		testService.insert(user);
 	}
-	
+	 
       //according to id delete
 	@GetMapping(value="/delete/{user_id}")
 	public void delete(@PathVariable("user_id") String user_id) {

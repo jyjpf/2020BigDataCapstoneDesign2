@@ -1,6 +1,7 @@
 package com.dictation.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -11,16 +12,44 @@ import com.dictation.vo.LectureVO;
 @Mapper
 public interface LectureMapper {
 	
-	//insert
-	public void insert(LectureVO lecture);
+	/**
+	 * 강의 정보 조회
+	 * @param String
+	 * @return LectureVO
+	 */
+	public LectureVO get(Map<String, Object> params);
 
-	//according to id delete
-	public void delete(int lecture_no);	
+	/**
+	 * 강의 리스트 조회
+	 * @param String
+	 * @return List<LectureVO>
+	 */
+	public List<LectureVO> list(Map<String, Object> params);
 
-	//according to user Of id modify
-	public void update(LectureVO lecture);
+	/**
+	 * 강의 생성
+	 * @param LectureVO
+	 * @return void
+	 */
+	// TODO: 년도/분기 Funciton 생성
+	public void insert(LectureVO lecture) throws Exception;
 
-	public Object lecture_no_search(int lecture_no);
+	/**
+	 * 강의 업데이트
+	 * @param LectureVO
+	 * @return void
+	 */
+	public void update(LectureVO lecture) throws Exception;
+
+	/**
+	 * 강의 삭제
+	 * @param String
+	 * @return void
+	 */
+	public void delete(String lecture_no) throws Exception;	
+
+
+
 	
 	public List<LectureVO> teacher_mylec(String user_id);
 	
@@ -28,11 +57,5 @@ public interface LectureMapper {
 	
 	public List<LectureVO> student_mylec(String user_id);
 	
-	//according to id query
-	public LectureVO getById(int lecture_no);
-
-	//All queries
-	public List<LectureVO> list();
-
 	
 }

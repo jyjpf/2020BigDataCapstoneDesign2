@@ -17,3 +17,4 @@ public class Dae_cdVO {
 	private Date update_date;
 	
 }
+ 

@@ -41,7 +41,7 @@ public class DictationController {
    private CourseService courseService;
    @Autowired
    private StudyService studyService;
-
+ 
    @GetMapping(value="/course/finish_yes/{course_no}")
    public void finish_yes(@PathVariable("course_no") int course_no, HttpServletRequest request) {
       CourseVO course = new CourseVO();

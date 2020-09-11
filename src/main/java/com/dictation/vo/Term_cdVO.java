@@ -22,3 +22,4 @@ public class Term_cdVO {
 	private Date update_date;
 	
 }
+ 

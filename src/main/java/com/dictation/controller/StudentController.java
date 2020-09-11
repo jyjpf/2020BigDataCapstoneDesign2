@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value="/api/student")
 public class StudentController {
-
+ 
 	@Autowired
 	private EnrollService enrollService;
 	@Autowired
@@ -37,7 +37,7 @@ public class StudentController {
 		EnrollVO enroll = new EnrollVO();
 		enroll.setLecture_no(lecture_no);
 		enroll.setApproval_cd("미승인");
-		
+		  
 		//user_id
 		HttpSession session = request.getSession();
 		UserVO user_session=(UserVO)session.getAttribute("user");

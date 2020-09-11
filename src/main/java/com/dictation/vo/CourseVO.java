@@ -24,8 +24,8 @@ public class CourseVO implements Comparable<CourseVO>{
 	private boolean change_file;
 	
 	//private MultipartFile file;
-	
-	@Override
+	  
+	@Override 
     public int compareTo(CourseVO s) {
         if (this.question_no < s.getQuestion_no()) {
             return -1;
@@ -34,5 +34,5 @@ public class CourseVO implements Comparable<CourseVO>{
         }
         return 0;
     }
-
+ 
 }

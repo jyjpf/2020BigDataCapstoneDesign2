@@ -1,28 +1,28 @@
 package com.dictation.controller;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-// import com.dictation.Security.JWTTokenProvider;
-import com.dictation.service.BoardService;
+import com.dictation.Common.PositionCode;
+import com.dictation.Security.JWTTokenProvider;
 import com.dictation.service.CommonService;
 import com.dictation.service.CourseService;
 import com.dictation.service.EnrollService;
-import com.dictation.service.LectureService;
+import com.dictation.service.UserService;
 import com.dictation.vo.CourseVO;
 import com.dictation.vo.EnrollVO;
-import com.dictation.vo.LectureVO;
 import com.dictation.vo.UserVO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,12 +33,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import lombok.RequiredArgsConstructor;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/api/common")
-// @RequiredArgsConstructor
 public class CommonController {
 
 	private Logger logger = LogManager.getLogger(CommonController.class);
@@ -47,28 +45,80 @@ public class CommonController {
 	private CourseService courseService;
 	@Autowired
 	private EnrollService enrollService;
-	@Autowired
-	private LectureService lectureService;
-	@Autowired
-	private BoardService boardService;
+
 	@Autowired
 	private CommonService commonService;
+	@Autowired
+	private UserService userService;
 
-	// private final JWTTokenProvider jwtTokenProvider;
+	@Autowired
+	private JWTTokenProvider jwtTokenProvider;
 
 
-	@CrossOrigin("*") 
+
 	@PostMapping(value = "/login")
-	public String signin(@RequestBody Map<String, Object> params, HttpSession session) {
+	public ResponseEntity<?> signin(@RequestBody Map<String, Object> params) {
 
-		logger.info("login");
+		HttpStatus status;
+		Map<String, Object> result = new HashMap<String, Object>();
 		UserVO user = commonService.login(params);
 
-		// ArrayList<String> role = new ArrayList<String>();
-		// role.add("ADMIN");
-		// return jwtTokenProvider.createToken(user.getUser_id(), role);
-		return null;
-	} 
+		if(user == null) {
+
+			status = HttpStatus.FORBIDDEN;
+			result.put("msg", "Login Failed");
+
+		} else {
+
+			status = HttpStatus.OK;
+
+			if(user.getPosition_cd().equals(PositionCode.ROME_ADMIN)) {
+				result.put("token", jwtTokenProvider.createToken(
+					user.getUser_id(), 
+					user.getSchool_cd(), 
+					"ROLE_ADMIN")
+				);
+			} else if(user.getPosition_cd().equals(PositionCode.ROME_TEACHER)) {
+				result.put("token", jwtTokenProvider.createToken(
+					user.getUser_id(), 
+					user.getSchool_cd(), 
+					"ROLE_TEACHER")
+				);
+			} else if(user.getPosition_cd().equals(PositionCode.ROLE_STUDENT)) {
+				result.put("token", jwtTokenProvider.createToken(
+					user.getUser_id(), 
+					user.getSchool_cd(), 
+					"ROLE_STUDENT")
+				);
+			} else {
+				status = HttpStatus.BAD_REQUEST;
+				result.put("msg", "Undefined Position");
+			}
+			
+		}
+
+		return ResponseEntity.status(status).body(result);
+
+	}
+
+	// TODO: 비밀번호 암호화
+	@PostMapping(value = "/signup")
+	public ResponseEntity<?> signup(@RequestBody UserVO user) {
+
+		HttpStatus status;
+		Map<String, Object> result = new HashMap<String, Object>();
+
+		try {
+			userService.insert(user);
+			status = HttpStatus.OK;
+			result.put("msg", "");
+		} catch(Exception e) {
+			result.put("msg", e);
+			status = HttpStatus.BAD_REQUEST;
+		}
+		
+		return ResponseEntity.status(status).body(result);
+	}
 	
     //according to id delete
 	@GetMapping(value="/course/delete/{lecture_no}&{course_no}&{question_no}")
@@ -189,7 +239,7 @@ public class CommonController {
 	public void update(@RequestBody EnrollVO enroll) { //user_id, lecture_no값 필수
 		enrollService.update(enroll);
 	}
-
+ 
 	
 	//according to id Query students
 	@GetMapping(value="/enroll/get/{user_id}")
@@ -203,67 +253,5 @@ public class CommonController {
 	public List<EnrollVO> en_list(){
 		return enrollService.list();
 	}
-	
-	//according to id delete
-	//lecture를 지우면 DB에 해당lecture_no이 존재하는 모든 데이터를 지워야함(board, course, enroll, study, lecture) 
-	@GetMapping(value="/lecture/delete/{lecture_no}")
-	public void delete(@PathVariable("lecture_no") int lecture_no) {
-
-		boardService.lecture_delete(lecture_no);
-		enrollService.lecture_delete(lecture_no);
-		courseService.lecture_delete(lecture_no);
-		lectureService.delete(lecture_no);
-	}
-	//modify
-	//lecture_no는 같아야 함
-	@PostMapping(value="/lecture/update")
-	public void update(@RequestBody LectureVO lecture) {
-		lectureService.update(lecture);
-	}
-
-	//according to id Query students
-	@GetMapping(value="/lecture/get/{lecture_no}")
-	public LectureVO getById_nosession(@PathVariable("lecture_no") int lecture_no) {
-
-		LectureVO lecture = lectureService.getById(lecture_no);
-		return lecture;
-	}
-	
-	@GetMapping(value="/lecture/get")
-	public LectureVO getById(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		int lecture_session=(int)session.getAttribute("lecture_no");
-		
-		LectureVO lecture = lectureService.getById(lecture_session);
-		return lecture;
-	}
-	
-	
-	//All queries
-	@RequestMapping(value="/lecture/list")
-	public List<LectureVO> lec_list(){
-		return lectureService.list();
-	}
-	
-	//강좌들어갈때 lecture_no 세션값 생성
-	//나중에는 post로 lecture_no 값 줄것
-	@GetMapping(value = "/lecture/lecture_no/{lecture_no}")
-	public String lecture_no(@PathVariable("lecture_no") int lecture_no, HttpServletRequest request) throws Exception {
-
-		HttpSession session = request.getSession();
-		session.setAttribute("lecture_no", lecture_no);
-		int lecture_session=(int)session.getAttribute("lecture_no");
-
-	    return "lecture_no";
-	}
-
-	//세션값 확인후 지우는 메소드(test용)
-	@GetMapping(value = "/lecture/session")
-	public String session(HttpServletRequest request) throws Exception {
-
-		HttpSession session = request.getSession();
-
-	  return "login/user_id&lecture_no";  
-	}	
 
 }

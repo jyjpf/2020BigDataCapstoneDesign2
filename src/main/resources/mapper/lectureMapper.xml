@@ -3,26 +3,73 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dictation.mapper.LectureMapper"> 
 	
-	<!-- Insert a lecture -->
-	<insert id="insert" parameterType="com.dictation.vo.LectureVO">
-		insert into lecture(
-			year,
-			term,
-			lecture_no,
-			lecture_nm,
-			school_cd,
-			grade,
-			ban,
-			enroll_st_dt,
-			enroll_ed_dt,
-			max_cnt,
-			teacher_id,
-			teacher_nm,		
-			input_id,
-			input_date
-		) values(
-			(select year from term_cd where use_yn=1::VARCHAR),
-			(select term from term_cd where use_yn=1::VARCHAR),
+		<select id="get" parameterType="Map" resultType="LectureVO">
+
+		SELECT
+			YEAR,
+			TERM,
+			LECTURE_NO,
+			LECTURE_NM,
+			SCHOOL_CD,
+			GRADE,
+			BAN,
+			ENROLL_ST_DT,
+			ENROLL_ED_DT,
+			MAX_CNT,
+			TEACHER_ID,
+			TEACHER_NM
+		FROM
+			LECTURE
+		WHERE 1=1
+			AND LECTURE_NO = #{lecture_no}
+			AND SCHOOL_CD = #{school_cd}
+
+	</select>
+
+	<select id="list" parameterType="Map" resultType="LectureVO">
+
+		SELECT
+			YEAR,
+			TERM,
+			LECTURE_NO,
+			LECTURE_NM,
+			SCHOOL_CD,
+			GRADE,
+			BAN,
+			ENROLL_ST_DT,
+			ENROLL_ED_DT,
+			MAX_CNT,
+			TEACHER_ID,	
+			TEACHER_NM
+		FROM
+			LECTURE
+		WHERE 1=1
+			AND SCHOOL_CD = #{school_cd}
+
+	</select> 
+
+	<insert id="insert" parameterType="LectureVO">
+
+		INSERT INTO LECTURE (
+			YEAR,
+			TERM,
+			LECTURE_NO,
+			LECTURE_NM,
+			SCHOOL_CD,
+			GRADE,
+			BAN,
+			ENROLL_ST_DT,
+			ENROLL_ED_DT,
+			MAX_CNT,
+			TEACHER_ID,
+			TEACHER_NM,		
+			INPUT_ID,
+			INPUT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE
+		) VALUES (
+			'2020',
+			'1',
 			#{lecture_no},
 			#{lecture_nm},
 			#{school_cd},
@@ -34,16 +81,20 @@
 			#{teacher_id},
 			#{teacher_nm},
 			#{input_id},
-			now()::TIMESTAMP
+			NOW(),
+			#{input_id},
+			NOW()
 		)
+
 	</insert>
  
- 
- 
- 
-	<!-- according to id Delete students -->
-	<delete id="delete" parameterType="int">
-		delete from lecture where lecture_no=#{lecture_no}
+	<delete id="delete" parameterType="String">
+
+		DELETE FROM
+			LECTURE
+		WHERE 1=1
+			AND LECTURE_NO = #{lecture_no}
+
 	</delete>
  
 	<!-- according to id Modifying Student Information-->
@@ -67,18 +118,6 @@
 		where
 			lecture_no=#{lecture_no}
 	</update>
-	
-	
-	<!-- 강좌번호 생성할때 중복되는 강좌가 있는지 검사하는코드 -->
-	<select id="lecture_no_search" parameterType="int" resultType="Object">
-		select
-			lecture_no
-		from
-			lecture
-		where
-			lecture_no=#{lecture_no}
-	</select>
-	
 	
 	<!-- 선생님 본인이 개설한 강좌목록 띄우기 위한 코드 -->
 	<select id="teacher_mylec" parameterType="String" resultType="LectureVO">
@@ -164,55 +203,6 @@
 			en.lecture_no=lec.lecture_no
 				
 	</select>
- 
-	<!-- according to id query -->
-	<select id="getById" parameterType="int" resultType="LectureVO">
-		select
-			year,
-			term,
-			lecture_no,
-			lecture_nm,
-			school_cd,
-			grade,
-			ban,
-			enroll_st_dt,
-			enroll_ed_dt,
-			max_cnt,
-			teacher_id,
-			teacher_nm,			
-			input_id,
-			input_date,
-			update_id,
-			update_date
-		from
-			lecture
-		where
-			lecture_no=#{lecture_no}
-	</select>
-	
-	
- 
-	<!-- Query all -->
-	<select id="list" parameterType="int" resultType="com.dictation.vo.LectureVO">
-		select
-			year,
-			term,
-			lecture_no,
-			lecture_nm,
-			school_cd,
-			grade,
-			ban,
-			enroll_st_dt,
-			enroll_ed_dt,
-			max_cnt,
-			teacher_id,	
-			teacher_nm,		
-			input_id,
-			input_date,
-			update_id,
-			update_date
-		from
-			lecture
-	</select> 
+
 </mapper>
 

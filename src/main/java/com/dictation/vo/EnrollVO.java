@@ -23,3 +23,4 @@ public class EnrollVO {
 	private Date update_date;
 	
 }
+ 

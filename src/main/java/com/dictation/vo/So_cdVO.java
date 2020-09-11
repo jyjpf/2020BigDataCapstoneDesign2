@@ -13,3 +13,4 @@ public class So_cdVO {
 	private String bigo;
 	
 }
+ 

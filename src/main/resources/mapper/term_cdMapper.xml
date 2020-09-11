@@ -3,6 +3,41 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dictation.mapper.Term_cdMapper"> 
 	
+	<select id="get" parameterType="String" resultType="Term_cdVO">
+
+		SELECT
+			YEAR,
+			TERM,
+			MANAGE_ST_DT,
+			MANAGE_ED_DT,
+			ENROLL_ST_DT,
+			ENROLL_ED_DT,
+			USE_YN,
+			BIGO
+		FROM
+			TERM_CD
+		WHERE 1=1
+			AND YEAR = #{year}
+			AND term = #{term}
+
+	</select>
+	
+	<select id="getList" parameterType="int" resultType="Term_cdVO">
+
+		SELECT
+			YEAR,
+			TERM,
+			MANAGE_ST_DT,
+			MANAGE_ED_DT,
+			ENROLL_ST_DT,
+			ENROLL_ED_DT,
+			USE_YN,
+			BIGO
+		FROM
+			TERM_CD
+
+	</select> 
+
 	<!-- Insert a term_cd -->
 	<insert id="insert" parameterType="com.dictation.vo.Term_cdVO">
 		insert into term_cd(
@@ -66,46 +101,6 @@
 	
 	
  
-	<!-- according to id query -->
-	<select id="getById" parameterType="String" resultType="Term_cdVO">
-		select
-			year,
-			term,
-			manage_st_dt,
-			manage_ed_dt,
-			enroll_st_dt,
-			enroll_ed_dt,
-			use_yn,
-			bigo,
-			input_id,
-			input_date,
-			update_id,
-			update_date
-		from
-			term_cd
-		where
-			year=#{year} and term=#{term}
-	</select>
 	
-	
- 
-	<!-- Query all -->
-	<select id="list" parameterType="int" resultType="com.dictation.vo.Term_cdVO">
-		select
-			year,
-			term,
-			manage_st_dt,
-			manage_ed_dt,
-			enroll_st_dt,
-			enroll_ed_dt,
-			use_yn,
-			bigo,
-			input_id,
-			input_date,
-			update_id,
-			update_date
-		from
-			term_cd
-	</select> 
 </mapper>
 

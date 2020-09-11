@@ -73,56 +73,5 @@
 
 	</insert>
  
-	<update id="update" parameterType="UserVO">
-
-		UPDATE
-			USERS
-		SET
-			PW=#{pw},
-			SCHOOL_CD =#{school_cd},
-			KOR_NM = #{ko r_nm},
-			END_NM = #{end_nm},
-			GRADE = #{grade},
-			BAN = #{ban}, 
-			BIRTH_DT = #{birth_dt},
-			CEL_PHONE_NO = #{cel_phone_no},
-			HOM_PHONE_NO = #{hom_phone_no},
-			GENDER_CD = #{gender_cd},
-			EMAIL = #{email},
-			UPDATE_ID = #{user_id},
-			UPDATE_DATE = now()
-		WHERE
-			USER_ID = #{user_id}
-
-	</update>
-	
-		<!-- according to id Delete students -->
-	<delete id="delete" parameterType="String">
-		delete from users where user_id=#{user_id}
-	</delete>
-
-	<!-- Query all -->
-	<select id="list" parameterType="int" resultType="UserVO" >
-		select
-			user_id,
-			pw,
-			school_cd,
-			position_cd,
-			kor_nm,
-			end_nm,
-			grade,
-			ban,
-			birth_dt,
-			cel_phone_no,
-			hom_phone_no,
-			gender_cd,
-			email,
-			input_id,
-			input_date,
-			update_id,
-			update_date
-		from
-			users
-	</select> 
 </mapper>
 

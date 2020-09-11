@@ -1,38 +1,39 @@
-// package com.dictation.Security;
+package com.dictation.Security;
 
-// import lombok.RequiredArgsConstructor;
+import java.io.IOException;
 
-// import org.apache.logging.log4j.LogManager;
-// import org.apache.logging.log4j.Logger;
-// import org.springframework.security.core.Authentication;
-// import org.springframework.security.core.context.SecurityContextHolder;
-// import org.springframework.web.filter.GenericFilterBean;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-// import javax.servlet.FilterChain;
-// import javax.servlet.ServletException;
-// import javax.servlet.ServletRequest;
-// import javax.servlet.ServletResponse;
-// import javax.servlet.http.HttpServletRequest;
-// import java.io.IOException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-// @RequiredArgsConstructor
-// public class JWTAuthenticationFilter extends GenericFilterBean {
+@Component
+public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
-//     private Logger logger = LogManager.getLogger(JWTAuthenticationFilter.class);
+    private Logger logger = LogManager.getLogger(JWTAuthenticationFilter.class);
 
-//     private final JWTTokenProvider jwtTokenProvider;
+    @Autowired
+    private JWTTokenProvider jwtTokenProvider;
 
-//     @Override
-//     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-//         logger.info("start authentication");
-//         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
-//         if (token != null && jwtTokenProvider.validateToken(token)) {
-//             logger.info("validate token");
-//             Authentication authentication = jwtTokenProvider.getAuthentication(token);
-//             SecurityContextHolder.getContext().setAuthentication(authentication);
-//         }
-//         logger.info("finish authentication");
-//         chain.doFilter(request, response);
-//     }
-// }
+    @Override 
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        logger.info("start authentication");
+        String token = jwtTokenProvider.resolveToken(request);
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            logger.info("validate token");
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        logger.info("finish authentication");
+        chain.doFilter(request, response);
+    }
+}
