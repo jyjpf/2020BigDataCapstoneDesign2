@@ -8,17 +8,12 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
-import com.dictation.service.CommonService;
 import com.dictation.vo.UserVO;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -28,9 +23,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTTokenProvider {
-
-    private Logger logger = LogManager.getLogger(JWTTokenProvider.class);
-
+    
     private String secretKey;
 
     @PostConstruct

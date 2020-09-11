@@ -7,7 +7,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Dae_cdVO {
+public class DaeVO {
+	
 	private String dae_cd;
 	private String dae_nm;
 	private String use_yn;

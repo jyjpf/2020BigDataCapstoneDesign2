@@ -3,8 +3,6 @@ package com.dictation.controller;
 import com.dictation.service.UserService;
 import com.dictation.vo.UserVO;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value="/api/user") 
 public class UserController {
 
-  private Logger logger = LogManager.getLogger(CommonController.class);
-  
   @Autowired
   private UserService userService;
 
