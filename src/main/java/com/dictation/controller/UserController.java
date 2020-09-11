@@ -1,9 +1,12 @@
 package com.dictation.controller;
 
+import java.util.List;
+
 import com.dictation.service.UserService;
 import com.dictation.vo.UserVO;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +25,13 @@ public class UserController {
 
   @GetMapping
 	public UserVO get(@AuthenticationPrincipal UserVO activeUser) {
-    UserVO user = userService.get(activeUser.getUser_id());
-    
-		return user;
+		return userService.get(activeUser.getUser_id());
+  }
+
+  @GetMapping
+  @Secured("ROLE_ADMIN")
+	public List<UserVO> getList() {
+    return userService.getList();
   }
 	
   @PutMapping

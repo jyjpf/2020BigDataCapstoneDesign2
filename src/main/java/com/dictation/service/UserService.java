@@ -3,6 +3,8 @@ package com.dictation.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import com.dictation.Common.PositionCode;
 import com.dictation.mapper.UserMapper;
 import com.dictation.vo.UserVO;
@@ -20,6 +22,14 @@ public class UserService {
 	 */
 	public UserVO get(String id) {
 		return userMapper.get(id);
+	}
+
+	/**
+	 * 유저 조회
+	 * @return UserVO
+	 */
+	public List<UserVO> getList() {
+		return userMapper.getList();
 	}
 	
   /**
