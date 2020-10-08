@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import com.dictation.Common.PositionCode;
+import com.dictation.Common.Code;
 import com.dictation.mapper.UserMapper;
 import com.dictation.vo.UserVO;
 
@@ -15,6 +15,26 @@ public class UserService {
 	@Autowired
 	private UserMapper userMapper;
 	
+	private String positionToCd(String position) throws Exception {
+		if("선생님".equals(position)) {
+			return Code.ROLE_TEACHER;
+		} else if("학생".equals(position)) {
+			return Code.ROLE_STUDENT;
+		} else {
+      throw new Exception("Undefined Position Code");
+		}
+	}
+
+	private String genderToCd(String position) throws Exception {
+		if("남자".equals(position)) {
+		  return Code.GENDER_MALE;
+    } else if("여자".equals(position)) {
+      return Code.GENDER_FEMALE; 
+    } else {
+      throw new Exception("Undefined Gender Code");
+    }
+	}
+
 	/**
 	 * 내 정보 조회
 	 * @param id
@@ -39,21 +59,8 @@ public class UserService {
    * @throws Exception
    */
   public void insert(UserVO user) throws Exception {
-    if("선생님".equals(user.getPosition_cd())) {
-			user.setPosition_cd(PositionCode.ROME_TEACHER);
-		} else if("학생".equals(user.getPosition_cd())) {
-			user.setPosition_cd(PositionCode.ROLE_STUDENT);
-		} else {
-      throw new Exception("Undefined Position Code");
-		}
-
-		if("남자".equals(user.getGender_cd())) {
-		  user.setGender_cd("002001");
-    } else if("여자".equals(user.getGender_cd())) {
-      user.setGender_cd("002002"); 
-    } else {
-      throw new Exception("Undefined Gender Code");
-    }
+		user.setPosition_cd(positionToCd(user.getPosition_cd()));
+		user.setGender_cd(genderToCd(user.getGender_cd()));
 		userMapper.insert(user);
 	}
 
@@ -64,21 +71,8 @@ public class UserService {
    * @throws Exception
    */
 	public void update(UserVO user) throws Exception {
-    if("선생님".equals(user.getPosition_cd())) {
-			user.setPosition_cd(PositionCode.ROME_TEACHER);
-		} else if("학생".equals(user.getPosition_cd())) {
-			user.setPosition_cd(PositionCode.ROLE_STUDENT);
-		} else {
-      throw new Exception("Undefined Position Code");
-		}
-
-		if("남자".equals(user.getGender_cd())) {
-		  user.setGender_cd("002001");
-    } else if("여자".equals(user.getGender_cd())) {
-      user.setGender_cd("002002"); 
-    } else {
-      throw new Exception("Undefined Gender Code");
-    }
+		user.setPosition_cd(positionToCd(user.getPosition_cd()));
+		user.setGender_cd(genderToCd(user.getGender_cd()));
 		userMapper.update(user);
 	}
 

@@ -65,9 +65,9 @@
 			#{hom_phone_no},
 			#{gender_cd},
 			#{email},
-			#{input_id},
+			#{user_id},
 			NOW(),
-      #{input_id},
+      #{user_id},
 			NOW()
 		)
 

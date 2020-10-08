@@ -1,156 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dictation.mapper.BoardMapper"> 
-	
-	<!-- Insert a board -->
-	<insert id="insert" parameterType="com.dictation.vo.BoardVO">
-		insert into board(
-			year,
-			term,
-			lecture_no,
-			board_cd,
-			no,
-			seq_no,
-			title,
-			content,
-			read_cnt,
-			file_nm,
-			save_file_nm,
-			input_id,
-			input_date,
-			update_id,
-			update_date
-			
-		) values(
-			(select year from term_cd where use_yn=1::VARCHAR),
-			(select term from term_cd where use_yn=1::VARCHAR),
+<mapper namespace="com.dictation.mapper.BoardMapper">
+
+	<select id="get" parameterType="Map" resultType="BoardVO">
+
+		SELECT
+			YEAR,
+			TERM,
+			LECTURE_NO,
+			BOARD_CD,
+			NO,
+			TITLE,
+			CONTENT,
+			READ_CNT,
+			FILE_NM,
+			SAVE_FILE_NM,
+			INPUT_ID,
+			INPUT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE
+		FROM
+			BOARD
+		WHERE 1=1
+			AND LECTURE_NO = #{lecture_no}
+			AND NO = #{no}
+
+	</select>
+
+	<select id="getList" parameterType="Map" resultType="BoardVO">
+
+		SELECT
+			YEAR,
+			TERM,
+			LECTURE_NO,
+			BOARD_CD,
+			NO,
+			TITLE,
+			CONTENT,
+			READ_CNT,
+			FILE_NM,
+			SAVE_FILE_NM,
+			INPUT_ID,
+			INPUT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE
+		FROM
+			BOARD
+		WHERE 1=1
+			AND LECTURE_NO = #{lecture_no}
+
+	</select> 
+
+	<insert id="insert" parameterType="BoardVO">
+
+		INSERT INTO BOARD(
+			YEAR,
+			TERM,
+			LECTURE_NO,
+			BOARD_CD,
+			NO,
+			SEQ_NO,
+			TITLE,
+			CONTENT,
+			READ_CNT,
+			FILE_NM,
+			SAVE_FILE_NM,
+			INPUT_ID,
+			INPUT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE
+		) VALUES (
+			'2020',
+			'01',
 			#{lecture_no},
-			(select concat(dae_cd, so_cd) from so_cd where dae_cd=#{dae_b} and so_cd=#{so_b} and use_yn=1::VARCHAR),
+			#{board_cd},
 			#{no},
-			(select COALESCE(max(seq_no::INTEGER),0)+1 from board ALIAS_FOR_SUBQUERY where no=#{no}),
+			'',
 			#{title},
 			#{content},
 			#{read_cnt},
 			#{file_nm},
 			#{save_file_nm},
 			#{input_id},
-			#{input_date},
-			#{update_id},
-			#{update_date}
+			NOW(),
+			#{input_id},
+			NOW()
 		)
+
 	</insert>
  
- 
- 
- 
-	<!-- according to id Delete students -->
-	<delete id="delete" parameterType="Hashmap">
-		delete from board where lecture_no=#{lecture_no} and board_cd=#{board_cd} and no=#{no} and seq_no=#{seq_no}
+
+	<delete id="delete" parameterType="Map">
+
+		DELETE FROM
+			BOARD
+		WHERE 1=1
+			AND LECTURE_NO = #{lecture_no}
+			AND BOARD_CD = #{board_cd}
+			AND NO = #{no}
+			AND SEQ_NO = #{seq_no}
+
 	</delete>
-	
-	<!--선생님이 강좌 삭제했을때 -->
-	<delete id="lecture_delete" parameterType="int">
-		delete from board where lecture_no=#{lecture_no}
-	</delete>
-	
-	<!-- update after delete -->
-	<update id="after_delete" parameterType="Hashmap">
-		update board
-		set
-			seq_no=seq_no-1
-		where
-			lecture_no=#{lecture_no} and board_cd=#{board_cd} and no=#{no} and seq_no>=#{seq_no}
-	</update>
- 
-	<!-- 게시판 글 수정(파일 있을때) -->
+
 	<update id="update" parameterType="BoardVO">
-		update board
+
+		update
+			board
 		set
-			title=#{title},
-			content=#{content},
-			file_nm=#{file_nm},
-			save_file_nm=#{save_file_nm},
-			input_id=#{input_id},
-			input_date=#{input_date},
-			update_id=#{update_id},
-			update_date=#{update_date}
-		where
-			lecture_no=#{lecture_no} and board_cd=#{board_cd} and no=#{no} and seq_no=#{seq_no}
+			title = #{title},
+			content = #{content},
+			file_nm = #{file_nm},
+			save_file_nm = #{save_file_nm},
+			update_id = #{id},
+			update_date = now()
+		where 1=1
+			and lecture_no = #{lecture_no}
+			and board_cd = #{board_cd}
+			and no = #{no}
+
 	</update>
-	
-	<!-- 게시판 글 수정(파일 없을때) -->
-	<update id="update_nofile" parameterType="BoardVO">
-		update board
-		set
-			title=#{title},
-			content=#{content},
-			input_id=#{input_id},
-			input_date=#{input_date},
-			update_id=#{update_id},
-			update_date=#{update_date}
-		where
-			lecture_no=#{lecture_no} and board_cd=#{board_cd} and no=#{no} and seq_no=#{seq_no}
-	</update>
-	
- 
-	<!-- according to id query -->
-	<select id="getById" parameterType="BoardVO" resultType="BoardVO">
-		select
-			year,
-			term,
-			lecture_no,
-			board_cd,
-			no,
-			seq_no,
-			title,
-			content,
-			read_cnt,
-			file_nm,
-			save_file_nm,
-			input_id,
-			input_date,
-			update_id,
-			update_date
-		from
-			board
-		where
-			lecture_no=#{lecture_no} and board_cd=#{board_cd} and no=#{no} and seq_no=#{seq_no}
+
+	<select id="getHashFilename" parameterType="Map" resultType="String">
+
+		SELECT
+			SAVE_FILE_NAME
+		FROM
+			BOARD
+		WHERE 1=1
+			AND LECTURE_NO = #{lecture_no}
+			AND NO = #{no}
+			AND FILE_NM = #{filename}
+
+
 	</select>
-	
-	
- 
-	<!-- Query all -->
-	<select id="list" parameterType="BoardVO" resultType="com.dictation.vo.BoardVO">
-		select
-			year,
-			term,
-			lecture_no,
-			board_cd,
-			no,
-			seq_no,
-			title,
-			content,
-			read_cnt,
-			file_nm,
-			save_file_nm,
-			input_id,
-			input_date,
-			update_id,
-			update_date
-		from
-			board
-		where
-			lecture_no=#{lecture_no} and board_cd=#{board_cd}
-	</select> 
-	
-	<select id="getFileNm" parameterType="String" resultType="String">
-		select
-			file_nm			
-		from
-			board
-		where
-			save_file_nm=#{save_file_nm}
-	</select>
+
 </mapper>
 

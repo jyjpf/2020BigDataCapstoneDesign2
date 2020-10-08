@@ -24,7 +24,14 @@ public interface LectureMapper {
 	 * @param String
 	 * @return List<LectureVO>
 	 */
-	public List<LectureVO> list(Map<String, Object> params);
+	public List<LectureVO> getList(Map<String, Object> params);
+
+	/**
+	 *
+	 * @param params
+	 * @return
+	 */
+	public List<LectureVO> getMyList(Map<String, Object> params);
 
 	/**
 	 * 강의 생성
@@ -46,16 +53,9 @@ public interface LectureMapper {
 	 * @param String
 	 * @return void
 	 */
-	public void delete(String lecture_no) throws Exception;	
+	public void delete(String lecture_no) throws Exception;
 
 
-
-	
-	public List<LectureVO> teacher_mylec(String user_id);
-	
-	public List<LectureVO> student_lec_list(String user_id);
-	
-	public List<LectureVO> student_mylec(String user_id);
 	
 	
 }

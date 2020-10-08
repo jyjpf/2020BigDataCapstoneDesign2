@@ -21,3 +21,4 @@ public class LectureVO {
 	private String teacher_nm;
 	
 } 
+ 

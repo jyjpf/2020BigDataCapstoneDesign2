@@ -4,23 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import com.dictation.service.BoardService;
-import com.dictation.service.CourseService;
-import com.dictation.service.EnrollService;
 import com.dictation.service.LectureService;
 import com.dictation.vo.LectureVO;
 import com.dictation.vo.UserVO;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Role;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,29 +27,37 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/lecture")
 public class LectureController {
 
-  @Autowired
+	private static final Logger logger = LogManager.getLogger(BoardController.class);
+
+  	@Autowired
 	private LectureService lectureService;
-	@Autowired
-	private BoardService boardService;
-	@Autowired
-	private EnrollService enrollService;
-	@Autowired
-	private CourseService courseService;
- 
+
+  	// TODO: QueryString 추가
 	@GetMapping(value="/{lecture_no}")
-	public LectureVO get(@PathVariable("lecture_no") String lecture_no, @AuthenticationPrincipal UserVO activeUser) {
-		Map<String, Object> params = new HashMap<String, Object>();
+	public LectureVO get(
+			@PathVariable("lecture_no") String lecture_no,
+			@AuthenticationPrincipal UserVO activeUser) {
+		Map<String, Object> params = new HashMap<>();
 		params.put("lecture_no", lecture_no);
 		params.put("school_cd", activeUser.getSchool_cd());
 		LectureVO lecture = lectureService.get(params);
 		return lecture;
 	}
-	
+
 	@GetMapping
 	public List<LectureVO> getList(@AuthenticationPrincipal UserVO activeUser) {
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", activeUser.getUser_id());
 		params.put("school_cd", activeUser.getSchool_cd());
-		return lectureService.list(params);
+		return lectureService.getList(params);
+	}
+
+	@GetMapping(value="/mylist")
+	public List<LectureVO> getMyList(@AuthenticationPrincipal UserVO activeUser) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", activeUser.getUser_id());
+		params.put("school_cd", activeUser.getSchool_cd());
+		return lectureService.getMyList(params);
 	}
   
 	@PostMapping

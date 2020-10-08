@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import com.dictation.Common.Code;
 import com.dictation.vo.UserVO;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,10 +32,10 @@ public class JWTTokenProvider {
         this.secretKey = Base64.getEncoder().encodeToString(JWTProperties.SECRET.getBytes());
     }
 
-    public String createToken(String userPk, String code, String role) {
+    public String createToken(String userPk, String school, String position) {
         Claims claims = Jwts.claims().setSubject(userPk);
-        claims.put("role", role);
-        claims.put("code", code);
+        claims.put("school", school);
+        claims.put("position", position);
         Date now = new Date();
         return JWTProperties.TOKEN_PREFIX +
             Jwts.builder()
@@ -47,12 +48,21 @@ public class JWTTokenProvider {
 
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token).getBody();
+        String position = (String) claims.get("position");
+        
         Collection<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
-        roles.add(new SimpleGrantedAuthority((String) claims.get("role")));
+        if(position.equals(Code.ROLE_ADMIN)) {
+            roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else if(position.equals(Code.ROLE_TEACHER)) {
+            roles.add(new SimpleGrantedAuthority("ROLE_TEACHER"));
+        } else {
+            roles.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
+        }
 
         UserVO user = new UserVO();
         user.setUser_id(claims.getSubject());
-        user.setSchool_cd((String) claims.get("code"));
+        user.setSchool_cd((String) claims.get("school"));
+        user.setPosition_cd((String) claims.get("position"));
 
         return new UsernamePasswordAuthenticationToken(user, "", roles);
     }

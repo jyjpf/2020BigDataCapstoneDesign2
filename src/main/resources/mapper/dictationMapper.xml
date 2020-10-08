@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dictation.mapper.DictationDAO">
+
+	<select id="get" parameterType="Map" resultType="CourseVO">
+
+		select
+			year,
+		    term,
+		    lecture_no,
+		    course_no,
+		    question_no,
+		    file_nm,
+		    save_file_nm,
+		    finish_yn,
+		    input_id,
+		    input_date,
+		    update_id,
+			update_date
+		from
+			course
+		where 1=1
+			and lecture_no = #{lecture_no}
+			and course_no = #{course_no}
+
+	</select>
+
+	<insert id="insert" parameterType="CourseVO">
+
+		insert into course (
+			year,
+			term,
+			lecture_no,
+			course_no,
+			question_no,
+			file_nm,
+			save_file_nm,
+			finish_yn,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		) values (
+			'2020',
+		    '1',
+		    #{lecture_no},
+			#{course_no},
+			#{question},
+			#{file_nm},
+			#{save_file_nm},
+			#{finish_yn},
+			#{id},
+			NOW(),
+			#{id},
+			NOW()
+		)
+
+
+	</insert>
+
+	<update id="update" parameterType="CourseVO">
+
+		update
+		    course
+		set
+			year = '2020',
+			term = '1',
+			lecture_no = #{lecture_no},
+			course_no = #{course_no},
+			question = #{question},
+			file_nm = #{file_nm},
+			save_file_nm = #{save_file_nm},
+			finish_yn = #{finish_yn},
+			update_id = #{id},
+			update_date = NOW()
+
+	</update>
+
+</mapper>
+

@@ -17,7 +17,7 @@ public class LectureService {
 
 	/**
 	 * 강의 정보 조회
-	 * @param Map
+	 * @param params
 	 * @return LectureVO
 	 */
 	public LectureVO get(Map<String, Object> params) {
@@ -25,17 +25,26 @@ public class LectureService {
 	}
 
 	/**
-	 * 강의 리스트 조회
-	 * @param String
+	 * 모든 선생님, 수강신청 가능한 상태의 강좌리스트 조회
+	 * @param params
 	 * @return List<LectureVO>
 	 */
-	public List<LectureVO> list(Map<String, Object> params) {
-		return lectureMapper.list(params);
+	public List<LectureVO> getList(Map<String, Object> params) {
+		return lectureMapper.getList(params);
+	}
+
+	/**
+	 * 내 강의 리스트 전체 조회
+	 * @param params
+	 * @return List<LectureVO>
+	 */
+	public List<LectureVO> getMyList(Map<String, Object> params) {
+		return lectureMapper.getMyList(params);
 	}
 	
 	/**
 	 * 강의 생성
-	 * @param LectureVO
+	 * @param lecture
 	 * @return void
 	 */
 	public void insert(LectureVO lecture) throws Exception {
@@ -44,7 +53,7 @@ public class LectureService {
 
 	/**
 	 * 강의 업데이트
-	 * @param LectureVO
+	 * @param lecture
 	 * @return void
 	 */
 	public void update(LectureVO lecture) throws Exception {
@@ -53,27 +62,11 @@ public class LectureService {
 
 	/**
 	 * 강의 삭제
-	 * @param String
+	 * @param lecture_no
 	 * @return void
 	 */
 	public void delete(String lecture_no) throws Exception {
 		lectureMapper.delete(lecture_no);
-	}
-
-
-
-	
-
-	public List<LectureVO> teacher_mylec(String user_id) {
-		return lectureMapper.teacher_mylec(user_id);
-	}
-	
-	public List<LectureVO> student_lec_list(String user_id) {
-		return lectureMapper.student_lec_list(user_id);
-	}
-	
-	public List<LectureVO> student_mylec(String user_id){
-		return lectureMapper.student_mylec(user_id);
 	}
 
 }

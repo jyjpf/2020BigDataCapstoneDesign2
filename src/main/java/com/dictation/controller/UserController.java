@@ -23,7 +23,7 @@ public class UserController {
   @Autowired
   private UserService userService;
 
-  @GetMapping
+  @GetMapping(value = "/my")
 	public UserVO get(@AuthenticationPrincipal UserVO activeUser) {
 		return userService.get(activeUser.getUser_id());
   }

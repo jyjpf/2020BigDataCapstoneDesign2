@@ -1,7 +1,7 @@
 package com.dictation.mapper;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -12,27 +12,46 @@ import com.dictation.vo.BoardVO;
 @Mapper
 public interface BoardMapper {
 	
-	//insert
-	public void insert(BoardVO board);
+	/**
+	 * 
+	 * @param board
+	 * @return
+	 */
+	public BoardVO get(Map<String, Object> params);
 
-	//according to id delete
-	public void delete(HashMap<String, Object> map);
+	/**
+	 * 
+	 * @param board
+	 * @return
+	 */
+	public List<BoardVO> getList(Map<String, Object> params);
 	
-	public void lecture_delete(int lecture_no);
+	/**
+	 * 
+	 * @param board
+	 * @throws Exception
+	 */
+	public void insert(BoardVO board) throws Exception;
 
-	//update after delete
-	public void after_delete(HashMap<String, Object> map);
-	
+	/**
+	 *
+	 * @param board
+	 */
 	public void update(BoardVO board);
-	
-	public void update_nofile(BoardVO board);
 
-	//according to id query
-	public BoardVO getById(BoardVO board);
+	/**
+	 *
+	 * @param map
+	 * @throws Exception
+	 */
+	public void delete(Map<String, Object> map) throws Exception;
 
-	//All queries
-	public List<BoardVO> list(BoardVO board);
-	
-	//search file_nm for file download
-	public String getFileNm(String save_file_nm);
+	/**
+	 *
+	 * @param originalFilename
+	 * @return
+	 */
+	public String getHashFilename(Map params);
+
+
 }

@@ -18,4 +18,4 @@ public class DaeVO {
 	private Date update_date;
 	
 }
- 
+  

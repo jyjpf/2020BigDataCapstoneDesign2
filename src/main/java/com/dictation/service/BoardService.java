@@ -1,8 +1,7 @@
 package com.dictation.service;
 
-import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,48 +15,57 @@ public class BoardService {
 	@Autowired
 	private BoardMapper boardMapper;
 	
+	/**
+	 * 게시글 정보를 가져옵니다
+	 * @param params - 강의번호, 게시글번호
+	 * @return BoardVO
+	 */
+	public BoardVO get(Map<String, Object> params) {
+		return boardMapper.get(params);
+	}
+
+	/**
+	 * 게시판 게시글 목록을 가져옵니다
+	 * @param params - 강의번호
+	 * @return List<BoardVO>
+	 */
+	public List<BoardVO> getList(Map<String, Object> params) {
+		return boardMapper.getList(params);
+	}
 	
-	//##insert,delete,update,getById,list##
-	//insert
-	public void insert(BoardVO board) {
+	/**
+	 * 게시판에 게시글을 생성합니다
+	 * @param board - boardVO
+	 * @throws Exception
+	 */
+	public void insert(BoardVO board) throws Exception {
 		boardMapper.insert(board);
 	}
 
-	//according to id delete
-	public void delete(HashMap<String, Object> map) {
-		boardMapper.delete(map);
-	}
-	
-	public void lecture_delete(int lecture_no) {
-		boardMapper.lecture_delete(lecture_no);
-	}
-	
-	//update after delete
-	public void after_delete(HashMap<String, Object> map) { 
-		boardMapper.after_delete(map); 
-	}
-	
+	/**
+	 *
+	 * @param board
+	 */
 	public void update(BoardVO board) {
 		boardMapper.update(board);
 	}
-	
-	public void update_nofile(BoardVO board) {
-		boardMapper.update_nofile(board);
+
+	/**
+	 * 게시판의 게시글을 삭제합니다.
+	 * @param params - 강의번호, 게시판번호
+	 * @throws Exception
+	 */
+	public void delete(Map<String, Object> params) throws Exception {
+		boardMapper.delete(params);
 	}
 
-	//according to id query
-	public BoardVO getById(BoardVO board) {
-		return boardMapper.getById(board);
-	}
-
-	//All queries
-	public List<BoardVO> list(BoardVO board){
-		return boardMapper.list(board);
-	}
-	
-	//search file_nm for file download
-	public String getFileNm(String save_file_nm) {
-		return boardMapper.getFileNm(save_file_nm);
+	/**
+	 * DB에 저장되 있는 파일명으로 다운받을 파일의 해시값을 불러옴
+	 * @param params
+	 * @return hashFilename
+	 */
+	public String getHashFilename(Map params) {
+		return boardMapper.getHashFilename(params);
 	}
 
 }

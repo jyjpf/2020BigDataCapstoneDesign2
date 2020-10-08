@@ -26,7 +26,35 @@
 
 	</select>
 
-	<select id="list" parameterType="Map" resultType="LectureVO">
+	<select id="getList" parameterType="Map" resultType="LectureVO">
+
+		select
+			year,
+			term,
+			lecture_no,
+			lecture_nm,
+			school_cd,
+			grade,
+			ban,
+			enroll_st_dt,
+			enroll_ed_dt,
+			max_cnt,
+			teacher_id,
+			teacher_nm,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		from
+			lecture
+		where 1=1
+			and school_cd = #{school_cd}
+		  	and now()
+		  	    between to_date(enroll_st_dt, 'yyyymmdd') and to_date(enroll_ed_dt, 'yyyymmdd')
+
+	</select>
+
+	<select id="getMyList" parameterType="Map" resultType="LectureVO">
 
 		SELECT
 			YEAR,
@@ -39,14 +67,19 @@
 			ENROLL_ST_DT,
 			ENROLL_ED_DT,
 			MAX_CNT,
-			TEACHER_ID,	
-			TEACHER_NM
+			TEACHER_ID,
+			TEACHER_NM,
+			INPUT_ID,
+			INPUT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE
 		FROM
 			LECTURE
 		WHERE 1=1
+			AND TEACHER_ID = #{id}
 			AND SCHOOL_CD = #{school_cd}
 
-	</select> 
+	</select>
 
 	<insert id="insert" parameterType="LectureVO">
 
@@ -70,7 +103,12 @@
 		) VALUES (
 			'2020',
 			'1',
-			#{lecture_no},
+			(
+			SELECT
+				COALESCE(MAX(LECTURE_NO) + 1, 1)
+			FROM
+				LECTURE
+			),
 			#{lecture_nm},
 			#{school_cd},
 			#{grade},
@@ -87,6 +125,29 @@
 		)
 
 	</insert>
+
+	<update id="update" parameterType="LectureVO">
+
+		UPDATE
+		    LECTURE
+		SET
+			YEAR = '2020',
+			term = '1',
+			LECTURE_NM = #{lecture_nm},
+			SCHOOL_CD = #{school_cd},
+			GRADE = #{grade},
+			BAN = #{ban},
+			ENROLL_ST_DT = #{enroll_st_dt},
+			ENROLL_ED_DT = #{enroll_ed_dt},
+			MAX_CNT = #{max_cnt},
+			TEACHER_ID = #{teacher_id},
+			TEACHER_NM = #{teacher_nm},
+			UPDATE_ID = #{teacher_id},
+			UPDATE_DATE = NOW()
+		WHERE
+			LECTURE_NO = #{lecture_no}
+
+	</update>
  
 	<delete id="delete" parameterType="String">
 
@@ -96,113 +157,6 @@
 			AND LECTURE_NO = #{lecture_no}
 
 	</delete>
- 
-	<!-- according to id Modifying Student Information-->
-	<update id="update" parameterType="LectureVO">
-		update lecture
-		set
-			year=(select year from term_cd where use_yn=1::VARCHAR),
-			term=(select term from term_cd where use_yn=1::VARCHAR),
-			lecture_nm=#{lecture_nm},
-			school_cd=#{school_cd},
-			grade=#{grade},
-			ban=#{ban},
-			enroll_st_dt=#{enroll_st_dt},
-			enroll_ed_dt=#{enroll_ed_dt},
-			max_cnt=#{max_cnt},
-			teacher_id=#{teacher_id},
-			teacher_nm=#{teacher_nm},
-			update_id=#{teacher_id},
-			update_date=now()::TIMESTAMP
-			
-		where
-			lecture_no=#{lecture_no}
-	</update>
-	
-	<!-- 선생님 본인이 개설한 강좌목록 띄우기 위한 코드 -->
-	<select id="teacher_mylec" parameterType="String" resultType="LectureVO">
-		select
-			year,
-			term,
-			lecture_no,
-			lecture_nm,
-			school_cd,
-			grade,
-			ban,
-			enroll_st_dt,
-			enroll_ed_dt,
-			max_cnt,
-			teacher_id,
-			teacher_nm,			
-			input_id,
-			input_date,
-			update_id,
-			update_date
-		from
-			lecture
-		where
-			teacher_id=#{user_id}
-	</select>
-	
-	
-	<!-- 학생화면 전체강좌 리스트에 강좌신청여부 -->
-	<select id="student_lec_list" parameterType="String" resultType="LectureVO">
-		select
-			lec.year,
-			lec.term,
-			lec.lecture_no,
-			lec.lecture_nm,
-			lec.school_cd,
-			lec.grade,
-			lec.ban,
-			lec.enroll_st_dt,
-			lec.enroll_ed_dt,
-			lec.max_cnt,
-			lec.teacher_id,
-			lec.teacher_nm,			
-			lec.input_id,
-			lec.input_date,
-			lec.update_id,
-			lec.update_date,
-			en.approval_cd
-		from
-			lecture as lec
-		left outer join
-			(select approval_cd, lecture_no from enroll where user_id=#{user_id}) as en
-		on
-			en.lecture_no=lec.lecture_no
-		
-	</select>
-	
-	<!-- 학생 본인이 수강신청해서 승인된 강좌목록 띄우기 위한 코드 -->
-	<select id="student_mylec" parameterType="String" resultType="LectureVO">
-
-		select
-			lec.year,
-			lec.term,
-			lec.lecture_no,
-			lec.lecture_nm,
-			lec.school_cd,
-			lec.grade,
-			lec.ban,
-			lec.enroll_st_dt,
-			lec.enroll_ed_dt,
-			lec.max_cnt,
-			lec.teacher_id,
-			lec.teacher_nm,			
-			lec.input_id,
-			lec.input_date,
-			lec.update_id,
-			lec.update_date,
-			en.approval_cd
-		from
-			lecture as lec
-		right outer join
-			(select approval_cd, lecture_no from enroll where user_id=#{user_id} and approval_cd='승인') as en
-		on
-			en.lecture_no=lec.lecture_no
-				
-	</select>
 
 </mapper>
 

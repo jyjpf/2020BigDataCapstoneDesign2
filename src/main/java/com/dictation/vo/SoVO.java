@@ -13,4 +13,4 @@ public class SoVO {
 	private String bigo;
 	
 }
- 
+  

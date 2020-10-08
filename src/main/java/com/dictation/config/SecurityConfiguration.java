@@ -22,6 +22,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.cors();
     http.httpBasic().disable();
     http.csrf().disable();
+    http.formLogin().disable();
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.authorizeRequests()
         .antMatchers("/api/common/**").permitAll()
