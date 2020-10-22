@@ -27,13 +27,6 @@ public interface LectureMapper {
 	public List<LectureVO> getList(Map<String, Object> params);
 
 	/**
-	 *
-	 * @param params
-	 * @return
-	 */
-	public List<LectureVO> getMyList(Map<String, Object> params);
-
-	/**
 	 * 강의 생성
 	 * @param LectureVO
 	 * @return void

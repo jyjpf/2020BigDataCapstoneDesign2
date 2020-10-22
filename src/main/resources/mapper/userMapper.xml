@@ -3,72 +3,91 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dictation.mapper.UserMapper"> 
 
-	<!-- according to id query -->
 	<select id="get" parameterType="map" resultType="UserVO">
 
-		SELECT
-			USER_ID,
-			PW,
-			SCHOOL_CD,
-			POSITION_CD,
-			KOR_NM,
-			END_NM,
-			GRADE,
-			BAN,
-			BIRTH_DT,
-			CEL_PHONE_NO,
-			HOM_PHONE_NO,
-			GENDER_CD,
-			EMAIL,
-			INPUT_ID,
-			INPUT_DATE,
-			UPDATE_ID,
-			UPDATE_DATE
-		FROM
-			USERS
-		WHERE
-			USER_ID = #{id}
+		select
+			user_id,
+			pw,
+			school_cd,
+			position_cd,
+			kor_nm,
+			grade,
+			ban,
+		    bunho,
+			birth_dt,
+			cel_phone_no,
+			gender_cd,
+			email,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		from
+			users
+		where
+			user_id = #{id}
+
+	</select>
+
+	<select id="getList" parameterType="map" resultType="UserVO">
+
+		select
+			user_id,
+			school_cd,
+			fn_cmmn(position_cd) as position_cd,
+			kor_nm,
+			grade,
+			ban,
+		    bunho,
+			birth_dt,
+			cel_phone_no,
+			fn_cmmn(gender_cd) as gender_cd,
+			email,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		from
+			users
 
 	</select>
 	
-  <insert id="insert" parameterType="map">
+  	<insert id="insert" parameterType="map">
 
-		INSERT INTO USERS (
-			USER_ID,
-			PW,
-			SCHOOL_CD,
-			POSITION_CD,
-			KOR_NM,
-			END_NM,
-			GRADE,
-			BAN,
-			BIRTH_DT,
-			CEL_PHONE_NO,
-			HOM_PHONE_NO,
-			GENDER_CD,
-			EMAIL,
-			INPUT_ID,
-			INPUT_DATE,
-			UPDATE_ID,
-			UPDATE_DATE
-		) VALUES (
+		insert into users (
+			user_id,
+			pw,
+			school_cd,
+			position_cd,
+			kor_nm,
+			grade,
+			ban,
+		    bunho,
+			birth_dt,
+			cel_phone_no,
+			gender_cd,
+			email,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		) values (
 			#{user_id},
 			#{pw},
 			#{school_cd},
 			#{position_cd},
 			#{kor_nm},
-			#{end_nm},
 			#{grade},
-			#{ban}, 
+			#{ban},
+		    #{bunho},
 			#{birth_dt},
 			#{cel_phone_no},
-			#{hom_phone_no},
 			#{gender_cd},
 			#{email},
 			#{user_id},
-			NOW(),
-      #{user_id},
-			NOW()
+			now(),
+      		#{user_id},
+			now()
 		)
 
 	</insert>

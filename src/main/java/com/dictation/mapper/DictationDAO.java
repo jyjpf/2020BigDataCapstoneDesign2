@@ -2,6 +2,7 @@ package com.dictation.mapper;
 
 import com.dictation.vo.BoardVO;
 import com.dictation.vo.CourseVO;
+import com.dictation.vo.StudyVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +15,10 @@ public interface DictationDAO {
 
 	List<CourseVO> get(Map<String, Object> params);
 
-	void insert(CourseVO course) throws Exception;
+	void insertQuestion(CourseVO course) throws Exception;
+
+	void insertAnswer(StudyVO study) throws Exception;
 
 	void update(CourseVO course) throws Exception;
+
 }

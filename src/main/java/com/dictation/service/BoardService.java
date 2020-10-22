@@ -20,7 +20,7 @@ public class BoardService {
 	 * @param params - 강의번호, 게시글번호
 	 * @return BoardVO
 	 */
-	public BoardVO get(Map<String, Object> params) {
+	public List<BoardVO> get(Map<String, Object> params) {
 		return boardMapper.get(params);
 	}
 
@@ -57,15 +57,6 @@ public class BoardService {
 	 */
 	public void delete(Map<String, Object> params) throws Exception {
 		boardMapper.delete(params);
-	}
-
-	/**
-	 * DB에 저장되 있는 파일명으로 다운받을 파일의 해시값을 불러옴
-	 * @param params
-	 * @return hashFilename
-	 */
-	public String getHashFilename(Map params) {
-		return boardMapper.getHashFilename(params);
 	}
 
 }

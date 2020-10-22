@@ -17,7 +17,7 @@ public interface BoardMapper {
 	 * @param board
 	 * @return
 	 */
-	public BoardVO get(Map<String, Object> params);
+	public List<BoardVO> get(Map<String, Object> params);
 
 	/**
 	 * 
@@ -45,13 +45,6 @@ public interface BoardMapper {
 	 * @throws Exception
 	 */
 	public void delete(Map<String, Object> map) throws Exception;
-
-	/**
-	 *
-	 * @param originalFilename
-	 * @return
-	 */
-	public String getHashFilename(Map params);
 
 
 }

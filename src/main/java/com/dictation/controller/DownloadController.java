@@ -28,28 +28,31 @@ import java.util.Map;
 public class DownloadController {
 
 	private static final Logger logger = LogManager.getLogger(DownloadController.class);
+	private static final String AUDIOPATH = "C:/home/dictation/audio/";
+	private static final String BOARDPATH = "C:/home/dictation/board/";
 
 	@Autowired
 	DownloadService downloadService;
 
 	@GetMapping(path = "/{type}/{hashfilename}")
 	public void download_file(
-			@PathVariable(value = "type") String type,
-			@PathVariable(value = "hashfilename") String hashfilename,
+			@PathVariable("type") String type,
+			@PathVariable("hashfilename") String hashfilename,
 			HttpServletRequest request,
 		  	HttpServletResponse response) throws Exception {
 
-		File file = new File("./" + type +  "/" + hashfilename);
+		// if(type.equals("audio"))
+		File file = new File(AUDIOPATH + hashfilename);
 
 		if (!file.exists()) {
 			return;
 		}
 
 		String originalFilename = downloadService.getOriginalFilename(type, hashfilename);
-
-		response.setContentType("application/download; utf-8");
-		response.setHeader("Content-Transfer-Encoding", "binary;");
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + originalFilename + "\"");
+		logger.info(originalFilename);
+		response.setContentType("audio/x-wav");
+//		response.setHeader("Content-Transfer-Encoding", "binary;");
+//		response.setHeader("Content-Disposition", "attachment; filename=\"" + originalFilename + "\"");
 
 		try {
 			OutputStream out = response.getOutputStream();

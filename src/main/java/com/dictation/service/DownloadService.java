@@ -23,8 +23,10 @@ public class DownloadService {
 	public String getOriginalFilename(String type, String hashfilename) {
 		if(type.equals("audio")) {
 			return downloadDAO.getOriginalFilenameByAudio(hashfilename);
-		} else {
+		} else if(type.equals("board")) {
 			return downloadDAO.getOriginalFilenameByBoard(hashfilename);
+		} else {
+			return null;
 		}
 	}
 

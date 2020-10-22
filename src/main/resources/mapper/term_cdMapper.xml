@@ -5,40 +5,41 @@
 	
 	<select id="get" parameterType="String" resultType="Term_cdVO">
 
-		SELECT
-			YEAR,
-			TERM,
-			MANAGE_ST_DT,
-			MANAGE_ED_DT,
-			ENROLL_ST_DT,
-			ENROLL_ED_DT,
-			USE_YN,
-			BIGO
-		FROM
-			TERM_CD
-		WHERE 1=1
-			AND YEAR = #{year}
-			AND term = #{term}
+		select
+			year,
+			term,
+			manage_st_dt,
+			manage_ed_dt,
+			enroll_st_dt,
+			enroll_ed_dt,
+			use_yn,
+			bigo
+		from
+			term_cd
+		where 1=1
+			and year = #{year}
+			and term = #{term}
 
 	</select>
 	
 	<select id="getList" parameterType="int" resultType="Term_cdVO">
 
-		SELECT
-			YEAR,
-			TERM,
-			MANAGE_ST_DT,
-			MANAGE_ED_DT,
-			ENROLL_ST_DT,
-			ENROLL_ED_DT,
-			USE_YN,
-			BIGO
-		FROM
-			TERM_CD
+		select
+			year,
+			term,
+			manage_st_dt,
+			manage_ed_dt,
+			enroll_st_dt,
+			enroll_ed_dt,
+			use_yn,
+			bigo
+		from
+			term_cd
 
 	</select> 
 
 	<insert id="insert" parameterType="Term_cdVO">
+
 		insert into term_cd(
 			year,
 			term,
@@ -67,6 +68,7 @@
 			#{update_id},
 			#{update_date}
 		)
+
 	</insert>
  
  

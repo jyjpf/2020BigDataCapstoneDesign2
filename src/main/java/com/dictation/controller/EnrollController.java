@@ -50,7 +50,6 @@ public class EnrollController {
 		enrollService.insert(enroll);
 	}
 
-
 	@PutMapping
 	public void update(
 			@RequestBody EnrollVO enroll,

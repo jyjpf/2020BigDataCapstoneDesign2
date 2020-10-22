@@ -5,17 +5,28 @@
 	
 	<select id="login" parameterType="map" resultType="UserVO">
 
-		SELECT
-			USER_ID,
-			SCHOOL_CD,
-			POSITION_CD,
-			KOR_NM
-		FROM
-			USERS
-		WHERE 1=1
-			AND USER_ID = #{user_id}
-			AND PW = #{pw}
+		select
+			user_id,
+			school_cd,
+			position_cd,
+			kor_nm
+		from
+			users
+		where 1=1
+			and user_id = #{user_id}
+			and pw = #{pw}
 			
+	</select>
+
+	<select id="check" parameterType="String" resultType="int">
+
+		select
+			count(*)
+		from
+			users
+		where 1=1
+		  and user_id = #{user_id}
+
 	</select>
 	
 </mapper>

@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dictation.mapper.EnrollMapper"> 
+<mapper namespace="com.dictation.mapper.EnrollMapper">
+
+	<select id="getList" parameterType="Map" resultType="Map">
+
+		select
+			fn_cmmn(e.approval_cd) as approval_cd,
+			u.user_id,
+			u.kor_nm,
+			fn_cmmn(u.gender_cd) as gender_cd,
+			u.birth_dt,
+			u.grade,
+			u.ban,
+			u.cel_phone_no
+		from
+			enroll e join users u
+	  	on
+			e.user_id = u.user_id
+		where
+			lecture_no = ${lecture_no}
+
+	</select>
 
 	<select id="getMyList" parameterType="UserVO" resultType="EnrollVO">
 
@@ -26,7 +46,7 @@
 
 	</select>
 
-	<insert id="insert" parameterType="com.dictation.vo.EnrollVO">
+	<insert id="insert" parameterType="EnrollVO">
 
 		insert into enroll(
 			year,
@@ -36,8 +56,6 @@
 			register_dt,
 			approval_dt,
 			approval_cd,
-			pass_course_no,
-			study_time,
 			input_id,
 			input_date,
 			update_id,
@@ -45,17 +63,32 @@
 		) values (
 			'2020',
 			'1',
-			#{lecture_no},
+			${lecture_no},
 			#{user_id},
-			#{register_dt},
-			#{approval_dt},
-			'미승인',
-			#{pass_course_no},
-			#{study_time},
-			#{input_id},
-			#{input_date},
-			#{update_id},
-			#{update_date}
+			to_char(now(), 'YYYYMMDD'),
+			(
+				select
+					case lecture_type_cd
+						when '005001' then to_char(now(), 'YYYYMMDD')
+						else null
+					end
+				from lecture
+				where lecture_no = ${lecture_no}
+			),
+			(
+			    select
+			    	case lecture_type_cd
+						when '005001' then '004001'
+						when '005002' then '004003'
+						else '004003'
+			    	end
+			    from lecture
+			    where lecture_no = ${lecture_no}
+			),
+			#{user_id},
+			now(),
+			#{user_id},
+			now()
 		)
 
 	</insert>
@@ -68,7 +101,7 @@
 			pass_course_no = #{pass_course_no},
 			study_time = #{study_time},
 			update_id = #{update_id},
-			update_date = NOW()
+			update_date = now()
 		where 1=1
 			and user_id = #{user_id}
 			and lecture_no = #{lecture_no}

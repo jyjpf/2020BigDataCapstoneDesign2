@@ -28,11 +28,11 @@ public class UserService {
 	private String genderToCd(String position) throws Exception {
 		if("남자".equals(position)) {
 		  return Code.GENDER_MALE;
-    } else if("여자".equals(position)) {
-      return Code.GENDER_FEMALE; 
-    } else {
-      throw new Exception("Undefined Gender Code");
-    }
+		} else if("여자".equals(position)) {
+		  return Code.GENDER_FEMALE;
+		} else {
+		  throw new Exception("Undefined Gender Code");
+		}
 	}
 
 	/**

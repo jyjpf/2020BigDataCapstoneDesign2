@@ -15,12 +15,11 @@ public class UserVO {
 	
 	private String pw;
 	private String kor_nm;
-	private String end_nm; 
 	private int grade;
 	private String ban;
+	private String bunho;
 	private String birth_dt;
 	private String cel_phone_no;
-	private String hom_phone_no; 
 	private String gender_cd;
 	private String email; 
 	private String register_dt;

@@ -5,32 +5,40 @@
 
 	<select id="get" parameterType="Map" resultType="SoVO">
 
-		SELECT
-			DAE_CD,
-			SO_CD,
-			SO_NM,
-			USE_YN,
-			BIGO
-		FROM
-			SO_CD
-		WHERE 1=1
-			DAE_CD = #{dae_cd}
-			SO_CD = #{so_cd}
+		select
+			dae_cd,
+			so_cd,
+			so_nm,
+			use_yn,
+			bigo,
+		    input_id,
+		    input_dt,
+		    update_id,
+		    update_dt
+		from
+			so_cd
+		where 1=1
+			and dae_cd = #{dae_cd}
+			and so_cd = #{so_cd}
 
 	</select>
 	
 	<select id="getList" parameterType="Map" resultType="SoVO">
 
-		SELECT
-			DAE_CD,
-			SO_CD,
-			SO_NM,
-			USE_YN,
-			BIGO
-		FROM
-			SO_CD
-		WHERE 1=1
-			DAE_CD = #{dae_cd}
+		select
+			dae_cd,
+			so_cd,
+			so_nm,
+			use_yn,
+			bigo,
+			input_id,
+			input_dt,
+			update_id,
+			update_dt
+		from
+			so_cd
+		where 1=1
+			and dae_cd = #{dae_cd}
 
 	</select> 
 	
@@ -38,41 +46,52 @@
 	<insert id="insert" parameterType="SoVO">
 
 		INSERT INTO SO_CD (
-			DAE_CD,
-			SO_CD,
-			SO_NM,
-			USE_YN,
-			BIGO	
+			dae_cd,
+			so_cd,
+			so_nm,
+			use_yn,
+			bigo,
+			input_id,
+			input_dt,
+			update_id,
+			update_dt
 		) VALUES (
 			#{dae_cd},
 			#{so_cd},
 			#{so_nm},
 			#{use_yn},
-			#{bigo}
+			#{bigo},
+			#{input_id},
+			now(),
+			#{update_id},
+			now()
 		)
 
 	</insert>
 
 	<update id="update" parameterType="SoVO">
 
-		UPDATE
-			SO_CD
-		SET
-			DAE_CD = #{dae_cd},
-			SO_CD = #{so_cd},
-			SO_NM = #{so_nm},
-			USE_YN = #{use_yn},
-			BIGO = #{bigo}
-		WHERE
-			sO_CD = #{so_cd}
+		update
+			so_cd
+		set
+			dae_cd = #{dae_cd},
+			so_cd = #{so_cd},
+			so_nm = #{so_nm},
+			use_yn = #{use_yn},
+			bigo = #{bigo},
+		    update_id = #{update_id},
+		    update_dt = now()
+		where
+			so_cd = #{so_cd}
+
 	</update>
 
 	<delete id="delete" parameterType="String">
 
-		DELETE FROM 
-			SO_CD 
-		WHERE
-			SO_CD = #{so_cd}
+		delete from
+			so_cd
+		where
+			so_cd = #{so_cd}
 			
 	</delete>
 

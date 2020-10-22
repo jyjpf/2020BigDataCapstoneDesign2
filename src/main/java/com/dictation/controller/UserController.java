@@ -17,27 +17,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping(value="/api/user") 
+@RequestMapping(value = "/api/user")
 public class UserController {
 
-  @Autowired
-  private UserService userService;
+    @Autowired
+    private UserService userService;
 
-  @GetMapping(value = "/my")
-	public UserVO get(@AuthenticationPrincipal UserVO activeUser) {
-		return userService.get(activeUser.getUser_id());
-  }
+    @GetMapping(value = "/myinfo")
+    public UserVO get(@AuthenticationPrincipal UserVO activeUser) {
+        return userService.get(activeUser.getUser_id());
+    }
 
-  @GetMapping
-  @Secured("ROLE_ADMIN")
-	public List<UserVO> getList() {
-    return userService.getList();
-  }
-	
-  @PutMapping
-	public void update(@RequestBody UserVO user, @AuthenticationPrincipal UserVO activeUser) throws Exception {
-    user.setUser_id(activeUser.getUser_id());
-    userService.update(user);
-  }
+    @GetMapping
+    @Secured("ROLE_ADMIN")
+    public List<UserVO> getList() {
+        return userService.getList();
+    }
+
+    @PutMapping
+    public void update(@RequestBody UserVO user, @AuthenticationPrincipal UserVO activeUser) throws Exception {
+        user.setUser_id(activeUser.getUser_id());
+        userService.update(user);
+    }
 
 }

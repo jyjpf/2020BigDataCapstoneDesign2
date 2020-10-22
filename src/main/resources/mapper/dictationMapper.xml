@@ -6,14 +6,13 @@
 	<select id="get" parameterType="Map" resultType="CourseVO">
 
 		select
-			year,
-		    term,
 		    lecture_no,
 		    course_no,
 		    question_no,
+			question,
 		    file_nm,
 		    save_file_nm,
-		    finish_yn,
+		    open,
 		    input_id,
 		    input_date,
 		    update_id,
@@ -22,40 +21,65 @@
 			course
 		where 1=1
 			and lecture_no = #{lecture_no}
+		<if test="course_no != null">
 			and course_no = #{course_no}
+		</if>
+		<if test="course_no == null">
+			and course_no = (select max(course_no) from course where lecture_no = #{lecture_no})
+		</if>
 
 	</select>
 
-	<insert id="insert" parameterType="CourseVO">
+	<insert id="insertQuestion" parameterType="CourseVO">
 
 		insert into course (
-			year,
-			term,
 			lecture_no,
 			course_no,
 			question_no,
+			question,
 			file_nm,
 			save_file_nm,
-			finish_yn,
 			input_id,
 			input_date,
 			update_id,
 			update_date
 		) values (
-			'2020',
-		    '1',
 		    #{lecture_no},
 			#{course_no},
+			#{question_no},
 			#{question},
 			#{file_nm},
 			#{save_file_nm},
-			#{finish_yn},
-			#{id},
-			NOW(),
-			#{id},
-			NOW()
+			#{input_id},
+			now(),
+			#{update_id},
+			now()
 		)
 
+	</insert>
+
+	<insert id="insertAnswer" parameterType="CourseVO">
+
+		insert into study (
+			lecture_no,
+			course_no,
+			question_no,
+			answer,
+			correct_yn,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		) values (
+			 #{lecture_no},
+			 #{course_no},
+			 #{question_no},
+			 #{answer},
+			 #{input_id},
+			 now(),
+			 #{update_id},
+			 now()
+		)
 
 	</insert>
 
@@ -64,16 +88,14 @@
 		update
 		    course
 		set
-			year = '2020',
-			term = '1',
 			lecture_no = #{lecture_no},
 			course_no = #{course_no},
 			question = #{question},
 			file_nm = #{file_nm},
 			save_file_nm = #{save_file_nm},
-			finish_yn = #{finish_yn},
+			open = #{open},
 			update_id = #{id},
-			update_date = NOW()
+			update_date = now()
 
 	</update>
 

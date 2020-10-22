@@ -17,5 +17,6 @@ public interface CommonMapper {
    * @return UserVO
    */
   public UserVO login(Map<String, Object> params);
-	
+
+  public int check(String user_id);
 }

@@ -5,73 +5,70 @@
 	
 	<select id="get" parameterType="String" resultType="DaeVO">
 
-		SELECT
-			DAE_CD,
-			DAE_NM,
-			USE_YN
-		FROM
-			DAE_CD
-		WHERE
-			DAE_CD = #{dae_cd}
+		select
+			dae_cd,
+			dae_nm,
+			use_yn
+		from
+			dae_cd
+		where
+			dae_cd = #{dae_cd}
 
 	</select>
 	
 	<select id="list" resultType="DaeVO">
 
-		SELECT
-			DAE_CD,
-			DAE_NM,
-			USE_YN
-		FROM
-			DAE_CD
+		select
+			dae_cd,
+			dae_nm,
+			use_yn
+		from
+			dae_cd
 
 	</select>
 
 	<insert id="insert" parameterType="DaeVO">
 
-		INSERT INTO DAE_CD (
-			DAE_CD,
-			DAE_NM,
-			USE_YN,
-			INPUT_ID,
-			INPUT_DATE,
-			UPDATE_ID,
-			UPDATE_DATE
-		) VALUES (
+		insert into dae_cd (
+			dae_cd,
+			dae_nm,
+			use_yn,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		) values (
 			#{dae_cd},
 			#{dae_nm},
 			#{use_yn},
 			#{input_id},
-			NOW(),
+			now(),
 			#{update_id},
-			NOW()
+			now()
 		)
 
 	</insert>
  
  	<update id="update" parameterType="DaeVO">
 
-		UPDATE
-			DAE_CD
-		SET
-			DAE_NM = #{dae_nm},
-			USE_YN = #{use_yn},
-			UPDATE_ID = #{update_id},
-			UPDATE_DATE = NOW()
-		WHERE
-			DAE_CD = #{dae_cd}
+		update
+			dae_cd
+		set
+			dae_nm = #{dae_nm},
+			use_yn = #{use_yn},
+			update_id = #{update_id},
+			update_date = now()
+		where
+			dae_cd = #{dae_cd}
 
 	</update>
  
  
 	<delete id="delete" parameterType="String">
+
 		delete from dae_cd where dae_cd=#{dae_cd}
+
 	</delete>
- 
-
-	
-	
-
 
 </mapper>
 

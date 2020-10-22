@@ -23,5 +23,9 @@ public class CommonService {
   public UserVO login(Map<String, Object> params) {
     return commonMapper.login(params);
   }
+
+  public boolean check(String user_id){
+    return commonMapper.check(user_id) > 0 ? true : false;
+  }
  
 }

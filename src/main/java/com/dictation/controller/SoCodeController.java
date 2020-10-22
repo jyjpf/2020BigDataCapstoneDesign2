@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SoCodeController {
 
 	@Autowired
-  private SoService soService;
+  	private SoService soService;
   
 	@GetMapping(value="/{soCode}")
 	public SoVO get(@PathVariable("daeCode") String daeCode, @PathVariable("soCode") String soCode) {

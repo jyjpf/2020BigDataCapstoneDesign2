@@ -9,15 +9,13 @@ import lombok.Setter;
 @Setter
 public class CourseVO {
 
-	private String year;
-	private String term;
-	private String lecture_no;
-	private String course_no;
-	private String question_no;
+	private long lecture_no;
+	private int course_no;
+	private int question_no;
 	private String question;
 	private String file_nm;
 	private String save_file_nm;
-	private String finish_yn;
+	private String open;
 	private String input_id;
 	private Date input_date;
 	private String update_id;

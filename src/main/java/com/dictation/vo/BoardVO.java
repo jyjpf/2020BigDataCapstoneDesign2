@@ -9,11 +9,10 @@ import lombok.Setter;
 @Setter
 public class BoardVO {
 
-	private String year;
-	private String term;
-	private String lecture_no;
+	private long lecture_no;
 	private String board_cd;
-	private String no;
+	private int no;
+	private int seq_no;
 	private String title;
 	private String content;
 	private int read_cnt;

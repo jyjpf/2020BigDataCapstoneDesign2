@@ -3,32 +3,62 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dictation.mapper.LectureMapper"> 
 	
-		<select id="get" parameterType="Map" resultType="LectureVO">
+	<select id="get" parameterType="Map" resultType="LectureVO">
 
-		SELECT
-			YEAR,
-			TERM,
-			LECTURE_NO,
-			LECTURE_NM,
-			SCHOOL_CD,
-			GRADE,
-			BAN,
-			ENROLL_ST_DT,
-			ENROLL_ED_DT,
-			MAX_CNT,
-			TEACHER_ID,
-			TEACHER_NM
-		FROM
-			LECTURE
-		WHERE 1=1
-			AND LECTURE_NO = #{lecture_no}
-			AND SCHOOL_CD = #{school_cd}
+		select
+			year,
+			term,
+			lecture_no,
+			lecture_nm,
+			school_cd,
+			grade,
+			ban,
+			enroll_st_dt,
+			enroll_ed_dt,
+			max_cnt,
+			teacher_id,
+			teacher_nm
+		from
+			lecture
+		where 1=1
+			and lecture_no = #{lecture_no}
+			and school_cd = #{school_cd}
 
 	</select>
 
 	<select id="getList" parameterType="Map" resultType="LectureVO">
 
 		select
+			year,
+			term,
+			lecture_no,
+			lecture_nm,
+			school_cd,
+			grade,
+			ban,
+			enroll_st_dt,
+		    enroll_ed_dt,
+			max_cnt,
+			teacher_id,
+			teacher_nm,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		from
+			lecture
+		where 1=1
+			and school_cd = #{school_cd}
+			and lecture_type_cd != '005003'
+		<if test="teacher_id != null">
+			and teacher_id = #{teacher_id}
+		</if>
+
+	</select>
+
+	<insert id="insert" parameterType="LectureVO">
+
+		insert into lecture (
 			year,
 			term,
 			lecture_no,
@@ -45,69 +75,14 @@
 			input_date,
 			update_id,
 			update_date
-		from
-			lecture
-		where 1=1
-			and school_cd = #{school_cd}
-		  	and now()
-		  	    between to_date(enroll_st_dt, 'yyyymmdd') and to_date(enroll_ed_dt, 'yyyymmdd')
-
-	</select>
-
-	<select id="getMyList" parameterType="Map" resultType="LectureVO">
-
-		SELECT
-			YEAR,
-			TERM,
-			LECTURE_NO,
-			LECTURE_NM,
-			SCHOOL_CD,
-			GRADE,
-			BAN,
-			ENROLL_ST_DT,
-			ENROLL_ED_DT,
-			MAX_CNT,
-			TEACHER_ID,
-			TEACHER_NM,
-			INPUT_ID,
-			INPUT_DATE,
-			UPDATE_ID,
-			UPDATE_DATE
-		FROM
-			LECTURE
-		WHERE 1=1
-			AND TEACHER_ID = #{id}
-			AND SCHOOL_CD = #{school_cd}
-
-	</select>
-
-	<insert id="insert" parameterType="LectureVO">
-
-		INSERT INTO LECTURE (
-			YEAR,
-			TERM,
-			LECTURE_NO,
-			LECTURE_NM,
-			SCHOOL_CD,
-			GRADE,
-			BAN,
-			ENROLL_ST_DT,
-			ENROLL_ED_DT,
-			MAX_CNT,
-			TEACHER_ID,
-			TEACHER_NM,		
-			INPUT_ID,
-			INPUT_DATE,
-			UPDATE_ID,
-			UPDATE_DATE
-		) VALUES (
+		) values (
 			'2020',
 			'1',
 			(
-			SELECT
-				COALESCE(MAX(LECTURE_NO) + 1, 1)
-			FROM
-				LECTURE
+			select
+				coalesce(max(lecture_no) + 1, 1)
+			from
+				lecture
 			),
 			#{lecture_nm},
 			#{school_cd},
@@ -119,42 +94,42 @@
 			#{teacher_id},
 			#{teacher_nm},
 			#{input_id},
-			NOW(),
+			now(),
 			#{input_id},
-			NOW()
+			now()
 		)
 
 	</insert>
 
 	<update id="update" parameterType="LectureVO">
 
-		UPDATE
-		    LECTURE
-		SET
-			YEAR = '2020',
+		update
+		    lecture
+		set
+			year = '2020',
 			term = '1',
-			LECTURE_NM = #{lecture_nm},
-			SCHOOL_CD = #{school_cd},
-			GRADE = #{grade},
-			BAN = #{ban},
-			ENROLL_ST_DT = #{enroll_st_dt},
-			ENROLL_ED_DT = #{enroll_ed_dt},
-			MAX_CNT = #{max_cnt},
-			TEACHER_ID = #{teacher_id},
-			TEACHER_NM = #{teacher_nm},
-			UPDATE_ID = #{teacher_id},
-			UPDATE_DATE = NOW()
-		WHERE
-			LECTURE_NO = #{lecture_no}
+			lecture_nm = #{lecture_nm},
+			school_cd = #{school_cd},
+			grade = #{grade},
+			ban = #{ban},
+			enroll_st_dt = #{enroll_st_dt},
+			enroll_ed_dt = #{enroll_ed_dt},
+			max_cnt = #{max_cnt},
+			teacher_id = #{teacher_id},
+			teacher_nm = #{teacher_nm},
+			update_id = #{teacher_id},
+			update_date = now()
+		where
+			lecture_no = #{lecture_no}
 
 	</update>
  
 	<delete id="delete" parameterType="String">
 
-		DELETE FROM
-			LECTURE
-		WHERE 1=1
-			AND LECTURE_NO = #{lecture_no}
+		delete from
+			lecture
+		where 1=1
+			and lecture_no = #{lecture_no}
 
 	</delete>
 

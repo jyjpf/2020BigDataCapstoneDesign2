@@ -5,103 +5,89 @@
 
 	<select id="get" parameterType="Map" resultType="BoardVO">
 
-		SELECT
-			YEAR,
-			TERM,
-			LECTURE_NO,
-			BOARD_CD,
-			NO,
-			TITLE,
-			CONTENT,
-			READ_CNT,
-			FILE_NM,
-			SAVE_FILE_NM,
-			INPUT_ID,
-			INPUT_DATE,
-			UPDATE_ID,
-			UPDATE_DATE
-		FROM
-			BOARD
-		WHERE 1=1
-			AND LECTURE_NO = #{lecture_no}
-			AND NO = #{no}
+		select
+			lecture_no,
+			board_cd,
+			no,
+			seq_no,
+			title,
+			content,
+			read_cnt,
+			file_nm,
+			save_file_nm,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		from
+			board
+		where 1=1
+			and lecture_no = #{lecture_no}
+			and no = #{no}
 
 	</select>
 
 	<select id="getList" parameterType="Map" resultType="BoardVO">
 
-		SELECT
-			YEAR,
-			TERM,
-			LECTURE_NO,
-			BOARD_CD,
-			NO,
-			TITLE,
-			CONTENT,
-			READ_CNT,
-			FILE_NM,
-			SAVE_FILE_NM,
-			INPUT_ID,
-			INPUT_DATE,
-			UPDATE_ID,
-			UPDATE_DATE
-		FROM
-			BOARD
-		WHERE 1=1
-			AND LECTURE_NO = #{lecture_no}
+		select
+			lecture_no,
+			board_cd,
+			no,
+			seq_no,
+			title,
+			read_cnt,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		from
+			board
+		where 1=1
+			and lecture_no = ${lecture_no}
+		<if test="type != null">
+			and board_cd = #{board_cd}
+		</if>
 
 	</select> 
 
 	<insert id="insert" parameterType="BoardVO">
 
-		INSERT INTO BOARD(
-			YEAR,
-			TERM,
-			LECTURE_NO,
-			BOARD_CD,
-			NO,
-			SEQ_NO,
-			TITLE,
-			CONTENT,
-			READ_CNT,
-			FILE_NM,
-			SAVE_FILE_NM,
-			INPUT_ID,
-			INPUT_DATE,
-			UPDATE_ID,
-			UPDATE_DATE
-		) VALUES (
-			'2020',
-			'01',
+		insert into board(
+			lecture_no,
+			board_cd,
+			no,
+			seq_no,
+			title,
+			content,
+			read_cnt,
+			file_nm,
+			save_file_nm,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		) values (
 			#{lecture_no},
 			#{board_cd},
-			#{no},
-			'',
+			(select
+				coalesce(max(lecture_no) + 1, 1)
+			from
+				board
+			where
+				lecture_no = #{lecture_no}),
+			0,
 			#{title},
 			#{content},
-			#{read_cnt},
+			0,
 			#{file_nm},
 			#{save_file_nm},
 			#{input_id},
-			NOW(),
-			#{input_id},
-			NOW()
+			now(),
+			#{update_id},
+			now()
 		)
 
 	</insert>
- 
-
-	<delete id="delete" parameterType="Map">
-
-		DELETE FROM
-			BOARD
-		WHERE 1=1
-			AND LECTURE_NO = #{lecture_no}
-			AND BOARD_CD = #{board_cd}
-			AND NO = #{no}
-			AND SEQ_NO = #{seq_no}
-
-	</delete>
 
 	<update id="update" parameterType="BoardVO">
 
@@ -121,19 +107,17 @@
 
 	</update>
 
-	<select id="getHashFilename" parameterType="Map" resultType="String">
+	<delete id="delete" parameterType="Map">
 
-		SELECT
-			SAVE_FILE_NAME
-		FROM
-			BOARD
-		WHERE 1=1
-			AND LECTURE_NO = #{lecture_no}
-			AND NO = #{no}
-			AND FILE_NM = #{filename}
+		delete from
+			board
+		where 1=1
+			and lecture_no = #{lecture_no}
+			and board_cd = #{board_cd}
+			and no = #{no}
+			and seq_no = #{seq_no}
 
-
-	</select>
+	</delete>
 
 </mapper>
 

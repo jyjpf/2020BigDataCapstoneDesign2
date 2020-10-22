@@ -32,15 +32,6 @@ public class LectureService {
 	public List<LectureVO> getList(Map<String, Object> params) {
 		return lectureMapper.getList(params);
 	}
-
-	/**
-	 * 내 강의 리스트 전체 조회
-	 * @param params
-	 * @return List<LectureVO>
-	 */
-	public List<LectureVO> getMyList(Map<String, Object> params) {
-		return lectureMapper.getMyList(params);
-	}
 	
 	/**
 	 * 강의 생성
