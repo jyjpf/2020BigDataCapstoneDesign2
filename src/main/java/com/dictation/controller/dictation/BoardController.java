@@ -56,7 +56,7 @@ public class BoardController {
 
     @GetMapping
     public List<BoardVO> getList(
-            @RequestParam(required = false) String board_cd,
+            @RequestParam(value = "board_cd", required = false) String board_cd,
             @PathVariable("lecture_no") long lecture_no) {
 
         Map<String, Object> params = new HashMap<>();

@@ -44,7 +44,7 @@
 			board
 		where 1=1
 			and lecture_no = ${lecture_no}
-		<if test="type != null">
+		<if test="board_cd != null">
 			and board_cd = #{board_cd}
 		</if>
 
