@@ -13,6 +13,7 @@ public class BoardVO {
 	private String board_cd;
 	private int no;
 	private int seq_no;
+	private String auth_nm;
 	private String title;
 	private String content;
 	private int read_cnt;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dictation.mapper.EnrollMapper">
+<mapper namespace="com.dictation.mapper.EnrollDAO">
 
-	<select id="getList" parameterType="Map" resultType="Map">
+	<select id="getStudentList" parameterType="Map" resultType="Map">
 
 		select
 			fn_cmmn(e.approval_cd) as approval_cd,
@@ -13,47 +13,38 @@
 			u.birth_dt,
 			u.grade,
 			u.ban,
+		    u.bunho,
 			u.cel_phone_no
 		from
 			enroll e join users u
 	  	on
 			e.user_id = u.user_id
-		where
-			lecture_no = ${lecture_no}
+		where 1=1
+			and lecture_no = ${lecture_no}
 
 	</select>
 
-	<select id="getMyList" parameterType="UserVO" resultType="EnrollVO">
+	<select id="getEnrollList" parameterType="Map" resultType="EnrollVO">
 
 		select
-			year,
-			term,
 			lecture_no,
 			user_id,
-			register_dt,
-			approval_dt,
-			approval_cd,
-			pass_course_no,
-			study_time,
-			input_id,
-			input_date,
-			update_id,
-			update_date
+			fn_cmmn(approval_cd) as approval_cd,
+		    update_id,
+		    update_date
 		from
 			enroll
 		where 1=1
-			and user_id = #{user_id}
+		  and user_id = #{user_id}
 
 	</select>
+
 
 	<insert id="insert" parameterType="EnrollVO">
 
 		insert into enroll(
-			year,
-			term,
 			lecture_no,
 			user_id,
-			register_dt,
 			approval_dt,
 			approval_cd,
 			input_id,
@@ -61,15 +52,12 @@
 			update_id,
 			update_date
 		) values (
-			'2020',
-			'1',
 			${lecture_no},
 			#{user_id},
-			to_char(now(), 'YYYYMMDD'),
 			(
 				select
 					case lecture_type_cd
-						when '005001' then to_char(now(), 'YYYYMMDD')
+						when '005001' then now()
 						else null
 					end
 				from lecture
@@ -98,8 +86,10 @@
 		update
 		    enroll
 		set
-			pass_course_no = #{pass_course_no},
-			study_time = #{study_time},
+			approval_cd = #{approval_cd},
+		    <if test="approval_cd.equals('004001')">
+				approval_dt = now(),
+			</if>
 			update_id = #{update_id},
 			update_date = now()
 		where 1=1
@@ -107,5 +97,15 @@
 			and lecture_no = #{lecture_no}
 
 	</update>
+
+	<delete id="delete" parameterType="Map">
+
+		delete from
+			enroll
+		where 1=1
+		  and user_id = #{user_id}
+		  and lecture_no = #{lecture_no}
+
+	</delete>
 
 </mapper>

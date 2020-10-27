@@ -13,7 +13,9 @@ import java.util.Map;
 @Mapper
 public interface DictationDAO {
 
-	List<CourseVO> get(Map<String, Object> params);
+	List<CourseVO> getStudentList(Map<String, Object> params);
+
+	List<CourseVO> getTeacherList(Map<String, Object> params);
 
 	void insertQuestion(CourseVO course) throws Exception;
 

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.dictation.Common.Code;
 import com.dictation.controller.dictation.BoardController;
 import com.dictation.service.LectureService;
 import com.dictation.vo.LectureVO;
@@ -40,13 +41,23 @@ public class LectureController {
 
 	@GetMapping
 	public List<LectureVO> getList(
-			@RequestParam(value = "id", required = false) String id,
+			@RequestParam(value = "type", required = false, defaultValue = "") String type,
 			@AuthenticationPrincipal UserVO activeUser) {
+
 		Map<String, Object> params = new HashMap<>();
-		params.put("id", activeUser.getUser_id());
-		params.put("teacher_id", id);
 		params.put("school_cd", activeUser.getSchool_cd());
-		return lectureService.getList(params);
+		params.put("id", activeUser.getUser_id());
+
+		if(type.equals("menu"))
+			if (activeUser.getPosition_cd().equals(Code.ROLE_TEACHER))
+				return lectureService.getTeacherMenuList(params);
+			else
+				return lectureService.getStudentMenuList(params);
+		else
+			return lectureService.getList(params);
+
+
+
 	}
 
 	@PostMapping

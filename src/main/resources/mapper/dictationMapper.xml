@@ -3,7 +3,34 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dictation.mapper.DictationDAO">
 
-	<select id="get" parameterType="Map" resultType="CourseVO">
+	<select id="getStudentList" parameterType="Map" resultType="CourseVO">
+
+		select
+			lecture_no,
+			course_no,
+			question_no,
+			save_file_nm,
+			open
+		from
+			course
+		where 1=1
+			and lecture_no = #{lecture_no}
+			<if test="course_no != 0">
+				and course_no = #{course_no}
+			</if>
+			<if test="course_no == 0">
+				and course_no = (
+				    select max(pass_course_no) + 1
+				    from enroll
+				    where 1=1
+				    	and lecture_no = #{lecture_no}
+				    	and user_id = #{user_id}
+					)
+			</if>
+
+	</select>
+
+	<select id="getTeacherList" parameterType="Map" resultType="CourseVO">
 
 		select
 		    lecture_no,
@@ -12,19 +39,15 @@
 			question,
 		    file_nm,
 		    save_file_nm,
-		    open,
-		    input_id,
-		    input_date,
-		    update_id,
-			update_date
+		    open
 		from
 			course
 		where 1=1
 			and lecture_no = #{lecture_no}
-		<if test="course_no != null">
+		<if test="course_no != 0">
 			and course_no = #{course_no}
 		</if>
-		<if test="course_no == null">
+		<if test="course_no == 0">
 			and course_no = (select max(course_no) from course where lecture_no = #{lecture_no})
 		</if>
 
@@ -88,14 +111,18 @@
 		update
 		    course
 		set
-			lecture_no = #{lecture_no},
-			course_no = #{course_no},
 			question = #{question},
-			file_nm = #{file_nm},
-			save_file_nm = #{save_file_nm},
+		    <if test="file_nm != null">
+				file_nm = #{file_nm},
+				save_file_nm = #{save_file_nm},
+			</if>
 			open = #{open},
-			update_id = #{id},
+			update_id = #{update_id},
 			update_date = now()
+		where 1=1
+			and lecture_no = #{lecture_no}
+			and course_no = #{course_no}
+			and question_no = #{question_no}
 
 	</update>
 

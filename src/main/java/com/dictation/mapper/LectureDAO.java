@@ -3,6 +3,7 @@ package com.dictation.mapper;
 import java.util.List;
 import java.util.Map;
 
+import com.dictation.vo.UserVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +11,7 @@ import com.dictation.vo.LectureVO;
 
 @Repository
 @Mapper
-public interface LectureMapper {
+public interface LectureDAO {
 	
 	/**
 	 * 강의 정보 조회
@@ -18,6 +19,27 @@ public interface LectureMapper {
 	 * @return LectureVO
 	 */
 	public LectureVO get(Map<String, Object> params);
+
+	/**
+	 * 강의 리스트 조회
+	 * @param String
+	 * @return List<LectureVO>
+	 */
+	public List<LectureVO> getStudentMenuList(Map<String, Object> params);
+
+	/**
+	 * 강의 리스트 조회
+	 * @param String
+	 * @return List<LectureVO>
+	 */
+	public List<LectureVO> getTeacherMenuList(Map<String, Object> params);
+
+	/**
+	 * 강의 리스트 조회
+	 * @param String
+	 * @return List<LectureVO>
+	 */
+	public List<Map<String, Object>> getEnrollList(UserVO user);
 
 	/**
 	 * 강의 리스트 조회

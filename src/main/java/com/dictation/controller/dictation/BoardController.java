@@ -17,15 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -68,7 +60,7 @@ public class BoardController {
 
     @PostMapping
     public void insert(
-            @RequestParam BoardVO board,
+            @ModelAttribute BoardVO board,
             @Param(value = "file") MultipartFile file,
             @PathVariable("lecture_no") long lecture_no,
             @AuthenticationPrincipal UserVO activeUser) throws Exception {
@@ -77,7 +69,7 @@ public class BoardController {
         board.setInput_id(activeUser.getUser_id());
         board.setUpdate_id(activeUser.getUser_id());
 
-        if (!file.isEmpty()) {
+        if (file != null) {
             String saveFilename = DictationUtils.fileNameToHash(file.getOriginalFilename());
             board.setFile_nm(file.getOriginalFilename());
             board.setSave_file_nm(saveFilename);
@@ -90,7 +82,7 @@ public class BoardController {
 
     @PutMapping(value = "/{no}")
     public void update(
-            @RequestParam BoardVO board,
+            @ModelAttribute BoardVO board,
             @PathVariable("lecture_no") long lecture_no,
             @PathVariable("no") int no,
             @Param(value = "file") MultipartFile file,

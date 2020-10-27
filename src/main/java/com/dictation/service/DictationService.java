@@ -16,10 +16,13 @@ public class DictationService {
 	
 	@Autowired
 	private DictationDAO dictationDAO;
-	
 
-	public List<CourseVO> get(Map<String, Object> params) {
-		return dictationDAO.get(params);
+	public List<CourseVO> getStudentList(Map<String, Object> params) {
+		return dictationDAO.getStudentList(params);
+	}
+
+	public List<CourseVO> getTeacherList(Map<String, Object> params) {
+		return dictationDAO.getTeacherList(params);
 	}
 
 	public void insertQuestion(CourseVO course) throws Exception {

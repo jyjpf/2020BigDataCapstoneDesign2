@@ -28,8 +28,8 @@ import java.util.Map;
 public class DownloadController {
 
 	private static final Logger logger = LogManager.getLogger(DownloadController.class);
-	private static final String AUDIOPATH = "C:/home/dictation/audio/";
-	private static final String BOARDPATH = "C:/home/dictation/board/";
+	private static final String AUDIOPATH = "/home/dictation/audio/";
+	private static final String BOARDPATH = "/home/dictation/board/";
 
 	@Autowired
 	DownloadService downloadService;
@@ -48,8 +48,8 @@ public class DownloadController {
 			return;
 		}
 
-		String originalFilename = downloadService.getOriginalFilename(type, hashfilename);
-		logger.info(originalFilename);
+//		String originalFilename = downloadService.getOriginalFilename(type, hashfilename);
+//		logger.info(originalFilename);
 		response.setContentType("audio/x-wav");
 //		response.setHeader("Content-Transfer-Encoding", "binary;");
 //		response.setHeader("Content-Disposition", "attachment; filename=\"" + originalFilename + "\"");

@@ -34,16 +34,15 @@
 			board_cd,
 			no,
 			seq_no,
+			auth_nm,
 			title,
 			read_cnt,
-			input_id,
-			input_date,
-			update_id,
 			update_date
 		from
 			board
 		where 1=1
 			and lecture_no = ${lecture_no}
+			and seq_no = 0
 		<if test="board_cd != null">
 			and board_cd = #{board_cd}
 		</if>
@@ -57,6 +56,7 @@
 			board_cd,
 			no,
 			seq_no,
+			auth_nm,
 			title,
 			content,
 			read_cnt,
@@ -70,12 +70,13 @@
 			#{lecture_no},
 			#{board_cd},
 			(select
-				coalesce(max(lecture_no) + 1, 1)
+				coalesce(max(no) + 1, 1)
 			from
 				board
 			where
 				lecture_no = #{lecture_no}),
 			0,
+			#{auth_nm},
 			#{title},
 			#{content},
 			0,

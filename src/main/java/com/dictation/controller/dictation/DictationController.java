@@ -3,6 +3,7 @@ package com.dictation.controller.dictation;
 import java.io.*;
 import java.util.*;
 
+import com.dictation.Common.Code;
 import com.dictation.Common.DictationUtils;
 import com.dictation.service.*;
 import com.dictation.vo.CourseVO;
@@ -10,6 +11,7 @@ import com.dictation.vo.CourseVO;
 
 import com.dictation.vo.StudyVO;
 import com.dictation.vo.UserVO;
+import org.apache.catalina.User;
 import org.apache.ibatis.annotations.Param;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,21 +33,28 @@ public class DictationController {
 	private DictationService dictationService;
 
 	@GetMapping
-	public List<CourseVO> getList(
+	public List<CourseVO> getDictation(
 			@PathVariable("lecture_no") long lecture_no,
-			@RequestParam(required = false, value = "course_no") int course_no) {
+			@RequestParam(required = false, value = "course_no", defaultValue = "0") int course_no,
+			@AuthenticationPrincipal UserVO activeUser) {
 
 		Map<String, Object> params = new HashMap<>();
 		params.put("lecture_no", lecture_no);
 		params.put("course_no", course_no);
 
-		return dictationService.get(params);
+		if (activeUser.getPosition_cd().equals(Code.ROLE_TEACHER)) {
+			return dictationService.getTeacherList(params);
+		} else {
+			params.put("user_id", activeUser.getUser_id());
+			logger.info(activeUser.getUser_id());
+			return dictationService.getStudentList(params);
+		}
 	}
 
 	@PostMapping
 	@Secured("ROLE_TEACHER")
 	public void insertQuestion(
-			@RequestParam CourseVO course,
+			@ModelAttribute CourseVO course,
 			@PathVariable("lecture_no") long lecture_no,
 			@Param("file") MultipartFile file,
 			@AuthenticationPrincipal UserVO activeUser) throws Exception {
@@ -54,7 +63,7 @@ public class DictationController {
 		course.setInput_id(activeUser.getUser_id());
 		course.setUpdate_id(activeUser.getUser_id());
 
-		if (!file.isEmpty()) {
+		if (file != null) {
 			String saveFilename = DictationUtils.fileNameToHash(file.getOriginalFilename());
 			course.setFile_nm(file.getOriginalFilename());
 			course.setSave_file_nm(saveFilename);
@@ -66,12 +75,11 @@ public class DictationController {
 		dictationService.insertQuestion(course);
 	}
 
-	@PostMapping(value = "/{course_no}")
+	@PostMapping(value = "/submit")
 	@Secured("ROLE_STUDENT")
 	public void insertAnswer(
-			@RequestParam StudyVO study,
+			@ModelAttribute StudyVO study,
 			@PathVariable("lecture_no") long lecture_no,
-			@PathVariable("course_no") int course_no,
 			@AuthenticationPrincipal UserVO activeUser) throws Exception {
 
 		study.setLecture_no(lecture_no);
@@ -85,7 +93,7 @@ public class DictationController {
 	@PutMapping
 	@Secured("ROLE_TEACHER")
 	public void update(
-			@RequestParam CourseVO course,
+			@ModelAttribute CourseVO course,
 			@PathVariable(value="lecture_no") long lecture_no,
 			@Param(value = "file") MultipartFile file,
 			@AuthenticationPrincipal UserVO activeUser) throws Exception {
@@ -94,7 +102,7 @@ public class DictationController {
 		course.setInput_id(activeUser.getUser_id());
 		course.setUpdate_id(activeUser.getUser_id());
 
-		if (!file.isEmpty()) {
+		if (file != null) {
 			String saveFilename = DictationUtils.fileNameToHash(file.getOriginalFilename());
 			course.setFile_nm(file.getOriginalFilename());
 			course.setSave_file_nm(saveFilename);

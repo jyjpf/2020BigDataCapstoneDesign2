@@ -33,15 +33,16 @@ public class EnrollController {
 	@Autowired
 	private EnrollService enrollService;
 
-	@GetMapping(value = "/mylist")
-	public List<EnrollVO> getMyList(@AuthenticationPrincipal UserVO activeUser) {
-		return enrollService.getMyList(activeUser);
+	@GetMapping
+	public List<Map<String, Object>> getEnrollList(
+			@AuthenticationPrincipal UserVO activeUser) {
+		return enrollService.getEnrollList(activeUser);
 	}
 
 	@PostMapping
 	public void insert(
 			@RequestBody EnrollVO enroll,
-			@AuthenticationPrincipal UserVO activeUser) {
+			@AuthenticationPrincipal UserVO activeUser) throws Exception {
 
 		enroll.setUser_id(activeUser.getUser_id());
 		enroll.setInput_id(activeUser.getUser_id());
@@ -50,15 +51,17 @@ public class EnrollController {
 		enrollService.insert(enroll);
 	}
 
-	@PutMapping
-	public void update(
-			@RequestBody EnrollVO enroll,
-			@AuthenticationPrincipal UserVO activeUser) {
+	@DeleteMapping(value = "/{lecture_no}")
+	public void delete(
+			@PathVariable("lecture_no") long lecture_no,
+			@AuthenticationPrincipal UserVO activeUser) throws Exception {
 
-		enroll.setUser_id(activeUser.getUser_id());
-		enroll.setUpdate_id(activeUser.getUser_id());
+		Map<String, Object> params = new HashMap<String, Object>();
 
-		enrollService.update(enroll);
+		params.put("lecture_no", lecture_no);
+		params.put("user_id", activeUser.getUser_id());
+
+		enrollService.delete(params);
 	}
 
 }

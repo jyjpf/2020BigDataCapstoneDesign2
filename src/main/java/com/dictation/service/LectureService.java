@@ -3,17 +3,17 @@ package com.dictation.service;
 import java.util.List;
 import java.util.Map;
 
+import com.dictation.mapper.LectureDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dictation.mapper.LectureMapper;
 import com.dictation.vo.LectureVO;
 
 @Service
 public class LectureService {
 	
 	@Autowired
-	private LectureMapper lectureMapper;
+	private LectureDAO lectureDAO;
 
 	/**
 	 * 강의 정보 조회
@@ -21,7 +21,25 @@ public class LectureService {
 	 * @return LectureVO
 	 */
 	public LectureVO get(Map<String, Object> params) {
-		return lectureMapper.get(params);
+		return lectureDAO.get(params);
+	}
+
+	/**
+	 * 모든 선생님, 수강신청 가능한 상태의 강좌리스트 조회
+	 * @param params
+	 * @return List<LectureVO>
+	 */
+	public List<LectureVO> getStudentMenuList(Map<String, Object> params) {
+		return lectureDAO.getStudentMenuList(params);
+	}
+
+	/**
+	 * 모든 선생님, 수강신청 가능한 상태의 강좌리스트 조회
+	 * @param params
+	 * @return List<LectureVO>
+	 */
+	public List<LectureVO> getTeacherMenuList(Map<String, Object> params) {
+		return lectureDAO.getTeacherMenuList(params);
 	}
 
 	/**
@@ -30,7 +48,7 @@ public class LectureService {
 	 * @return List<LectureVO>
 	 */
 	public List<LectureVO> getList(Map<String, Object> params) {
-		return lectureMapper.getList(params);
+		return lectureDAO.getList(params);
 	}
 	
 	/**
@@ -39,7 +57,7 @@ public class LectureService {
 	 * @return void
 	 */
 	public void insert(LectureVO lecture) throws Exception {
-		lectureMapper.insert(lecture);
+		lectureDAO.insert(lecture);
 	}
 
 	/**
@@ -48,7 +66,7 @@ public class LectureService {
 	 * @return void
 	 */
 	public void update(LectureVO lecture) throws Exception {
-		lectureMapper.update(lecture);
+		lectureDAO.update(lecture);
 	}
 
 	/**
@@ -57,7 +75,7 @@ public class LectureService {
 	 * @return void
 	 */
 	public void delete(String lecture_no) throws Exception {
-		lectureMapper.delete(lecture_no);
+		lectureDAO.delete(lecture_no);
 	}
 
 }

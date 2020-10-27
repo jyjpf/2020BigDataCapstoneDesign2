@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dictation.mapper.LectureMapper"> 
+<mapper namespace="com.dictation.mapper.LectureDAO">
 	
 	<select id="get" parameterType="Map" resultType="LectureVO">
 
@@ -23,6 +23,62 @@
 		where 1=1
 			and lecture_no = #{lecture_no}
 			and school_cd = #{school_cd}
+
+	</select>
+
+	<select id="getStudentMenuList" parameterType="Map" resultType="LectureVO">
+
+		select
+			l.lecture_nm,
+			l.lecture_no
+		from
+			lecture l join enroll e
+		on
+			l.lecture_no = e.lecture_no
+		where 1=1
+			and e.approval_cd = '004001'
+			and e.user_id = #{id}
+
+	</select>
+
+	<select id="getTeacherMenuList" parameterType="Map" resultType="LectureVO">
+
+		select
+			lecture_no,
+			lecture_nm
+		from
+			lecture
+		where 1=1
+		  and teacher_id = #{id}
+
+	</select>
+
+	<select id="getEnrollList" parameterType="Map" resultType="Map">
+
+		select
+			l.year,
+			l.term,
+			l.lecture_no,
+			l.lecture_nm,
+			l.school_cd,
+			l.grade,
+			l.ban,
+			l.enroll_st_dt,
+			l.enroll_ed_dt,
+			l.max_cnt,
+			l.teacher_id,
+			l.teacher_nm,
+			l.input_id,
+			l.input_date,
+			l.update_id,
+			l.update_date,
+			fn_cmmn(e.approval_cd) as approval_cd
+		from
+			lecture l
+		left outer join (
+		    select * from enroll where user_id = #{user_id}
+		) e
+		using (lecture_no)
 
 	</select>
 
