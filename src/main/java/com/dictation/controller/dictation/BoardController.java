@@ -80,20 +80,19 @@ public class BoardController {
         boardService.insert(board);
     }
 
-    @PutMapping(value = "/{no}")
+
+    @PutMapping
     public void update(
             @ModelAttribute BoardVO board,
             @PathVariable("lecture_no") long lecture_no,
-            @PathVariable("no") int no,
             @Param(value = "file") MultipartFile file,
             @AuthenticationPrincipal UserVO activeUser) throws Exception {
 
         board.setLecture_no(lecture_no);
-        board.setNo(no);
         board.setInput_id(activeUser.getUser_id());
         board.setUpdate_id(activeUser.getUser_id());
 
-        if (!file.isEmpty()) {
+        if (file != null) {
             String saveFilename = DictationUtils.fileNameToHash(file.getOriginalFilename());
             board.setFile_nm(file.getOriginalFilename());
             board.setSave_file_nm(saveFilename);

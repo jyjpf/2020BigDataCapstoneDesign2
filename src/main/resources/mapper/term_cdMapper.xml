@@ -94,9 +94,6 @@
 			year=#{year} and term=#{term}
 
 	</update>
-	
-	
- 
-	
+
 </mapper>
 

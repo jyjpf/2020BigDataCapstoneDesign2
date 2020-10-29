@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dictation.mapper.BoardMapper">
+<mapper namespace="com.dictation.mapper.BoardDAO">
 
 	<select id="get" parameterType="Map" resultType="BoardVO">
 
@@ -12,6 +12,7 @@
 			seq_no,
 			title,
 			content,
+			auth_nm,
 			read_cnt,
 			file_nm,
 			save_file_nm,
@@ -24,6 +25,7 @@
 		where 1=1
 			and lecture_no = #{lecture_no}
 			and no = #{no}
+		order by seq_no asc
 
 	</select>
 
@@ -76,12 +78,57 @@
 			where
 				lecture_no = #{lecture_no}),
 			0,
-			#{auth_nm},
+			(select
+				kor_nm
+			from
+				users
+			where
+				user_id = #{input_id}),
 			#{title},
 			#{content},
 			0,
 			#{file_nm},
 			#{save_file_nm},
+			#{input_id},
+			now(),
+			#{update_id},
+			now()
+		)
+
+	</insert>
+
+	<insert id="insertComment" parameterType="BoardVO">
+
+		insert into board(
+			lecture_no,
+			board_cd,
+			no,
+			seq_no,
+			auth_nm,
+			content,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		) values (
+			#{lecture_no},
+			#{board_cd},
+			#{no},
+			(select
+				max(seq_no) + 1
+			from
+				board
+			where 1=1
+				and lecture_no = #{lecture_no}
+				and board_cd = #{board_cd}
+				and no = #{no}),
+			(select
+				kor_nm
+			from
+				users
+			where
+				user_id = #{input_id}),
+			#{content},
 			#{input_id},
 			now(),
 			#{update_id},
@@ -99,7 +146,7 @@
 			content = #{content},
 			file_nm = #{file_nm},
 			save_file_nm = #{save_file_nm},
-			update_id = #{id},
+			update_id = #{update_id},
 			update_date = now()
 		where 1=1
 			and lecture_no = #{lecture_no}
@@ -108,7 +155,34 @@
 
 	</update>
 
+	<update id="updateComment" parameterType="BoardVO">
+
+		update
+			board
+		set
+			content = #{content},
+			update_id = #{update_id},
+			update_date = now()
+		where 1=1
+			and lecture_no = #{lecture_no}
+			and board_cd = #{board_cd}
+			and no = #{no}
+			and seq_no = #{seq_no}
+
+	</update>
+
 	<delete id="delete" parameterType="Map">
+
+		delete from
+			board
+		where 1=1
+			and lecture_no = #{lecture_no}
+			and board_cd = #{board_cd}
+			and no = #{no}
+
+	</delete>
+
+	<delete id="deleteComment" parameterType="Map">
 
 		delete from
 			board

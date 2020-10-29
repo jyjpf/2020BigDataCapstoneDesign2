@@ -13,6 +13,7 @@ public class StudyVO {
 	private int course_no;
 	private int question_no;
 	private int seq_no;
+	private String student_id;
 	private String answer;
 	private boolean correct_yn;
 	private String input_id;

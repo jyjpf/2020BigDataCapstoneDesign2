@@ -53,7 +53,7 @@ public class DictationController {
 
 	@PostMapping
 	@Secured("ROLE_TEACHER")
-	public void insertQuestion(
+	public void insert(
 			@ModelAttribute CourseVO course,
 			@PathVariable("lecture_no") long lecture_no,
 			@Param("file") MultipartFile file,
@@ -72,21 +72,7 @@ public class DictationController {
 			fos.close();
 		}
 
-		dictationService.insertQuestion(course);
-	}
-
-	@PostMapping(value = "/submit")
-	@Secured("ROLE_STUDENT")
-	public void insertAnswer(
-			@ModelAttribute StudyVO study,
-			@PathVariable("lecture_no") long lecture_no,
-			@AuthenticationPrincipal UserVO activeUser) throws Exception {
-
-		study.setLecture_no(lecture_no);
-		study.setInput_id(activeUser.getUser_id());
-		study.setUpdate_id(activeUser.getUser_id());
-
-		dictationService.insertAnswer(study);
+		dictationService.insert(course);
 	}
 
 	// Update시 삭제 구현?

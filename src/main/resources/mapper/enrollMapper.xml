@@ -47,6 +47,8 @@
 			user_id,
 			approval_dt,
 			approval_cd,
+		    pass_course_no,
+		    study_time,
 			input_id,
 			input_date,
 			update_id,
@@ -73,6 +75,8 @@
 			    from lecture
 			    where lecture_no = ${lecture_no}
 			),
+		    0,
+			0,
 			#{user_id},
 			now(),
 			#{user_id},

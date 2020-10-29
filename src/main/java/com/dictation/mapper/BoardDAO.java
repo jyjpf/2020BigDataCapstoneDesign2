@@ -10,7 +10,7 @@ import com.dictation.vo.BoardVO;
 
 @Repository
 @Mapper
-public interface BoardMapper {
+public interface BoardDAO {
 	
 	/**
 	 * 
@@ -36,8 +36,21 @@ public interface BoardMapper {
 	/**
 	 *
 	 * @param board
+	 * @throws Exception
 	 */
-	public void update(BoardVO board);
+	public void insertComment(BoardVO board) throws Exception;
+
+	/**
+	 *
+	 * @param board
+	 */
+	public void update(BoardVO board) throws Exception;
+
+	/**
+	 *
+	 * @param board
+	 */
+	public void updateComment(BoardVO board) throws Exception;
 
 	/**
 	 *
@@ -45,6 +58,13 @@ public interface BoardMapper {
 	 * @throws Exception
 	 */
 	public void delete(Map<String, Object> map) throws Exception;
+
+	/**
+	 *
+	 * @param map
+	 * @throws Exception
+	 */
+	public void deleteComment(Map<String, Object> map) throws Exception;
 
 
 }

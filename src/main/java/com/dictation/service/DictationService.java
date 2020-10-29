@@ -1,8 +1,7 @@
 package com.dictation.service;
 
-import com.dictation.mapper.BoardMapper;
 import com.dictation.mapper.DictationDAO;
-import com.dictation.vo.BoardVO;
+import com.dictation.mapper.StudyDAO;
 import com.dictation.vo.CourseVO;
 import com.dictation.vo.StudyVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +24,8 @@ public class DictationService {
 		return dictationDAO.getTeacherList(params);
 	}
 
-	public void insertQuestion(CourseVO course) throws Exception {
-		dictationDAO.insertQuestion(course);
-	}
-
-	public void insertAnswer(StudyVO study) throws Exception {
-		dictationDAO.insertAnswer(study);
+	public void insert(CourseVO course) throws Exception {
+		dictationDAO.insert(course);
 	}
 
 	public void update(CourseVO course) throws Exception {

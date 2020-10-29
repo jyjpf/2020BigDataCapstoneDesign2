@@ -41,18 +41,20 @@ public class DownloadController {
 			HttpServletRequest request,
 		  	HttpServletResponse response) throws Exception {
 
-		// if(type.equals("audio"))
-		File file = new File(AUDIOPATH + hashfilename);
+		File file;
+
+		if(type.equals("audio")) {
+			response.setContentType("audio/x-wav");
+			file = new File(AUDIOPATH + hashfilename);
+		} else {
+			response.setContentType("application/download");
+			response.setHeader("Conent-Disposition", "attachment); filename=\"test\";");
+			file = new File(BOARDPATH + hashfilename);
+		}
 
 		if (!file.exists()) {
 			return;
 		}
-
-//		String originalFilename = downloadService.getOriginalFilename(type, hashfilename);
-//		logger.info(originalFilename);
-		response.setContentType("audio/x-wav");
-//		response.setHeader("Content-Transfer-Encoding", "binary;");
-//		response.setHeader("Content-Disposition", "attachment; filename=\"" + originalFilename + "\"");
 
 		try {
 			OutputStream out = response.getOutputStream();

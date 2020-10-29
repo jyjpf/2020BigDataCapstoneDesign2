@@ -6,14 +6,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dictation.mapper.BoardMapper;
+import com.dictation.mapper.BoardDAO;
 import com.dictation.vo.BoardVO;
 
 @Service
 public class BoardService {
 	
 	@Autowired
-	private BoardMapper boardMapper;
+	private BoardDAO boardDAO;
 	
 	/**
 	 * 게시글 정보를 가져옵니다
@@ -21,7 +21,7 @@ public class BoardService {
 	 * @return BoardVO
 	 */
 	public List<BoardVO> get(Map<String, Object> params) {
-		return boardMapper.get(params);
+		return boardDAO.get(params);
 	}
 
 	/**
@@ -30,7 +30,7 @@ public class BoardService {
 	 * @return List<BoardVO>
 	 */
 	public List<BoardVO> getList(Map<String, Object> params) {
-		return boardMapper.getList(params);
+		return boardDAO.getList(params);
 	}
 	
 	/**
@@ -39,15 +39,15 @@ public class BoardService {
 	 * @throws Exception
 	 */
 	public void insert(BoardVO board) throws Exception {
-		boardMapper.insert(board);
+		boardDAO.insert(board);
 	}
 
 	/**
 	 *
 	 * @param board
 	 */
-	public void update(BoardVO board) {
-		boardMapper.update(board);
+	public void update(BoardVO board) throws Exception {
+		boardDAO.update(board);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class BoardService {
 	 * @throws Exception
 	 */
 	public void delete(Map<String, Object> params) throws Exception {
-		boardMapper.delete(params);
+		boardDAO.delete(params);
 	}
 
 }

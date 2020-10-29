@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dictation.mapper.StudyDAO">
+
+    <select id="getSequence" resultType="int" parameterType="Map">
+
+        select
+            coalesce(max(seq_no) + 1, 0) as seq_no
+        from
+            study
+        where 1=1
+          and student_id = #{student_id}
+          and lecture_no = #{lecture_no}
+          and course_no = #{course_no}
+
+    </select>
+
+    <insert id="insert" parameterType="StudyVO">
+
+        insert into study (
+            lecture_no,
+            course_no,
+            question_no,
+            seq_no,
+            student_id,
+            answer,
+            correct_yn,
+            input_id,
+            input_date,
+            update_id,
+            update_date
+        ) values (
+            #{lecture_no},
+            #{course_no},
+            #{question_no},
+            #{seq_no},
+            #{student_id},
+            #{answer},
+            (select
+                 case when question = #{answer}
+                     then true
+                     else false
+                 end
+             from
+                 course
+             where 1=1
+               and lecture_no = #{lecture_no}
+               and course_no = #{course_no}
+               and question_no = #{question_no}),
+            #{input_id},
+            now(),
+            #{update_id},
+            now()
+        )
+
+    </insert>
+
+</mapper>
+

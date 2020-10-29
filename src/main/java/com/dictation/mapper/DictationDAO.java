@@ -13,14 +13,12 @@ import java.util.Map;
 @Mapper
 public interface DictationDAO {
 
-	List<CourseVO> getStudentList(Map<String, Object> params);
+	public List<CourseVO> getStudentList(Map<String, Object> params);
 
-	List<CourseVO> getTeacherList(Map<String, Object> params);
+	public List<CourseVO> getTeacherList(Map<String, Object> params);
 
-	void insertQuestion(CourseVO course) throws Exception;
+	public void insert(CourseVO course) throws Exception;
 
-	void insertAnswer(StudyVO study) throws Exception;
-
-	void update(CourseVO course) throws Exception;
+	public void update(CourseVO course) throws Exception;
 
 }

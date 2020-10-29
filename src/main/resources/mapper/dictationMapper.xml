@@ -53,7 +53,7 @@
 
 	</select>
 
-	<insert id="insertQuestion" parameterType="CourseVO">
+	<insert id="insert" parameterType="CourseVO">
 
 		insert into course (
 			lecture_no,
@@ -70,38 +70,13 @@
 		    #{lecture_no},
 			#{course_no},
 			#{question_no},
-			#{question},
+			trim(#{question}),
 			#{file_nm},
 			#{save_file_nm},
 			#{input_id},
 			now(),
 			#{update_id},
 			now()
-		)
-
-	</insert>
-
-	<insert id="insertAnswer" parameterType="CourseVO">
-
-		insert into study (
-			lecture_no,
-			course_no,
-			question_no,
-			answer,
-			correct_yn,
-			input_id,
-			input_date,
-			update_id,
-			update_date
-		) values (
-			 #{lecture_no},
-			 #{course_no},
-			 #{question_no},
-			 #{answer},
-			 #{input_id},
-			 now(),
-			 #{update_id},
-			 now()
 		)
 
 	</insert>

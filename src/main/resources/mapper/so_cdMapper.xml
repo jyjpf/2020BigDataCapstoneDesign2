@@ -41,8 +41,7 @@
 			and dae_cd = #{dae_cd}
 
 	</select> 
-	
-	<!-- Insert a so_cd -->
+
 	<insert id="insert" parameterType="SoVO">
 
 		INSERT INTO SO_CD (
