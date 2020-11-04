@@ -3,14 +3,14 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dictation.mapper.EnrollDAO">
 
-	<select id="getEnroll" parameterType="EnrollVO" resultType="Map">
+	<select id="getEnroll" parameterType="EnrollVO" resultType="EnrollVO">
 
 		select
 			lecture_no,
 			user_id,
 			approval_dt,
 			approval_cd,
-			pass_course_no as level,
+			pass_course_no,
 			study_time
 		from
 			enroll

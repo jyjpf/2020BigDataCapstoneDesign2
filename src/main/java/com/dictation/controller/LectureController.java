@@ -81,8 +81,7 @@ public class LectureController {
 			@RequestBody LectureVO lecture,
 			@AuthenticationPrincipal UserVO activeUser) throws Exception {
 
-		lecture.setTeacher_id(activeUser.getUser_id());
-		lecture.setSchool_cd(activeUser.getSchool_cd());
+		lecture.setUpdate_id(activeUser.getUser_id());
 
 		lectureService.update(lecture);
 	}

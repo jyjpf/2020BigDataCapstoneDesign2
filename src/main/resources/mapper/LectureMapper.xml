@@ -161,15 +161,15 @@
 		update
 		    lecture
 		set
-			lecture_nm = #{lecture_nm},
-			grade = #{grade},
-			ban = #{ban},
-		    level = #{level},
-			enroll_st_dt = #{enroll_st_dt},
-			enroll_ed_dt = #{enroll_ed_dt},
-			max_cnt = #{max_cnt},
-			teacher_id = #{teacher_id},
-			teacher_nm = #{teacher_nm},
+			<if test="lecture_nm != null">lecture_nm = #{lecture_nm},</if>
+		<if test="grade != null">grade = #{grade},</if>
+		<if test="ban != null">ban = #{ban},</if>
+		<if test="level != null">level = #{level},</if>
+		<if test="enroll_st_dt != null">enroll_st_dt = #{enroll_st_dt},</if>
+		<if test="enroll_ed_dt != null">enroll_ed_dt = #{enroll_ed_dt},</if>
+		<if test="max_cnt != null">max_cnt = #{max_cnt},</if>
+		<if test="teacher_id != null">teacher_id = #{teacher_id},</if>
+		<if test="teacher_nm != null">teacher_nm = #{teacher_nm},</if>
 			update_id = #{update_id},
 			update_date = now()
 		where
