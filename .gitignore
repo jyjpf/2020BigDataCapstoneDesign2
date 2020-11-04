@@ -31,3 +31,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### FrontEnd ###
+src/main/resources/static
+
