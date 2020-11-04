@@ -3,6 +3,23 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dictation.mapper.EnrollDAO">
 
+	<select id="getEnroll" parameterType="EnrollVO" resultType="Map">
+
+		select
+			lecture_no,
+			user_id,
+			approval_dt,
+			approval_cd,
+			pass_course_no as level,
+			study_time
+		from
+			enroll
+		where 1=1
+			and lecture_no = #{lecture_no}
+			and user_id = #{user_id}
+
+	</select>
+
 	<select id="getStudentList" parameterType="Map" resultType="Map">
 
 		select
@@ -20,7 +37,7 @@
 	  	on
 			e.user_id = u.user_id
 		where 1=1
-			and lecture_no = ${lecture_no}
+			and lecture_no = #{lecture_no}
 
 	</select>
 
@@ -85,15 +102,32 @@
 
 	</insert>
 
-	<update id="update" parameterType="EnrollVO">
+	<update id="updateStudent" parameterType="EnrollVO">
 
 		update
 		    enroll
 		set
-			approval_cd = #{approval_cd},
-		    <if test="approval_cd.equals('004001')">
+			<if test="pass_course_no != null">pass_course_no = #{pass_course_no},</if>
+			<if test="study_time != null">study_time = #{study_time},</if>
+			update_id = #{update_id},
+			update_date = now()
+		where 1=1
+			and user_id = #{user_id}
+			and lecture_no = #{lecture_no}
+
+	</update>
+
+	<update id="updateTeacher" parameterType="EnrollVO">
+
+		update
+			enroll
+		set
+			<if test="pass_course_no != null">pass_course_no = #{pass_course_no},</if>
+			<if test="study_time != null">study_time = #{study_time},</if>
+			<if test="approval_cd != null">
+				approval_cd = #{approval_cd},
 				approval_dt = now(),
-			</if>
+		    </if>
 			update_id = #{update_id},
 			update_date = now()
 		where 1=1

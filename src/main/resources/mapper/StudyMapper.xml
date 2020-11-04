@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dictation.mapper.StudyDAO">
 
-    <select id="getSequence" resultType="int" parameterType="Map">
+    <select id="getNextSequence" resultType="int" parameterType="Map">
 
         select
             coalesce(max(seq_no) + 1, 0) as seq_no
@@ -13,6 +13,88 @@
           and student_id = #{student_id}
           and lecture_no = #{lecture_no}
           and course_no = #{course_no}
+
+    </select>
+
+    <select id="getStatsList" resultType="Map" parameterType="Map">
+
+        with last_score as (
+            select
+                s.course_no,
+                s.student_id,
+                max(s.seq_no) as seq_no,
+                (select
+                     count(case when correct_yn = true then 1 end) * 10 as score
+                 from
+                     study
+                 where 1=1
+                   and lecture_no = #{lecture_no}
+                   and course_no = s.course_no
+                   and student_id = s.student_id
+                   and seq_no = max(s.seq_no)
+                )
+            from
+                study s
+            where 1=1
+              and lecture_no = #{lecture_no}
+            group by course_no , student_id
+        )
+
+        select
+            l.course_no ,
+            avg(l.score) as score_avg,
+            (select
+                count(case when pass_course_no >= l.course_no then 1 end)::varchar
+                || ' / '
+                || (select count(*) from enroll where lecture_no = #{lecture_no})
+             from
+                enroll
+             where
+                lecture_no = #{lecture_no}
+             ) as complete_student
+        from
+            last_score l
+        group by course_no
+        order by l.course_no asc
+
+    </select>
+
+    <select id="getStatsDetailList" resultType="Map" parameterType="Map">
+
+        select
+            u.kor_nm,
+            max(s.seq_no) as num_of_trial,
+            count(case when s.correct_yn = true then 1 end) * 10 as score,
+            to_char(min(s.update_date), 'YYYY-MM-DD HH24시 MI분 SS초') as update_date
+        from
+            study s join users u
+        on
+            s.student_id = u.user_id
+        where 1=1
+            and s.lecture_no = #{lecture_no}
+            and s.course_no = #{course_no}
+        group by s.course_no, u.user_id, s.seq_no
+        order by num_of_trial asc
+
+    </select>
+
+    <select id="getAnswer" resultType="Map" parameterType="StudyVO">
+
+        select
+            c.question_no,
+            s.correct_yn,
+            c.question as answer
+        from
+            study s join course c
+        on 1=1
+            and s.lecture_no = c.lecture_no
+            and s.course_no  = c.course_no
+            and s.question_no = c.question_no
+        where 1=1
+            and s.course_no = #{course_no}
+            and s.question_no = #{question_no}
+            and s.student_id = #{student_id}
+            and s.seq_no  = #{seq_no}
 
     </select>
 

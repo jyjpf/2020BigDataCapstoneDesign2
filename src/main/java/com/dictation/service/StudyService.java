@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dictation.vo.StudyVO;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class StudyService {
@@ -16,12 +17,13 @@ public class StudyService {
 	@Autowired
 	private StudyDAO studyDAO;
 
-	public int getSequence(Map<String, Object> params) throws Exception {
-		return studyDAO.getSequence(params);
+	public int getNextSequence(Map<String, Object> params) {
+		return studyDAO.getNextSequence(params);
 	}
 
-	public void insert(StudyVO study) throws Exception {
+	public Map<String, Object> insert(StudyVO study) throws Exception {
 		studyDAO.insert(study);
+		return studyDAO.getAnswer(study);
 	}
 
 }

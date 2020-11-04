@@ -15,21 +15,21 @@ public interface LectureDAO {
 	
 	/**
 	 * 강의 정보 조회
-	 * @param String
+	 * @param 강좌번호, 학교코드
 	 * @return LectureVO
 	 */
 	public LectureVO get(Map<String, Object> params);
 
 	/**
-	 * 강의 리스트 조회
-	 * @param String
+	 * 학생 메뉴 강좌 조회
+	 * @param 유저아이디
 	 * @return List<LectureVO>
 	 */
 	public List<LectureVO> getStudentMenuList(Map<String, Object> params);
 
 	/**
-	 * 강의 리스트 조회
-	 * @param String
+	 * 선생님 메뉴 강좌 조회
+	 * @param 유저아이디
 	 * @return List<LectureVO>
 	 */
 	public List<LectureVO> getTeacherMenuList(Map<String, Object> params);
@@ -64,13 +64,17 @@ public interface LectureDAO {
 	public void update(LectureVO lecture) throws Exception;
 
 	/**
+	 * 강의 업데이트
+	 * @param LectureVO
+	 * @return void
+	 */
+	public void updateLevel(long lecture_no) throws Exception;
+
+	/**
 	 * 강의 삭제
 	 * @param String
 	 * @return void
 	 */
 	public void delete(String lecture_no) throws Exception;
 
-
-	
-	
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Repository
 @Mapper
-public interface DictationDAO {
+public interface CourseDAO {
 
 	public List<CourseVO> getStudentList(Map<String, Object> params);
 

@@ -8,10 +8,7 @@ import com.dictation.Common.DictationUtils;
 import com.dictation.service.*;
 import com.dictation.vo.CourseVO;
 
-
-import com.dictation.vo.StudyVO;
 import com.dictation.vo.UserVO;
-import org.apache.catalina.User;
 import org.apache.ibatis.annotations.Param;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,31 +20,41 @@ import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping(value = "/api/lecture/{lecture_no}/dictation")
-public class DictationController {
+@RequestMapping(value = "/api/lecture/{lecture_no}/course")
+public class CourseController {
 
-	private static final Logger logger = LogManager.getLogger(DictationController.class);
+	private static final Logger logger = LogManager.getLogger(CourseController.class);
 	private static final String FILEPATH = "/home/dictation/audio/";
 
 	@Autowired
-	private DictationService dictationService;
+	private CourseService courseService;
 
-	@GetMapping
-	public List<CourseVO> getDictation(
+	@Autowired
+	private StudyService studyService;
+
+
+	@GetMapping(value = "/{course_no}")
+	public List<CourseVO> getCourse(
 			@PathVariable("lecture_no") long lecture_no,
-			@RequestParam(required = false, value = "course_no", defaultValue = "0") int course_no,
+			@PathVariable("course_no") int course_no,
+			@RequestParam(value = "result", required = false, defaultValue = "false") String result,
 			@AuthenticationPrincipal UserVO activeUser) {
 
 		Map<String, Object> params = new HashMap<>();
+
 		params.put("lecture_no", lecture_no);
 		params.put("course_no", course_no);
 
 		if (activeUser.getPosition_cd().equals(Code.ROLE_TEACHER)) {
-			return dictationService.getTeacherList(params);
+			return courseService.getTeacherList(params);
 		} else {
-			params.put("user_id", activeUser.getUser_id());
-			logger.info(activeUser.getUser_id());
-			return dictationService.getStudentList(params);
+			if (result.equals("true")) {
+				params.put("student_id", activeUser.getUser_id());
+				return studyService.getNextSequence(params) > 0 ? courseService.getTeacherList(params) : null;
+			} else {
+				params.put("user_id", activeUser.getUser_id());
+				return courseService.getStudentList(params);
+			}
 		}
 	}
 
@@ -72,7 +79,7 @@ public class DictationController {
 			fos.close();
 		}
 
-		dictationService.insert(course);
+		courseService.insert(course);
 	}
 
 	// Update시 삭제 구현?
@@ -97,7 +104,7 @@ public class DictationController {
 			fos.close();
 		}
 
-		dictationService.update(course);
+		courseService.update(course);
 	}
 
 	@DeleteMapping

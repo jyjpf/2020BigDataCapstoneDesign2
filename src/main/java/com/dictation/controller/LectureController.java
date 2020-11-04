@@ -30,13 +30,15 @@ public class LectureController {
   	// TODO: QueryString 추가
 	@GetMapping(value="/{lecture_no}")
 	public LectureVO get(
-			@PathVariable("lecture_no") String lecture_no,
+			@PathVariable("lecture_no") long lecture_no,
 			@AuthenticationPrincipal UserVO activeUser) {
+
 		Map<String, Object> params = new HashMap<>();
+
 		params.put("lecture_no", lecture_no);
 		params.put("school_cd", activeUser.getSchool_cd());
-		LectureVO lecture = lectureService.get(params);
-		return lecture;
+
+		return lectureService.get(params);
 	}
 
 	@GetMapping
@@ -45,6 +47,7 @@ public class LectureController {
 			@AuthenticationPrincipal UserVO activeUser) {
 
 		Map<String, Object> params = new HashMap<>();
+
 		params.put("school_cd", activeUser.getSchool_cd());
 		params.put("id", activeUser.getUser_id());
 
@@ -63,17 +66,34 @@ public class LectureController {
 	@PostMapping
 	@Secured({"ROLE_TEACHER", "ROLE_ADMIN"})
 	public void insert(@RequestBody LectureVO lecture, @AuthenticationPrincipal UserVO activeUser) throws Exception {
+
 		lecture.setTeacher_id(activeUser.getUser_id());
 		lecture.setSchool_cd(activeUser.getSchool_cd());
+		lecture.setInput_id(activeUser.getUser_id());
+		lecture.setUpdate_id(activeUser.getUser_id());
+
 		lectureService.insert(lecture);
   	}
 	
 	@PutMapping
 	@Secured({"ROLE_TEACHER", "ROLE_ADMIN"})
-	public void update(@RequestBody LectureVO lecture, @AuthenticationPrincipal UserVO activeUser) throws Exception {
+	public void update(
+			@RequestBody LectureVO lecture,
+			@AuthenticationPrincipal UserVO activeUser) throws Exception {
+
 		lecture.setTeacher_id(activeUser.getUser_id());
 		lecture.setSchool_cd(activeUser.getSchool_cd());
+
 		lectureService.update(lecture);
+	}
+
+	@PutMapping(value="/{lecture_no}")
+	@Secured({"ROLE_TEACHER", "ROLE_ADMIN"})
+	public void updateLevel(
+			@PathVariable("lecture_no") long lecture_no,
+			@AuthenticationPrincipal UserVO activeUser) throws Exception {
+
+		lectureService.updateLevel(lecture_no);
 	}
 
 	// TODO: Lecture 삭제 구현

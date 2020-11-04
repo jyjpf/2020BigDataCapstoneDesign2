@@ -13,6 +13,7 @@
 			school_cd,
 			grade,
 			ban,
+		    level,
 			enroll_st_dt,
 			enroll_ed_dt,
 			max_cnt,
@@ -120,11 +121,11 @@
 			lecture_no,
 			lecture_nm,
 			school_cd,
+		    lecture_type_cd,
 			grade,
 			ban,
 			enroll_st_dt,
 			enroll_ed_dt,
-			max_cnt,
 			teacher_id,
 			teacher_nm,
 			input_id,
@@ -132,24 +133,24 @@
 			update_id,
 			update_date
 		) values (
-			'2020',
-			'1',
+			#{year},
+			#{term},
 			(select
 				coalesce(max(lecture_no) + 1, 1)
 			from
 				lecture),
 			#{lecture_nm},
 			#{school_cd},
+			#{lecture_type_cd},
 			#{grade},
 			#{ban},
-			#{enroll_st_dt},
-			#{enroll_ed_dt},
-			#{max_cnt},
+			to_date(#{enroll_st_dt}, 'yyyy-mm-dd'),
+			to_date(#{enroll_ed_dt}, 'yyyy-mm-dd'),
 			#{teacher_id},
 			#{teacher_nm},
 			#{input_id},
 			now(),
-			#{input_id},
+			#{update_id},
 			now()
 		)
 
@@ -160,21 +161,30 @@
 		update
 		    lecture
 		set
-			year = '2020',
-			term = '1',
 			lecture_nm = #{lecture_nm},
-			school_cd = #{school_cd},
 			grade = #{grade},
 			ban = #{ban},
+		    level = #{level},
 			enroll_st_dt = #{enroll_st_dt},
 			enroll_ed_dt = #{enroll_ed_dt},
 			max_cnt = #{max_cnt},
 			teacher_id = #{teacher_id},
 			teacher_nm = #{teacher_nm},
-			update_id = #{teacher_id},
+			update_id = #{update_id},
 			update_date = now()
 		where
 			lecture_no = #{lecture_no}
+
+	</update>
+
+	<update id="updateLevel" parameterType="LectureVO">
+
+		update
+			lecture
+		set
+			level = (select max(level) + 1 from lecture where lecture_no = ${lecture_no})
+		where
+			lecture_no = ${lecture_no}
 
 	</update>
  

@@ -27,12 +27,39 @@ public class EnrollService {
 	 * @param user
 	 * @return
 	 */
+	public EnrollVO getEnroll(EnrollVO enroll) {
+		return enrollDAO.getEnroll(enroll);
+	}
+
+	/***
+	 *
+	 * @param user
+	 * @return
+	 */
 	public List<Map<String, Object>> getEnrollList(UserVO user) {
 		return lectureDAO.getEnrollList(user);
 	}
 
+	/***
+	 *
+	 * @param user
+	 * @return
+	 */
+	public List<Map<String, Object>> getStudentList(long lecture_no) {
+		return enrollDAO.getStudentList(lecture_no);
+	}
+
+
 	public void insert(EnrollVO enroll) throws Exception {
 		enrollDAO.insert(enroll);
+	}
+
+	public void updateStudent(EnrollVO enroll) throws Exception {
+		enrollDAO.updateStudent(enroll);
+	}
+
+	public void updateTeacher(EnrollVO enroll) throws Exception {
+		enrollDAO.updateTeacher(enroll);
 	}
 
 	public void delete(Map<String, Object> params) throws Exception {

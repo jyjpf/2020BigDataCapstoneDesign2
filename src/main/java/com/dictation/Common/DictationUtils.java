@@ -4,15 +4,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.security.MessageDigest;
+import java.util.Date;
 
 public class DictationUtils {
 
     private static final Logger logger = LogManager.getLogger(DictationUtils.class);
 
-    // TODO: 현재시각 추가
     public static String fileNameToHash(String originalFilename) {
 
+        Date date = new Date();
         StringBuilder sb = new StringBuilder();
+
+        originalFilename += date.getTime();
 
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

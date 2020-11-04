@@ -12,7 +12,13 @@ import com.dictation.vo.StudyVO;
 @Mapper
 public interface StudyDAO {
 
-    public int getSequence(Map<String, Object> params);
+    public int getNextSequence(Map<String, Object> params);
+
+    public Map<String, Object> getAnswer(StudyVO study);
+
+    public List<Map<String, Object>> getStatsList(Map<String, Object> params);
+
+    public List<Map<String, Object>> getStatsDetailList(Map<String, Object> params);
 
     public void insert(StudyVO study) throws Exception;
 }

@@ -48,6 +48,7 @@
 		<if test="board_cd != null">
 			and board_cd = #{board_cd}
 		</if>
+			order by update_date desc
 
 	</select> 
 

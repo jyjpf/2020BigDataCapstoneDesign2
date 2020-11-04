@@ -13,13 +13,17 @@ import com.dictation.vo.UserVO;
 @Mapper
 public interface EnrollDAO {
 
-	public List<Map<String, Object>> getStudentList(Map<String, Object> params);
+	public EnrollVO getEnroll(EnrollVO enroll);
+
+	public List<Map<String, Object>> getStudentList(long lecture_no);
 
 	public List<EnrollVO> getEnrollList(UserVO user);
 
 	public void insert(EnrollVO enroll) throws Exception;
 
-	public void update(EnrollVO enroll) throws Exception;
+	public void updateStudent(EnrollVO enroll) throws Exception;
+
+	public void updateTeacher(EnrollVO enroll) throws Exception;
 
 	public void delete(Map<String, Object> params) throws Exception;
 

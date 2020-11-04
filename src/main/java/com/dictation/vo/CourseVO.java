@@ -15,7 +15,6 @@ public class CourseVO {
 	private String question;
 	private String file_nm;
 	private String save_file_nm;
-	private String open;
 	private String input_id;
 	private Date input_date;
 	private String update_id;

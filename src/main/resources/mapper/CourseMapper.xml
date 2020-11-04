@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dictation.mapper.DictationDAO">
+<mapper namespace="com.dictation.mapper.CourseDAO">
 
 	<select id="getStudentList" parameterType="Map" resultType="CourseVO">
 
@@ -9,8 +9,7 @@
 			lecture_no,
 			course_no,
 			question_no,
-			save_file_nm,
-			open
+			save_file_nm
 		from
 			course
 		where 1=1
@@ -38,8 +37,7 @@
 		    question_no,
 			question,
 		    file_nm,
-		    save_file_nm,
-		    open
+		    save_file_nm
 		from
 			course
 		where 1=1
@@ -91,7 +89,6 @@
 				file_nm = #{file_nm},
 				save_file_nm = #{save_file_nm},
 			</if>
-			open = #{open},
 			update_id = #{update_id},
 			update_date = now()
 		where 1=1

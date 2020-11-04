@@ -70,6 +70,15 @@ public class LectureService {
 	}
 
 	/**
+	 * 강의 업데이트
+	 * @param lecture
+	 * @return void
+	 */
+	public void updateLevel(long lecture_no) throws Exception {
+		lectureDAO.updateLevel(lecture_no);
+	}
+
+	/**
 	 * 강의 삭제
 	 * @param lecture_no
 	 * @return void

@@ -14,7 +14,7 @@ import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping(value = "/api/lecture/{lecture_no}/study")
+@RequestMapping(value = "/api/lecture/{lecture_no}/study/{course_no}")
 public class StudyController {
 
 	private static final Logger logger = LogManager.getLogger(StudyController.class);
@@ -22,32 +22,34 @@ public class StudyController {
 	@Autowired
 	private StudyService studyService;
 
-	@GetMapping(value = "/{course_no}")
-	public int getSequence(
+	@GetMapping(value = "/seq")
+	public int getNextSequence(
 			@PathVariable("lecture_no") long lecture_no,
 			@PathVariable("course_no") int course_no,
-			@AuthenticationPrincipal UserVO activeUser) throws Exception {
+			@AuthenticationPrincipal UserVO activeUser) {
 		Map<String, Object> params = new HashMap<String, Object>();
 
 		params.put("lecture_no", lecture_no);
 		params.put("course_no", course_no);
 		params.put("student_id", activeUser.getUser_id());
 
-		return studyService.getSequence(params);
+		return studyService.getNextSequence(params);
 	}
 
 	@PostMapping
-	public void insert(
+	public Map<String, Object> insert(
 			@RequestBody StudyVO study,
 			@PathVariable("lecture_no") long lecture_no,
+			@PathVariable("course_no") int course_no,
 			@AuthenticationPrincipal UserVO activeUser) throws Exception {
 
 		study.setLecture_no(lecture_no);
+		study.setCourse_no(course_no);
 		study.setStudent_id(activeUser.getUser_id());
 		study.setInput_id(activeUser.getUser_id());
 		study.setUpdate_id(activeUser.getUser_id());
 
-		studyService.insert(study);
+		return studyService.insert(study);
 	}
 
 }
