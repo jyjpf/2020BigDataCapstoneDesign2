@@ -32,6 +32,9 @@ out/
 ### VS Code ###
 .vscode/
 
+### logs ###
+logs/
+
 ### FrontEnd ###
 src/main/resources/static
 
