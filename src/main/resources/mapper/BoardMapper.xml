@@ -172,6 +172,28 @@
 
 	</update>
 
+	<update id="updateCount" parameterType="Map">
+
+		update
+			board
+		set
+			read_cnt = (
+				select
+					max(read_cnt) + 1
+				from
+					board
+				where 1=1
+					and lecture_no = #{lecture_no}
+					and no = #{no}
+					and seq_no = 0
+				)
+		where 1=1
+			and lecture_no = #{lecture_no}
+			and no = #{no}
+			and seq_no = 0
+
+	</update>
+
 	<delete id="delete" parameterType="Map">
 
 		delete from

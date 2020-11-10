@@ -20,7 +20,8 @@ public class BoardService {
 	 * @param params - 강의번호, 게시글번호
 	 * @return BoardVO
 	 */
-	public List<BoardVO> get(Map<String, Object> params) {
+	public List<BoardVO> get(Map<String, Object> params) throws Exception {
+		boardDAO.updateCount(params);
 		return boardDAO.get(params);
 	}
 

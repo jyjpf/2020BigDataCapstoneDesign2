@@ -35,7 +35,7 @@ public class BoardController {
     @GetMapping(value = "/{no}")
     public List<BoardVO> get(
             @PathVariable("lecture_no") long lecture_no,
-            @PathVariable("no") int no) {
+            @PathVariable("no") int no) throws Exception {
 
         Map<String, Object> params = new HashMap<>();
 

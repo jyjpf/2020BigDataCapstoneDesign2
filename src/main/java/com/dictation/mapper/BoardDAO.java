@@ -54,6 +54,12 @@ public interface BoardDAO {
 
 	/**
 	 *
+	 * @param board
+	 */
+	public void updateCount(Map<String, Object> params) throws Exception;
+
+	/**
+	 *
 	 * @param map
 	 * @throws Exception
 	 */
