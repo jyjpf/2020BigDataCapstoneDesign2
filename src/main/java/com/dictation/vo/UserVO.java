@@ -3,6 +3,8 @@ package com.dictation.vo;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 public class UserVO {
@@ -18,12 +20,16 @@ public class UserVO {
 	private int grade;
 	private String ban;
 	private String bunho;
-	private String birth_dt;
+	private Date birth_dt;
 	private String cel_phone_no;
 	private String gender_cd;
-	private String email; 
-	private String register_dt;
+	private String email;
 	private String login_date;
 	private String logout_date;
+
+	private String input_id;
+	private Date input_dt;
+	private String update_id;
+	private Date update_dt;
 	
 }

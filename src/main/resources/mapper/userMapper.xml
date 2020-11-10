@@ -63,10 +63,9 @@
 			grade,
 			ban,
 		    bunho,
-			birth_dt,
-			cel_phone_no,
-			gender_cd,
+		    birth_dt,
 			email,
+		    gender_cd,
 			input_id,
 			input_date,
 			update_id,
@@ -81,12 +80,11 @@
 			#{ban},
 		    #{bunho},
 			#{birth_dt},
-			#{cel_phone_no},
-			#{gender_cd},
 			#{email},
-			#{user_id},
+		    #{gender_cd},
+			#{input_id},
 			now(),
-      		#{user_id},
+      		#{update_id},
 			now()
 		)
 

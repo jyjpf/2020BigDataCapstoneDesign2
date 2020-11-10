@@ -14,26 +14,6 @@ public class UserService {
 	
 	@Autowired
 	private UserMapper userMapper;
-	
-	private String positionToCd(String position) throws Exception {
-		if("선생님".equals(position)) {
-			return Code.ROLE_TEACHER;
-		} else if("학생".equals(position)) {
-			return Code.ROLE_STUDENT;
-		} else {
-      throw new Exception("Undefined Position Code");
-		}
-	}
-
-	private String genderToCd(String position) throws Exception {
-		if("남자".equals(position)) {
-		  return Code.GENDER_MALE;
-		} else if("여자".equals(position)) {
-		  return Code.GENDER_FEMALE;
-		} else {
-		  throw new Exception("Undefined Gender Code");
-		}
-	}
 
 	/**
 	 * 내 정보 조회
@@ -59,8 +39,6 @@ public class UserService {
    * @throws Exception
    */
   public void insert(UserVO user) throws Exception {
-		user.setPosition_cd(positionToCd(user.getPosition_cd()));
-		user.setGender_cd(genderToCd(user.getGender_cd()));
 		userMapper.insert(user);
 	}
 
@@ -71,8 +49,6 @@ public class UserService {
    * @throws Exception
    */
 	public void update(UserVO user) throws Exception {
-		user.setPosition_cd(positionToCd(user.getPosition_cd()));
-		user.setGender_cd(genderToCd(user.getGender_cd()));
 		userMapper.update(user);
 	}
 

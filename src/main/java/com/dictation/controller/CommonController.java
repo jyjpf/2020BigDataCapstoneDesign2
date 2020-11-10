@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.dictation.Common.Code;
+import com.dictation.Common.DictationUtils;
 import com.dictation.Security.JWTTokenProvider;
 import com.dictation.service.CommonService;
 import com.dictation.service.UserService;
@@ -37,6 +38,7 @@ public class CommonController {
 
 		HttpStatus status;
 		Map<String, Object> response = new HashMap<String, Object>();
+		params.replace("pw", DictationUtils.toSHA256((String) params.get("pw")));
 		UserVO user = commonService.login(params);
 
 		if(user == null) {
@@ -79,6 +81,10 @@ public class CommonController {
 		Map<String, Object> result = new HashMap<String, Object>();
 
 		try {
+			user.setPw(DictationUtils.toSHA256(user.getPw()));
+			user.setInput_id(user.getUser_id());
+			user.setUpdate_id(user.getUser_id());
+
 			userService.insert(user);
 			status = HttpStatus.OK;
 			result.put("msg", "");

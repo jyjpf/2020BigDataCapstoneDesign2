@@ -1,6 +1,5 @@
 package com.dictation.controller.dictation;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +69,7 @@ public class BoardController {
         board.setUpdate_id(activeUser.getUser_id());
 
         if (file != null) {
-            String saveFilename = DictationUtils.fileNameToHash(file.getOriginalFilename());
+            String saveFilename = DictationUtils.toMD5(file.getOriginalFilename());
             board.setFile_nm(file.getOriginalFilename());
             board.setSave_file_nm(saveFilename);
             FileOutputStream fos = new FileOutputStream(FILEPATH + saveFilename);
@@ -93,7 +92,7 @@ public class BoardController {
         board.setUpdate_id(activeUser.getUser_id());
 
         if (file != null) {
-            String saveFilename = DictationUtils.fileNameToHash(file.getOriginalFilename());
+            String saveFilename = DictationUtils.toMD5(file.getOriginalFilename());
             board.setFile_nm(file.getOriginalFilename());
             board.setSave_file_nm(saveFilename);
             FileOutputStream fos = new FileOutputStream(FILEPATH + saveFilename);

@@ -71,7 +71,7 @@ public class CourseController {
 		course.setUpdate_id(activeUser.getUser_id());
 
 		if (file != null) {
-			String saveFilename = DictationUtils.fileNameToHash(file.getOriginalFilename());
+			String saveFilename = DictationUtils.toMD5(file.getOriginalFilename());
 			course.setFile_nm(file.getOriginalFilename());
 			course.setSave_file_nm(saveFilename);
 			FileOutputStream fos = new FileOutputStream(FILEPATH + saveFilename);
@@ -96,7 +96,7 @@ public class CourseController {
 		course.setUpdate_id(activeUser.getUser_id());
 
 		if (file != null) {
-			String saveFilename = DictationUtils.fileNameToHash(file.getOriginalFilename());
+			String saveFilename = DictationUtils.toMD5(file.getOriginalFilename());
 			course.setFile_nm(file.getOriginalFilename());
 			course.setSave_file_nm(saveFilename);
 			FileOutputStream fos = new FileOutputStream(FILEPATH + saveFilename);
