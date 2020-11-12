@@ -38,3 +38,5 @@ logs/
 ### FrontEnd ###
 src/main/resources/static
 
+## profile
+application.properties
