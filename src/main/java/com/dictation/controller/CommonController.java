@@ -51,7 +51,7 @@ public class CommonController {
 			status = HttpStatus.OK;
 
 			response.put("token", jwtTokenProvider.createToken(
-				user.getUser_id(), 
+				user.getUser_id(),
 				user.getSchool_cd(), 
 				user.getPosition_cd())
 			);
