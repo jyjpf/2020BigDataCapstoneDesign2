@@ -39,6 +39,7 @@
 			auth_nm,
 			title,
 			read_cnt,
+			update_id,
 			update_date
 		from
 			board
