@@ -30,12 +30,12 @@ public class BoardController {
 
     @Autowired
     private BoardService boardService;
-
+    // 댓글 불러오기 관리
     // TODO: 권한관리
     @GetMapping(value = "/{no}")
     public List<BoardVO> get(
             @PathVariable("lecture_no") long lecture_no,
-            @PathVariable("no") int no) throws Exception {
+            @PathVariable("no") int no ) throws Exception {
 
         Map<String, Object> params = new HashMap<>();
 
@@ -79,7 +79,7 @@ public class BoardController {
         boardService.insert(board);
     }
 
-
+    //수정
     @PutMapping
     public void update(
             @ModelAttribute BoardVO board,
@@ -101,18 +101,23 @@ public class BoardController {
         }
         boardService.update(board);
     }
-
-	/*
-	@DeleteMapping(value = "/{no}")
+    //삭제
+	
+	@DeleteMapping(value = "{no}")
 	public void delete(
-			@PathVariable("lecture_no") String lecture_no,
-			@PathVariable("no") String no) throws Exception {
+			@ModelAttribute BoardVO board,
+			@PathVariable("lecture_no") long lecture_no,
+			@PathVariable("no") int no,
+			@AuthenticationPrincipal UserVO activeUser ) throws Exception {
+		
+		board.setInput_id(activeUser.getUser_id());
+        board.setUpdate_id(activeUser.getUser_id());
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("lecture_no", lecture_no);
 		params.put("no", no);
+		params.put("input_id", activeUser.getUser_id());
 
 		boardService.delete(params);
 	}
-	*/
 }

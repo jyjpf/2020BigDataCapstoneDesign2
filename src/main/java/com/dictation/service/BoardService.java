@@ -1,5 +1,6 @@
 package com.dictation.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,9 +55,10 @@ public class BoardService {
 	/**
 	 * 게시판의 게시글을 삭제합니다.
 	 * @param params - 강의번호, 게시판번호
+	 * @return 
 	 * @throws Exception
 	 */
-	public void delete(Map<String, Object> params) throws Exception {
+	public void delete(HashMap<String, Object> params) throws Exception {
 		boardDAO.delete(params);
 	}
 

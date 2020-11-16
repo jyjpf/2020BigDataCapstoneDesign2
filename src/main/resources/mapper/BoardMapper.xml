@@ -154,6 +154,7 @@
 			and lecture_no = #{lecture_no}
 			and board_cd = #{board_cd}
 			and no = #{no}
+			and input_id = #{input_id}
 
 	</update>
 
@@ -170,6 +171,7 @@
 			and board_cd = #{board_cd}
 			and no = #{no}
 			and seq_no = #{seq_no}
+			and input_id = #{input_id}
 
 	</update>
 
@@ -197,12 +199,40 @@
 
 	<delete id="delete" parameterType="Map">
 
-		delete from
-			board
-		where 1=1
-			and lecture_no = #{lecture_no}
-			and board_cd = #{board_cd}
-			and no = #{no}
+		delete from board(
+			lecture_no,
+			board_cd,
+			no,
+			seq_no,
+			auth_nm,
+			title,
+			content,
+			read_cnt,
+			file_nm,
+			save_file_nm,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		) values (
+			(select
+				kor_nm
+			from
+				users
+			where 1=1
+				user_id = #{input_id}),
+			#{title},
+			#{lecture_no},
+			#{board_cd},
+			#{no},
+			#{content},
+			0,
+			#{file_nm},
+			#{save_file_nm},
+			#{input_id},
+			now(),
+		)
+
 
 	</delete>
 
@@ -215,6 +245,7 @@
 			and board_cd = #{board_cd}
 			and no = #{no}
 			and seq_no = #{seq_no}
+			and input_id = #{input_id}
 
 	</delete>
 

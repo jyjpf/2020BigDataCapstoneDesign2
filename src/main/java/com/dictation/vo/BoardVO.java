@@ -19,7 +19,7 @@ public class BoardVO {
 	private int read_cnt;
 	private String file_nm;
 	private String save_file_nm;
-	private String input_id;  
+	private String input_id;
 	private Date input_date;
 	private String update_id;
 	private Date update_date;

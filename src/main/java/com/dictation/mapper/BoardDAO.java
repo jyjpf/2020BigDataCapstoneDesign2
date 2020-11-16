@@ -61,9 +61,10 @@ public interface BoardDAO {
 	/**
 	 *
 	 * @param map
+	 * @return 
 	 * @throws Exception
 	 */
-	public void delete(Map<String, Object> map) throws Exception;
+	public List<BoardVO> delete(Map<String, Object> map) throws Exception;
 
 	/**
 	 *
