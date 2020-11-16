@@ -30,6 +30,7 @@ public class BoardController {
 
     @Autowired
     private BoardService boardService;
+
     // 댓글 불러오기 관리
     // TODO: 권한관리
     @GetMapping(value = "/{no}")
@@ -80,6 +81,7 @@ public class BoardController {
     }
 
     //수정
+    // TODO: 기존 파일 수정 or 삭제 구현
     @PutMapping
     public void update(
             @ModelAttribute BoardVO board,
@@ -88,7 +90,6 @@ public class BoardController {
             @AuthenticationPrincipal UserVO activeUser) throws Exception {
 
         board.setLecture_no(lecture_no);
-        board.setInput_id(activeUser.getUser_id());
         board.setUpdate_id(activeUser.getUser_id());
 
         if (file != null) {
@@ -101,19 +102,17 @@ public class BoardController {
         }
         boardService.update(board);
     }
+
     //삭제
-	
+    // TODO: 기존 파일 수정 or 삭제 구현
 	@DeleteMapping(value = "{no}")
 	public void delete(
-			@ModelAttribute BoardVO board,
 			@PathVariable("lecture_no") long lecture_no,
 			@PathVariable("no") int no,
-			@AuthenticationPrincipal UserVO activeUser ) throws Exception {
-		
-		board.setInput_id(activeUser.getUser_id());
-        board.setUpdate_id(activeUser.getUser_id());
+			@AuthenticationPrincipal UserVO activeUser) throws Exception {
 
-		HashMap<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<String, Object>();
+
 		params.put("lecture_no", lecture_no);
 		params.put("no", no);
 		params.put("input_id", activeUser.getUser_id());

@@ -1,6 +1,5 @@
 package com.dictation.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,8 +26,8 @@ public class BoardService {
 	}
 
 	/**
-	 * 게시판 게시글 목록을 가져옵니다
-	 * @param params - 강의번호
+	 * 게시글 목록을 가져옵니다
+	 * @param params - 강의번호, 게시판코드
 	 * @return List<BoardVO>
 	 */
 	public List<BoardVO> getList(Map<String, Object> params) {
@@ -36,7 +35,7 @@ public class BoardService {
 	}
 	
 	/**
-	 * 게시판에 게시글을 생성합니다
+	 * 게시글을 생성합니다
 	 * @param board - boardVO
 	 * @throws Exception
 	 */
@@ -45,8 +44,9 @@ public class BoardService {
 	}
 
 	/**
-	 *
-	 * @param board
+	 * 게시글을 수정합니다
+	 * @param board - boardVO
+	 * @throws Exception
 	 */
 	public void update(BoardVO board) throws Exception {
 		boardDAO.update(board);
@@ -55,10 +55,9 @@ public class BoardService {
 	/**
 	 * 게시판의 게시글을 삭제합니다.
 	 * @param params - 강의번호, 게시판번호
-	 * @return 
 	 * @throws Exception
 	 */
-	public void delete(HashMap<String, Object> params) throws Exception {
+	public void delete(Map<String, Object> params) throws Exception {
 		boardDAO.delete(params);
 	}
 
