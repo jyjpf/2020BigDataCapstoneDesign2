@@ -17,7 +17,7 @@ public class BoardService {
 	
 	/**
 	 * 게시글 정보를 가져옵니다
-	 * @param params - 강의번호, 게시글번호
+	 * @param params - 강의번호, 게시글번호, 댓글 번호
 	 * @return BoardVO
 	 */
 	public List<BoardVO> get(Map<String, Object> params) throws Exception {
@@ -27,7 +27,7 @@ public class BoardService {
 
 	/**
 	 * 게시글 목록을 가져옵니다
-	 * @param params - 강의번호, 게시판코드
+	 * @param params - 강의번호, 게시판코드, 댓글 번호
 	 * @return List<BoardVO>
 	 */
 	public List<BoardVO> getList(Map<String, Object> params) {
@@ -59,6 +59,15 @@ public class BoardService {
 	 */
 	public void delete(Map<String, Object> params) throws Exception {
 		boardDAO.delete(params);
+	}
+	
+	/**
+	 * 게시판의 댓글을 삭제합니다.
+	 * @param params - 강의번호, 게시판번호
+	 * @throws Exception
+	 */
+	public void deleteComment(Map<String, Object> params) throws Exception {
+		boardDAO.deleteComment(params);
 	}
 
 }

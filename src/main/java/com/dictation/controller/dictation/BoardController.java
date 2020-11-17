@@ -42,6 +42,7 @@ public class BoardController {
 
         params.put("lecture_no", lecture_no);
         params.put("no", no);
+//        params.put("seq_no", seq_no);
 
         return boardService.get(params);
     }
@@ -86,10 +87,12 @@ public class BoardController {
     public void update(
             @ModelAttribute BoardVO board,
             @PathVariable("lecture_no") long lecture_no,
+//            @PathVariable("seq_no") int seq_no,
             @Param(value = "file") MultipartFile file,
             @AuthenticationPrincipal UserVO activeUser) throws Exception {
 
         board.setLecture_no(lecture_no);
+//        board.setLecture_no(seq_no);
         board.setUpdate_id(activeUser.getUser_id());
 
         if (file != null) {
@@ -103,20 +106,41 @@ public class BoardController {
         boardService.update(board);
     }
 
-    //삭제
+    //게시판 삭제
     // TODO: 기존 파일 수정 or 삭제 구현
 	@DeleteMapping(value = "{no}")
 	public void delete(
 			@PathVariable("lecture_no") long lecture_no,
 			@PathVariable("no") int no,
+			@PathVariable("seq_no") int seq_no,
 			@AuthenticationPrincipal UserVO activeUser) throws Exception {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 
 		params.put("lecture_no", lecture_no);
 		params.put("no", no);
+		params.put("seq_no", seq_no);
 		params.put("input_id", activeUser.getUser_id());
 
 		boardService.delete(params);
+		System.out.println("게시판 삭제");
+	}
+	//게시판 댓글 삭제
+	@DeleteMapping(value = "{no}/comment")
+	public void deleteComment(
+			@PathVariable("lecture_no") long lecture_no,
+			@PathVariable("no") int no,
+//			@PathVariable("seq_no") int seq_no,
+			@AuthenticationPrincipal UserVO activeUser) throws Exception {
+
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		params.put("lecture_no", lecture_no);
+		params.put("no", no);
+//		params.put("seq_no", seq_no);
+		params.put("input_id", activeUser.getUser_id());
+
+		boardService.deleteComment(params);
+		System.out.println("댓글삭제");
 	}
 }
