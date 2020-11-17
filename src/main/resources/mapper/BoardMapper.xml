@@ -147,7 +147,6 @@
 			title = #{title},
 			content = #{content},
 			file_nm = #{file_nm},
-			seq_no = #{seq_no},
 			save_file_nm = #{save_file_nm},
 			update_id = #{update_id},
 			update_date = now()
@@ -155,7 +154,6 @@
 			and lecture_no = #{lecture_no}
 			and board_cd = #{board_cd}
 			and no = #{no}
-			and seq_no = #{seq_no}
 			and input_id = #{input_id}
 
 	</update>
@@ -190,28 +188,16 @@
 				where 1=1
 					and lecture_no = #{lecture_no}
 					and no = #{no}
-					and seq_no = #{seq_no}
+					and seq_no = 0
 				)
 		where 1=1
 			and lecture_no = #{lecture_no}
 			and no = #{no}
-			and seq_no = #{seq_no}
+			and seq_no = 0
 
 	</update>
 
 	<delete id="delete" parameterType="Map">
-
-		delete from
-			board
-		where 1=1
-			and lecture_no = #{lecture_no}
-			and no = #{no}
-			and seq_no = #{seq_no}
-			and input_id = #{input_id}
-
-	</delete>
-
-	<delete id="deleteComment" parameterType="Map">
 
 		delete from
 			board
@@ -223,5 +209,16 @@
 
 	</delete>
 
-</mapper>
+	<delete id="deleteComment" parameterType="Map">
 
+		delete from
+			board
+		where 1=1
+			and lecture_no = #{lecture_no}
+			and no = #{no}
+			and seq_no = #{seq_no}
+			and input_id = #{input_id}
+
+	</delete>
+
+</mapper>
