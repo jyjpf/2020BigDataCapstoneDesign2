@@ -122,6 +122,7 @@
 			lecture_nm,
 			school_cd,
 		    lecture_type_cd,
+		    level,
 			grade,
 			ban,
 			enroll_st_dt,
@@ -142,6 +143,7 @@
 			#{lecture_nm},
 			#{school_cd},
 			#{lecture_type_cd},
+		    0,
 			#{grade},
 			#{ban},
 			to_date(#{enroll_st_dt}, 'yyyy-mm-dd'),
@@ -162,14 +164,14 @@
 		    lecture
 		set
 			<if test="lecture_nm != null">lecture_nm = #{lecture_nm},</if>
-		<if test="grade != null">grade = #{grade},</if>
-		<if test="ban != null">ban = #{ban},</if>
-		<if test="level != null">level = #{level},</if>
-		<if test="enroll_st_dt != null">enroll_st_dt = #{enroll_st_dt},</if>
-		<if test="enroll_ed_dt != null">enroll_ed_dt = #{enroll_ed_dt},</if>
-		<if test="max_cnt != null">max_cnt = #{max_cnt},</if>
-		<if test="teacher_id != null">teacher_id = #{teacher_id},</if>
-		<if test="teacher_nm != null">teacher_nm = #{teacher_nm},</if>
+			<if test="grade != null">grade = #{grade},</if>
+			<if test="ban != null">ban = #{ban},</if>
+			<if test="level != null">level = #{level},</if>
+			<if test="enroll_st_dt != null">enroll_st_dt = #{enroll_st_dt},</if>
+			<if test="enroll_ed_dt != null">enroll_ed_dt = #{enroll_ed_dt},</if>
+			<if test="max_cnt != null">max_cnt = #{max_cnt},</if>
+			<if test="teacher_id != null">teacher_id = #{teacher_id},</if>
+			<if test="teacher_nm != null">teacher_nm = #{teacher_nm},</if>
 			update_id = #{update_id},
 			update_date = now()
 		where
