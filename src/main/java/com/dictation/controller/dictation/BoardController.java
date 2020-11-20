@@ -80,9 +80,9 @@ public class BoardController {
         boardService.insert(board);
     }
 
-    //수정
+    //게시판 수정 put 말고 Patch를 써야 기존 내용 삭제가 되지 않고 업데이트됨
     // TODO: 기존 파일 수정 or 삭제 구현
-    @PutMapping
+    @PatchMapping
     public void update(
             @ModelAttribute BoardVO board,
             @PathVariable("lecture_no") long lecture_no,
@@ -102,8 +102,31 @@ public class BoardController {
         }
         boardService.update(board);
     }
+    
+    //게시판 댓글 수정
+    // TODO: 기존 파일 수정 or 삭제 구현
+//    @PatchMapping
+//    public void updateComment(
+//            @ModelAttribute BoardVO board,
+//            @PathVariable("lecture_no") long lecture_no,
+//            @Param(value = "file") MultipartFile file,
+//            @AuthenticationPrincipal UserVO activeUser) throws Exception {
+//
+//        board.setLecture_no(lecture_no);
+//        board.setUpdate_id(activeUser.getUser_id());
+//
+//        if (file != null) {
+//            String saveFilename = DictationUtils.toMD5(file.getOriginalFilename());
+//            board.setFile_nm(file.getOriginalFilename());
+//            board.setSave_file_nm(saveFilename);
+//            FileOutputStream fos = new FileOutputStream(FILEPATH + saveFilename);
+//            fos.write(file.getBytes());
+//            fos.close();
+//        }
+//        boardService.updateComment(board);
+//    }
 
-    //삭제
+    //게시판 삭제
     // TODO: 기존 파일 수정 or 삭제 구현
 	@DeleteMapping(value = "{no}")
 	public void delete(
@@ -118,5 +141,24 @@ public class BoardController {
 		params.put("input_id", activeUser.getUser_id());
 
 		boardService.delete(params);
+	}
+	
+	//게시판 댓글 삭제
+    // TODO: 기존 파일 수정 or 삭제 구현
+	@DeleteMapping(value = "{no}/comment")
+	public void deleteComment(
+			@PathVariable("lecture_no") long lecture_no,
+			@PathVariable("no") int no,
+			@PathVariable("seq_no") int seq_no,
+			@AuthenticationPrincipal UserVO activeUser) throws Exception {
+
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		params.put("lecture_no", lecture_no);
+		params.put("no", no);
+		params.put("seq_no", seq_no);
+		params.put("input_id", activeUser.getUser_id());
+
+		boardService.deleteComment(params);
 	}
 }

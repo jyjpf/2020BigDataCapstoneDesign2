@@ -60,5 +60,23 @@ public class BoardService {
 	public void delete(Map<String, Object> params) throws Exception {
 		boardDAO.delete(params);
 	}
+	
+	/**
+	 * 게시판 댓글을 삭제합니다.
+	 * @param params - 강의번호, 게시판번호
+	 * @throws Exception
+	 */
+	public void deleteComment(Map<String, Object> params) throws Exception {
+		boardDAO.deleteComment(params);
+	}
+	
+	/**
+	 * 게시판 댓글을 수정합니다
+	 * @param board - boardVO
+	 * @throws Exception
+	 */
+	public void updateComment(BoardVO board) throws Exception {
+		boardDAO.updateComment(board);
+	}
 
 }
