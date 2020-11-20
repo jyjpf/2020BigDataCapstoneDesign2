@@ -5,6 +5,12 @@ spring:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     username: dictation
     password: dic123
+  servlet:
+    multipart:
+      enabled: true
+      location: "./temp"
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 server:
   port: 3003
@@ -12,13 +18,7 @@ server:
 logging:
   config: classpath:log4j2_local.yml  
 
-servlet:
-  multipart:
-    enabled: true
-    file-size-threshold: 1MB
-    location: "./temp"
-    max-file-size: 100MB
-    max-request-size: 100MB    
+
 
 mybatis:
  mapper-locations: classpath:mapper/*.xml
@@ -32,6 +32,12 @@ spring:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     username: dictation
     password: dic123
+  servlet:
+    multipart:
+      enabled: true
+      location: "./temp"
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 server:
   port: 80
@@ -39,13 +45,7 @@ server:
 logging:
   config: classpath:log4j2_dev.yml
 
-servlet:
-  multipart:
-    enabled: true
-    file-size-threshold: 1MB
-    location: "./temp"
-    max-file-size: 100MB
-    max-request-size: 100MB    
+
 
 mybatis:
  mapper-locations: classpath:mapper/*.xml
@@ -58,20 +58,19 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: dictation
     password: dic123
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 1MB
+      location: "./temp"
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 server:
   port: 80
 
 logging:
   config: classpath:log4j2_service.yml
-
-servlet:
-  multipart:
-    enabled: true
-    file-size-threshold: 1MB
-    location: "./temp"
-    max-file-size: 100MB
-    max-request-size: 100MB    
 
 mybatis:
  mapper-locations: classpath:mapper/*.xml
