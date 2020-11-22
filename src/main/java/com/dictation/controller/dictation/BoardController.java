@@ -141,11 +141,12 @@ public class BoardController {
 		params.put("input_id", activeUser.getUser_id());
 
 		boardService.delete(params);
+		System.out.println("게시판 글 삭제");
 	}
 	
 	//게시판 댓글 삭제
     // TODO: 기존 파일 수정 or 삭제 구현
-	@DeleteMapping(value = "{no}/comment")
+	@DeleteMapping(value = "{seq_no}")
 	public void deleteComment(
 			@PathVariable("lecture_no") long lecture_no,
 			@PathVariable("no") int no,
@@ -160,5 +161,6 @@ public class BoardController {
 		params.put("input_id", activeUser.getUser_id());
 
 		boardService.deleteComment(params);
+		System.out.println("게시판 댓글 삭제");
 	}
 }
