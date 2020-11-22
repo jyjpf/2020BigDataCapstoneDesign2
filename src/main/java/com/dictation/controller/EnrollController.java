@@ -37,7 +37,6 @@ public class EnrollController {
 	private EnrollService enrollService;
 
 	@GetMapping(value = "/{lecture_no}")
-
 	public ResponseEntity<?> getEnroll(
 			@PathVariable("lecture_no") long lecture_no,
 			@AuthenticationPrincipal UserVO activeUser) {
