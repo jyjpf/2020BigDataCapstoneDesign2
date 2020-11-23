@@ -99,13 +99,15 @@ public class BoardController {
             FileOutputStream fos = new FileOutputStream(FILEPATH + saveFilename);
             fos.write(file.getBytes());
             fos.close();
+            boardService.update(board);
+        } else {
+            	//파일이 있을 때 구현하기
+            }
         }
-        boardService.update(board);
-    }
     
     //게시판 댓글 수정
     // TODO: 기존 파일 수정 or 삭제 구현
-//    @PatchMapping
+//    @PatchMapping (value = "{no}")
 //    public void updateComment(
 //            @ModelAttribute BoardVO board,
 //            @PathVariable("lecture_no") long lecture_no,
@@ -145,8 +147,8 @@ public class BoardController {
 	}
 	
 	//게시판 댓글 삭제
-    // TODO: 기존 파일 수정 or 삭제 구현
-	@DeleteMapping(value = "{seq_no}")
+    // TODO: 기존 파일 수정 or 삭제 구현 no까지 받아야함 아니리 404에러
+	@DeleteMapping(value = "{no}/{seq_no}")
 	public void deleteComment(
 			@PathVariable("lecture_no") long lecture_no,
 			@PathVariable("no") int no,
