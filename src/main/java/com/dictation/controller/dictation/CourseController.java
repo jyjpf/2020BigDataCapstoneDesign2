@@ -100,6 +100,9 @@ public class CourseController {
 			@ModelAttribute CourseVO course,
 			@PathVariable("lecture_no") long lecture_no,
 			@Param("file") MultipartFile file,
+			@Param(value = "type") int type,
+			@Param(value = "file_nm") String file_nm,
+			@Param(value = "save_file_nm") String save_file_nm,
 			@AuthenticationPrincipal UserVO activeUser) throws Exception {
 
 		course.setLecture_no(lecture_no);
@@ -114,6 +117,10 @@ public class CourseController {
 			fos.write(file.getBytes());
 			fos.close();
 		}
+		if (type == 1) {
+			course.setFile_nm(file_nm);
+			course.setSave_file_nm(save_file_nm);
+		}
 
 		courseService.insert(course);
 	}
@@ -125,12 +132,15 @@ public class CourseController {
 			@ModelAttribute CourseVO course,
 			@PathVariable(value="lecture_no") long lecture_no,
 			@Param(value = "file") MultipartFile file,
+			@Param(value = "type") int type,
+			@Param(value = "file_nm") String file_nm,
+			@Param(value = "save_file_nm") String save_file_nm,
 			@AuthenticationPrincipal UserVO activeUser) throws Exception {
 
 		course.setLecture_no(lecture_no);
 		course.setInput_id(activeUser.getUser_id());
 		course.setUpdate_id(activeUser.getUser_id());
-
+		
 		if (file != null) {
 			String saveFilename = DictationUtils.toMD5(file.getOriginalFilename());
 			course.setFile_nm(file.getOriginalFilename());
@@ -138,6 +148,10 @@ public class CourseController {
 			FileOutputStream fos = new FileOutputStream(FILEPATH + saveFilename);
 			fos.write(file.getBytes());
 			fos.close();
+		}
+		if (type == 1) {
+			course.setFile_nm(file_nm);
+			course.setSave_file_nm(save_file_nm);
 		}
 
 		courseService.update(course);
