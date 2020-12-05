@@ -16,7 +16,9 @@ public interface CourseDAO {
 	public List<CourseVO> getStudentList(Map<String, Object> params);
 
 	public List<CourseVO> getTeacherList(Map<String, Object> params);
-
+	
+	public List<CourseVO> getDicList(Map<String, Object> params);
+	
 	public void insert(CourseVO course) throws Exception;
 
 	public void update(CourseVO course) throws Exception;

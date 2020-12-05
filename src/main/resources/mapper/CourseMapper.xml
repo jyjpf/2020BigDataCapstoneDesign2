@@ -50,6 +50,28 @@
 		</if>
 
 	</select>
+	
+	<select id="getDicList" parameterType="Map" resultType="CourseVO">
+
+		select
+		    lecture_no,
+		    course_no,
+		    question_no,
+			question,
+		    file_nm,
+		    save_file_nm
+		from
+			course
+		where 1=1
+			and lecture_no = '0'
+		<if test="course_no != 0">
+			and course_no = #{course_no}
+		</if>
+		<if test="course_no == 0">
+			and course_no = (select max(course_no) from course where lecture_no = '0')
+		</if>
+
+	</select>
 
 	<insert id="insert" parameterType="CourseVO">
 

@@ -21,7 +21,11 @@ public class CourseService {
 	public List<CourseVO> getTeacherList(Map<String, Object> params) {
 		return courseDAO.getTeacherList(params);
 	}
-
+	
+	public List<CourseVO> getDicList(Map<String, Object> params) {
+		return courseDAO.getDicList(params);
+	}
+	
 	public void insert(CourseVO course) throws Exception {
 		courseDAO.insert(course);
 	}
