@@ -49,4 +49,5 @@ public class StatsController {
 
 		return statsService.getList(params);
 	}
+
 }

@@ -40,9 +40,6 @@ public class CourseController {
 			@RequestParam(value = "result", required = false, defaultValue = "false") String result,
 			@AuthenticationPrincipal UserVO activeUser) {
 
-		System.out.println();
-		System.out.println("[TEST]");
-		System.out.println();
 		Map<String, Object> params = new HashMap<>();
 
 		params.put("lecture_no", lecture_no);
@@ -60,39 +57,6 @@ public class CourseController {
 			}
 		}
 	}
-	
-	@GetMapping(value = "/random/{grade}/{count}")
-	public List<CourseVO> getRandomCourse(
-			@PathVariable("lecture_no") long lecture_no,
-			@PathVariable("grade") int grade,
-			@PathVariable("count") int count,
-			@RequestParam(value = "result", required = false, defaultValue = "false") String result,
-			@AuthenticationPrincipal UserVO activeUser) {
-
-		System.out.println();
-		System.out.println("[TEST2] grade=" + grade + " count=" + count);
-		System.out.println();
-		Map<String, Object> params = new HashMap<>();
-
-		params.put("course_no", grade);
-
-		if (activeUser.getPosition_cd().equals(Code.ROLE_TEACHER)) {
-			List<CourseVO> dicList = courseService.getDicList(params);
-		    List<CourseVO> newList = new ArrayList<CourseVO>(); 
-			if(dicList != null && dicList.size() > 0) {
-				Random rand = new Random();
-				int k = (count > dicList.size()) ? dicList.size() : count;
-			    for (int i = 0; i < k; i++) {
-			        int randomIndex = rand.nextInt(dicList.size());
-			        newList.add(dicList.get(randomIndex));
-			        dicList.remove(randomIndex);
-			    }
-			}
-			return newList;
-		} else {
-			return null;
-		}
-	}
 
 	@PostMapping
 	@Secured("ROLE_TEACHER")
@@ -100,9 +64,6 @@ public class CourseController {
 			@ModelAttribute CourseVO course,
 			@PathVariable("lecture_no") long lecture_no,
 			@Param("file") MultipartFile file,
-			@Param(value = "type") int type,
-			@Param(value = "file_nm") String file_nm,
-			@Param(value = "save_file_nm") String save_file_nm,
 			@AuthenticationPrincipal UserVO activeUser) throws Exception {
 
 		course.setLecture_no(lecture_no);
@@ -116,10 +77,6 @@ public class CourseController {
 			FileOutputStream fos = new FileOutputStream(FILEPATH + saveFilename);
 			fos.write(file.getBytes());
 			fos.close();
-		}
-		if (type == 1) {
-			course.setFile_nm(file_nm);
-			course.setSave_file_nm(save_file_nm);
 		}
 
 		courseService.insert(course);
@@ -132,15 +89,12 @@ public class CourseController {
 			@ModelAttribute CourseVO course,
 			@PathVariable(value="lecture_no") long lecture_no,
 			@Param(value = "file") MultipartFile file,
-			@Param(value = "type") int type,
-			@Param(value = "file_nm") String file_nm,
-			@Param(value = "save_file_nm") String save_file_nm,
 			@AuthenticationPrincipal UserVO activeUser) throws Exception {
 
 		course.setLecture_no(lecture_no);
 		course.setInput_id(activeUser.getUser_id());
 		course.setUpdate_id(activeUser.getUser_id());
-		
+
 		if (file != null) {
 			String saveFilename = DictationUtils.toMD5(file.getOriginalFilename());
 			course.setFile_nm(file.getOriginalFilename());
@@ -148,10 +102,6 @@ public class CourseController {
 			FileOutputStream fos = new FileOutputStream(FILEPATH + saveFilename);
 			fos.write(file.getBytes());
 			fos.close();
-		}
-		if (type == 1) {
-			course.setFile_nm(file_nm);
-			course.setSave_file_nm(save_file_nm);
 		}
 
 		courseService.update(course);
