@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dictation.mapper.SoMapper"> 
+
+	<select id="get" parameterType="Map" resultType="SoVO">
+
+		select
+			dae_cd,
+			so_cd,
+			so_nm,
+			use_yn,
+			bigo,
+		    input_id,
+		    input_dt,
+		    update_id,
+		    update_dt
+		from
+			so_cd
+		where 1=1
+			and dae_cd = #{dae_cd}
+			and so_cd = #{so_cd}
+
+	</select>
+	
+	<select id="getList" parameterType="Map" resultType="SoVO">
+
+		select
+			dae_cd,
+			so_cd,
+			so_nm,
+			use_yn,
+			bigo,
+			input_id,
+			input_dt,
+			update_id,
+			update_dt
+		from
+			so_cd
+		where 1=1
+			and dae_cd = #{dae_cd}
+
+	</select> 
+
+	<insert id="insert" parameterType="SoVO">
+
+		INSERT INTO SO_CD (
+			dae_cd,
+			so_cd,
+			so_nm,
+			use_yn,
+			bigo,
+			input_id,
+			input_dt,
+			update_id,
+			update_dt
+		) VALUES (
+			#{dae_cd},
+			#{so_cd},
+			#{so_nm},
+			#{use_yn},
+			#{bigo},
+			#{input_id},
+			now(),
+			#{update_id},
+			now()
+		)
+
+	</insert>
+
+	<update id="update" parameterType="SoVO">
+
+		update
+			so_cd
+		set
+			dae_cd = #{dae_cd},
+			so_cd = #{so_cd},
+			so_nm = #{so_nm},
+			use_yn = #{use_yn},
+			bigo = #{bigo},
+		    update_id = #{update_id},
+		    update_dt = now()
+		where
+			so_cd = #{so_cd}
+
+	</update>
+
+	<delete id="delete" parameterType="String">
+
+		delete from
+			so_cd
+		where
+			so_cd = #{so_cd}
+			
+	</delete>
+
+</mapper>
+

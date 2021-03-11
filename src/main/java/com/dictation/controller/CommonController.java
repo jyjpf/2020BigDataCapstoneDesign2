@@ -1,347 +1,104 @@
 package com.dictation.controller;
 
-import java.io.File;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.dictation.service.BoardService;
-import com.dictation.service.CourseService;
-import com.dictation.service.EnrollService;
-import com.dictation.service.LectureService;
+import com.dictation.Common.Code;
+import com.dictation.Common.DictationUtils;
+import com.dictation.Security.JWTTokenProvider;
+import com.dictation.service.CommonService;
 import com.dictation.service.UserService;
-import com.dictation.vo.CourseVO;
-import com.dictation.vo.EnrollVO;
-import com.dictation.vo.LectureVO;
 import com.dictation.vo.UserVO;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping(value="/api/common")
-public class CommonController {//°øÅëÄÁÆ®·Ñ·¯
+@RequestMapping(value = "/api/common")
+public class CommonController {
+
+	private Logger logger = LogManager.getLogger(CommonController.class);
+
 	@Autowired
-	private CourseService courseService;
-	@Autowired
-	private EnrollService enrollService;
-	@Autowired
-	private LectureService lectureService;
+	private CommonService commonService;
 	@Autowired
 	private UserService userService;
+
 	@Autowired
-	private BoardService boardService;
-	
-	//È¸¿ø°¡ÀÔ
-	@PostMapping(produces = "application/json;charset=UTF-8",value="/signup")
-	public void insert(@RequestBody UserVO user) {
-		
-		//position_cd
-		if(user.getPosition_cd().equals("°ü¸®ÀÚ")) {  
-			user.setPosition_cd("003001");
-		}else if(user.getPosition_cd().equals("¼±»ý´Ô")) {//ÇÁ·ÐÆ®¿¡¼­ ¼±»ý´ÔÀÌ¸é "¼±»ý´Ô"À¸·Î µ¥ÀÌÅÍ °ªÀ» ³Ñ±è
-			user.setPosition_cd("003002");
-		}else if(user.getPosition_cd().equals("ÇÐ»ý")) {//ÇÁ·ÐÆ®¿¡¼­ ÇÐ»ýÀÌ¸é "ÇÐ»ý"À¸·Î µ¥ÀÌÅÍ °ªÀ» ³Ñ±è
-			user.setPosition_cd("003003");
-		}
-		
-		userService.insert(user);
-		
-	}
-	
-	//·Î±×ÀÎ(¼º°ø½Ã UserVO°ª ¼¼¼Ç°ªÀ¸·Î ÀúÀåÇÏ°í, position_cd°ª ¹ÝÈ¯)
-	//³ªÁß¿¡´Â post·Î user_id °ª ÁÙ°Í
-	@GetMapping(value = "login/{user_id}&{pw}")
-	public UserVO login(@PathVariable("user_id") String user_id,@PathVariable("pw") String pw, HttpServletRequest request) throws Exception {
+	private JWTTokenProvider jwtTokenProvider;
 
-		HttpSession session = request.getSession();
-		UserVO user = userService.getById(user_id);
-		
-		if(user.equals(null) || user == null) {
-		    user.setLoginYn("0");
-		    return user;
-		}else if(user.getPw().equals(pw)) {//·Î±×ÀÎ¼º°ø &¼¼¼Ç°ª ÁÜ
-			//if() °ü¸®ÀÚÄÚµå, ¼±»ý´ÔÄÚµå ·Î±×ÀÎ½Ã ¼¼¼ÇÈ®ÀÎ°ª »ý¼º ÇÊ¿ä
+	@PostMapping(value = "/login")
+	public ResponseEntity<?> signin(@RequestBody Map<String, Object> params) {
+
+		HttpStatus status;
+		Map<String, Object> response = new HashMap<String, Object>();
+		params.replace("pw", DictationUtils.toSHA256((String) params.get("pw")));
+		UserVO user = commonService.login(params);
+
+		if(user == null) {
+
+			status = HttpStatus.FORBIDDEN;
+			response.put("msg", "Login Failed");
+
+		} else { 
+
+			status = HttpStatus.OK;
+
+			response.put("token", jwtTokenProvider.createToken(
+				user.getUser_id(),
+				user.getSchool_cd(), 
+				user.getPosition_cd())
+			);
+
+			if(user.getPosition_cd().equals(Code.ROLE_ADMIN)) {
+				response.put("role", "ADMIN");
+			} else if(user.getPosition_cd().equals(Code.ROLE_TEACHER)) {
+				response.put("role", "TEACHER");
+			} else if(user.getPosition_cd().equals(Code.ROLE_STUDENT)) {
+				response.put("role", "STUDENT");
+			} else {
+				status = HttpStatus.NOT_FOUND; 
+				response.put("msg", "Undefined Position");
+			}
 			
-			session.setAttribute("user", user);//¼¼¼Ç¿¡ UserVO°ªÁÜ
-			
-			UserVO user_session=(UserVO)session.getAttribute("user");
-			System.out.println("¾ÆÀÌµð ¼¼¼Ç°ª :" +user_session.getUser_id());
-			System.out.println("ºñ¹Ð¹øÈ£ ¼¼¼Ç°ª :" +user_session.getPw());
-			System.out.println("½ÅºÐÄÚµå ¼¼¼Ç°ª :" +user_session.getPosition_cd());
-			user.setLoginYn("1");
-			return user;
-		}else {
-			System.out.println("¸®ÅÏ°ªÈ®ÀÎ¿Ï·á");
-			session.setAttribute("login_fail", pw);
-			user.setLoginYn("0");
-			return user;
 		}
+
+		return ResponseEntity.status(status).body(response);
+
 	}
-	
-	//mypage(È¸¿øÁ¤º¸¸¦ ¹ÝÈ¯)
-	@GetMapping(value = "/user/get")
-	public UserVO user_getById(HttpServletRequest request) throws Exception {
-		HttpSession session = request.getSession();
-		UserVO user_session=(UserVO)session.getAttribute("user");
-		
-		UserVO user = userService.getById(user_session.getUser_id());
-		return user;
-	}
-	
-	//È¸¿øÁ¤º¸ ¼öÁ¤(mypage)
-	@PostMapping(value = "/user/update")
-	public void user_update(@RequestBody UserVO user) throws Exception {
-		System.out.println("this is common/user/update");
-		//gender_cd
-		if(user.getGender_cd().equals("³²ÀÚ")) {//ÇÁ·ÐÆ®¿¡¼­ ³²ÀÚÀÌ¸é "002001"À¸·Î µ¥ÀÌÅÍ °ªÀ» ³Ñ±è  
-			user.setGender_cd("002001");
-		}else if(user.getGender_cd().equals("¿©ÀÚ")) {//ÇÁ·ÐÆ®¿¡¼­ ¿©ÀÚÀÌ¸é "002002"À¸·Î µ¥ÀÌÅÍ °ªÀ» ³Ñ±è
-			user.setGender_cd("002002");
+
+	// TODO: ë¹„ë°€ë²ˆí˜¸ ì•”í˜¸í™”
+	@PostMapping(value = "/signup")
+	public ResponseEntity<?> signup(@RequestBody UserVO user) {
+
+		HttpStatus status;
+		Map<String, Object> result = new HashMap<String, Object>();
+
+		try {
+			user.setPw(DictationUtils.toSHA256(user.getPw()));
+			user.setInput_id(user.getUser_id());
+			user.setUpdate_id(user.getUser_id());
+
+			userService.insert(user);
+			status = HttpStatus.OK;
+			result.put("msg", "");
+		} catch(Exception e) {
+			result.put("msg", e);
+			status = HttpStatus.BAD_REQUEST;
 		}
 		
-		userService.update(user);
-	}
-	
-    //according to id delete
-	@GetMapping(value="/course/delete/{lecture_no}&{course_no}&{question_no}")
-	public void delete(@PathVariable("lecture_no") int lecture_no, @PathVariable("course_no") int course_no, @PathVariable("question_no") int question_no) {
-		CourseVO course=new CourseVO();
-		course.setLecture_no(lecture_no);
-		course.setCourse_no(course_no);
-		course.setQuestion_no(question_no);
-		courseService.delete(course);
-	}
-	
-	//modify
-	//lecture_no´Â °°¾Æ¾ß ÇÔ
-	@PostMapping(value="/course/update")
-	public void update(@RequestBody CourseVO course) {
-		courseService.update(course);
+		return ResponseEntity.status(status).body(result);
 	}
 
-	//according to id Query students
-	@GetMapping(value="/course/get/{lecture_no}&{course_no}&{question_no}")
-	public CourseVO getById(@PathVariable("lecture_no") int lecture_no, @PathVariable("course_no") int course_no, @PathVariable("question_no") int question_no) {
-		CourseVO course2=new CourseVO();
-		course2.setLecture_no(lecture_no);
-		course2.setCourse_no(course_no);
-		course2.setQuestion_no(question_no);
-		
-		CourseVO course = courseService.getById(course2);
-		return course;
+	@GetMapping(value = "/check")
+	public boolean check(@RequestParam("user_id") String user_id) {
+		return commonService.check(user_id);
 	}
-	
-	//All queries
-	@PostMapping(value="/course/list")
-	public List<CourseVO> list(){
-		return courseService.list();
-	}	
-	
-	
-	//ÆÄÀÏ ¾÷·Îµå¸¦ À§ÇÔ(1°³ÀÇ ÆÄÀÏ)
-	@CrossOrigin("*")
-	@PostMapping(value="/course/fileupload")
-	//@ResponseStatus(HttpStatus.CREATED)//@RequestParam("file") 
-	public String upload(HttpServletRequest request, @RequestPart MultipartFile file) throws Exception {
-		
-		if(file.isEmpty()){ //¾÷·ÎµåÇÒ ÆÄÀÏÀÌ ¾øÀ» ½Ã
-            System.out.println("ÆÄÀÏ¾øÀ½");
-            return "";
-        }else {
-        	System.out.println("file ½ÇÇà !!");
-    		
-    		//ÆÄÀÏ ÀÌ¸§°¡Á®¿È(FILE_NM)
-    		String originalfileName = file.getOriginalFilename();
-    	
-    		/*
-    		String fileUrl=ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/downloadFile/")
-                    .path(originalfileName)
-                    .toUriString();
-            */
-    		
-    			
-    		//SAVE_FILE_NM
-    		UUID uuid =UUID.randomUUID();
-    		String save_file_nm=uuid.toString() +"_" +originalfileName;
-    				
-    		//ÆÄÀÏ ÁöÁ¤ÇÑ °æ·Î·Î ÀúÀå(save_file_nm ÆÄÀÏÀÌ¸§À¸·Î ÀúÀå)
-    		File dest = new File("C:/Temp/" + save_file_nm);
-    		file.transferTo(dest);
-    		
-    		System.out.println("ÆÄÀÏÀÌ¸§ : "+originalfileName);
-    		System.out.println("»õ·Î¿î ÆÄÀÏÀÌ¸§ : "+save_file_nm);
-    		//System.out.println("ÆÄÀÏ°æ·Î : "+fileUrl);
-    		
-    		return save_file_nm;
-
-        }
-	}
-	
-	
-	//ÆÄÀÏ ¾÷·Îµå¸¦ À§ÇÔ(¿©·¯°³ÀÇ ÆÄÀÏ)
-	@CrossOrigin("*")
-	@PostMapping(value="/course/fileupload_list")
-	//@ResponseStatus(HttpStatus.CREATED)//@RequestParam("file") 
-	public String upload_list(HttpServletRequest request, @RequestPart List<MultipartFile> file) throws Exception {
-		
-		if(file.isEmpty()){ //¾÷·ÎµåÇÒ ÆÄÀÏÀÌ ¾øÀ» ½Ã
-            System.out.println("ÆÄÀÏ¾øÀ½");
-            return "";
-        }else {
-        	
-        	for(int i=0; i<file.size(); i++) {
-        		System.out.println("file ½ÇÇà !!");
-	    		
-	    		//ÆÄÀÏ ÀÌ¸§°¡Á®¿È(FILE_NM)
-	    		String originalfileName = file.get(i).getOriginalFilename();
-	    	
-	    		/*
-	    		String fileUrl=ServletUriComponentsBuilder.fromCurrentContextPath()
-	                    .path("/downloadFile/")
-	                    .path(originalfileName)
-	                    .toUriString();
-	            */
-	    		
-	    			
-	    		//SAVE_FILE_NM
-	    		UUID uuid =UUID.randomUUID();
-	    		String save_file_nm=uuid.toString() +"_" +originalfileName;
-	    				
-	    		//ÆÄÀÏ ÁöÁ¤ÇÑ °æ·Î·Î ÀúÀå(save_file_nm ÆÄÀÏÀÌ¸§À¸·Î ÀúÀå)
-	    		File dest = new File("C:/Temp/" + save_file_nm);
-	    		file.get(i).transferTo(dest);
-	    		
-	    		System.out.println("ÆÄÀÏÀÌ¸§ : "+originalfileName);
-	    		System.out.println("»õ·Î¿î ÆÄÀÏÀÌ¸§ : "+save_file_nm);
-	    		//System.out.println("ÆÄÀÏ°æ·Î : "+fileUrl);
-	    		
-
-        	}
-        	
-        }
-		
-		return "¼º°ø";
-	}
-	
-	//modify
-	//user_id´Â °°¾Æ¾ß ÇÔ
-	@PostMapping(value="/enroll/update")
-	public void update(@RequestBody EnrollVO enroll) { //user_id, lecture_no°ª ÇÊ¼ö
-		enrollService.update(enroll);
-	}
-
-	
-	//according to id Query students
-	@GetMapping(value="/enroll/get/{user_id}")
-	public EnrollVO getById(@PathVariable("user_id") String user_id) {
-		EnrollVO enroll = enrollService.getById(user_id);
-		return enroll;
-	}
-	
-	//All queries
-	@PostMapping(value="/enroll/list")
-	public List<EnrollVO> en_list(){
-		return enrollService.list();
-	}
-	
-	//according to id delete
-	//lecture¸¦ Áö¿ì¸é DB¿¡ ÇØ´çlecture_noÀÌ Á¸ÀçÇÏ´Â ¸ðµç µ¥ÀÌÅÍ¸¦ Áö¿ö¾ßÇÔ(board, course, enroll, study, lecture) 
-	@GetMapping(value="/lecture/delete/{lecture_no}")
-	public void delete(@PathVariable("lecture_no") int lecture_no) {
-
-		boardService.lecture_delete(lecture_no);
-		enrollService.lecture_delete(lecture_no);
-		courseService.lecture_delete(lecture_no);
-		lectureService.delete(lecture_no);
-	}
-	//modify
-	//lecture_no´Â °°¾Æ¾ß ÇÔ
-	@PostMapping(value="/lecture/update")
-	public void update(@RequestBody LectureVO lecture) {
-		lectureService.update(lecture);
-	}
-
-	//according to id Query students
-	@GetMapping(value="/lecture/get/{lecture_no}")
-	public LectureVO getById_nosession(@PathVariable("lecture_no") int lecture_no) {
-
-		LectureVO lecture = lectureService.getById(lecture_no);
-		return lecture;
-	}
-	
-	@GetMapping(value="/lecture/get")
-	public LectureVO getById(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		int lecture_session=(int)session.getAttribute("lecture_no");
-		
-		LectureVO lecture = lectureService.getById(lecture_session);
-		return lecture;
-	}
-	
-	
-	//All queries
-	@RequestMapping(value="/lecture/list")
-	public List<LectureVO> lec_list(){
-		return lectureService.list();
-	}
-	
-	//°­ÁÂµé¾î°¥¶§ lecture_no ¼¼¼Ç°ª »ý¼º
-	//³ªÁß¿¡´Â post·Î lecture_no °ª ÁÙ°Í
-	@GetMapping(value = "/lecture/lecture_no/{lecture_no}")
-	public String lecture_no(@PathVariable("lecture_no") int lecture_no, HttpServletRequest request) throws Exception {
-		
-		System.out.println("lecture_no¿¡ ´ëÇÑ ¼¼¼Ç°ªÀ» ÁÜ");
-		
-		HttpSession session = request.getSession();
-		session.setAttribute("lecture_no", lecture_no);
-		int lecture_session=(int)session.getAttribute("lecture_no");
-		System.out.println("lecture_no ¼¼¼Ç°ª :" +lecture_session);
-
-	    return "lecture_no";
-	}
-	//¼¼¼Ç°ª È®ÀÎÈÄ Áö¿ì´Â ¸Þ¼Òµå(test¿ë)
-	@GetMapping(value = "/lecture/session")
-	public String session(HttpServletRequest request) throws Exception {
-
-		HttpSession session = request.getSession();
-
-	    System.out.println("lecture_no ¼¼¼Ç°ª :" +(int)session.getAttribute("lecture_no"));
-	    
-	    //¸ðµç ¼¼¼Ç°ª È®ÀÎ
-	    Enumeration se = session.getAttributeNames();
-	    while(se.hasMoreElements()){
-	    	String getse = se.nextElement()+"";
-	    	System.out.println("@@@@@@@ session : "+getse+" : "+session.getAttribute(getse));
-	    }
-
-
-	    // ¼¼¼Ç¿¡¼­ Áö¿î´Ù.
-	    //session.invalidate();
-	    //System.out.println("Áö¿îÈÄ user_id ¼¼¼Ç°ª :" +session.getAttribute("user_id"));
-	    //System.out.println("Áö¿îÈÄ lecture_no ¼¼¼Ç°ª :" +session.getAttribute("lecture_no"));
-	    return "login/user_id&lecture_no";
-	    
-	}
-	/*
-	¼¼¼Ç°ª »ý¼º  session.setAttribute("ÀÌ¸§", "°ª");
-	°¡Á®¿À±â  session.getAttribute("ÀÌ¸§");
-	ÇÑ°³»èÁ¦  session.removeAttribute("ÀÌ¸§");
-	ÃÊ±âÈ­    session.invalidate();
-	*/
-	
 
 }

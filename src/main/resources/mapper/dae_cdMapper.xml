@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dictation.mapper.DaeMapper"> 
+	
+	<select id="get" parameterType="String" resultType="DaeVO">
+
+		select
+			dae_cd,
+			dae_nm,
+			use_yn
+		from
+			dae_cd
+		where
+			dae_cd = #{dae_cd}
+
+	</select>
+	
+	<select id="list" resultType="DaeVO">
+
+		select
+			dae_cd,
+			dae_nm,
+			use_yn
+		from
+			dae_cd
+
+	</select>
+
+	<insert id="insert" parameterType="DaeVO">
+
+		insert into dae_cd (
+			dae_cd,
+			dae_nm,
+			use_yn,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		) values (
+			#{dae_cd},
+			#{dae_nm},
+			#{use_yn},
+			#{input_id},
+			now(),
+			#{update_id},
+			now()
+		)
+
+	</insert>
+ 
+ 	<update id="update" parameterType="DaeVO">
+
+		update
+			dae_cd
+		set
+			dae_nm = #{dae_nm},
+			use_yn = #{use_yn},
+			update_id = #{update_id},
+			update_date = now()
+		where
+			dae_cd = #{dae_cd}
+
+	</update>
+ 
+ 
+	<delete id="delete" parameterType="String">
+
+		delete from dae_cd where dae_cd=#{dae_cd}
+
+	</delete>
+
+</mapper>
+

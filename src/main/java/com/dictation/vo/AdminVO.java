@@ -17,7 +17,7 @@ public class AdminVO {
 	private String birth_dt;
 	private String cel_phone_no;
 	private String hom_phone_no;
-	private String gender_cd;
+	private String gender_cd; 
 	private String email;
 	private String loginYn;
 

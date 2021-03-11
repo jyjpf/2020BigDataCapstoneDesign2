@@ -8,18 +8,19 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StudyVO {
-	private String year;
-	private String term;
-	private int lecture_no;
-	private String user_id;
+
+	private long lecture_no;
 	private int course_no;
 	private int question_no;
 	private int seq_no;
+	private String student_id;
 	private String answer;
-	private Date system_time;
-	private String correct_yn;
+	private boolean correct_yn;
+	private String input_id;
+	private Date input_date;
 	private String update_id;
 	private Date update_date;
 	
 	
 }
+ 

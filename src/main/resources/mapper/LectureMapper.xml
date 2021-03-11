@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dictation.mapper.LectureDAO">
+	
+	<select id="get" parameterType="Map" resultType="LectureVO">
+
+		select
+			year,
+			term,
+			lecture_no,
+			lecture_nm,
+			school_cd,
+			grade,
+			ban,
+		    level,
+			enroll_st_dt,
+			enroll_ed_dt,
+			max_cnt,
+			teacher_id,
+			teacher_nm
+		from
+			lecture
+		where 1=1
+			and lecture_no = #{lecture_no}
+			and school_cd = #{school_cd}
+
+	</select>
+
+	<select id="getStudentMenuList" parameterType="Map" resultType="LectureVO">
+
+		select
+			l.lecture_nm,
+			l.lecture_no
+		from
+			lecture l join enroll e
+		on
+			l.lecture_no = e.lecture_no
+		where 1=1
+			and e.approval_cd = '004001'
+			and e.user_id = #{id}
+
+	</select>
+
+	<select id="getTeacherMenuList" parameterType="Map" resultType="LectureVO">
+
+		select
+			lecture_no,
+			lecture_nm
+		from
+			lecture
+		where 1=1
+		  and teacher_id = #{id}
+
+	</select>
+
+	<select id="getEnrollList" parameterType="Map" resultType="Map">
+
+		select
+			l.year,
+			l.term,
+			l.lecture_no,
+			l.lecture_nm,
+			l.school_cd,
+			l.grade,
+			l.ban,
+			l.enroll_st_dt,
+			l.enroll_ed_dt,
+			l.max_cnt,
+			l.teacher_id,
+			l.teacher_nm,
+			l.input_id,
+			l.input_date,
+			l.update_id,
+			l.update_date,
+			fn_cmmn(e.approval_cd) as approval_cd
+		from
+			lecture l
+		left outer join (
+		    select * from enroll where user_id = #{user_id}
+		) e using (lecture_no)
+		where 1=1
+			and l.school_cd = #{school_cd}
+
+	</select>
+
+	<select id="getList" parameterType="Map" resultType="LectureVO">
+
+		select
+			year,
+			term,
+			lecture_no,
+			lecture_nm,
+			school_cd,
+			grade,
+			ban,
+			enroll_st_dt,
+		    enroll_ed_dt,
+			max_cnt,
+			teacher_id,
+			teacher_nm,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		from
+			lecture
+		where 1=1
+			and school_cd = #{school_cd}
+			and lecture_type_cd != '005003'
+		<if test="teacher_id != null">
+			and teacher_id = #{teacher_id}
+		</if>
+
+	</select>
+
+	<insert id="insert" parameterType="LectureVO">
+
+		insert into lecture (
+			year,
+			term,
+			lecture_no,
+			lecture_nm,
+			school_cd,
+		    lecture_type_cd,
+		    level,
+			grade,
+			ban,
+			enroll_st_dt,
+			enroll_ed_dt,
+			teacher_id,
+			teacher_nm,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+		) values (
+			#{year},
+			#{term},
+			(select
+				coalesce(max(lecture_no) + 1, 1)
+			from
+				lecture),
+			#{lecture_nm},
+			#{school_cd},
+			#{lecture_type_cd},
+		    0,
+			#{grade},
+			#{ban},
+			to_date(#{enroll_st_dt}, 'yyyy-mm-dd'),
+			to_date(#{enroll_ed_dt}, 'yyyy-mm-dd'),
+			#{teacher_id},
+			#{teacher_nm},
+			#{input_id},
+			now(),
+			#{update_id},
+			now()
+		)
+
+	</insert>
+
+	<update id="update" parameterType="LectureVO">
+
+		update
+		    lecture
+		set
+			<if test="lecture_nm != null">lecture_nm = #{lecture_nm},</if>
+			<if test="grade != null">grade = #{grade},</if>
+			<if test="ban != null">ban = #{ban},</if>
+			<if test="level != null">level = #{level},</if>
+			<if test="enroll_st_dt != null">enroll_st_dt = #{enroll_st_dt},</if>
+			<if test="enroll_ed_dt != null">enroll_ed_dt = #{enroll_ed_dt},</if>
+			<if test="max_cnt != null">max_cnt = #{max_cnt},</if>
+			<if test="teacher_id != null">teacher_id = #{teacher_id},</if>
+			<if test="teacher_nm != null">teacher_nm = #{teacher_nm},</if>
+			update_id = #{update_id},
+			update_date = now()
+		where
+			lecture_no = #{lecture_no}
+
+	</update>
+
+	<update id="updateLevel" parameterType="LectureVO">
+
+		update
+			lecture
+		set
+			level = (select max(level) + 1 from lecture where lecture_no = ${lecture_no})
+		where
+			lecture_no = ${lecture_no}
+
+	</update>
+ 
+	<delete id="delete" parameterType="String">
+
+		delete from
+			lecture
+		where 1=1
+			and lecture_no = #{lecture_no}
+
+	</delete>
+
+</mapper>
+

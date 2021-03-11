@@ -1,63 +1,82 @@
 package com.dictation.service;
 
-import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dictation.mapper.BoardMapper;
+import com.dictation.mapper.BoardDAO;
 import com.dictation.vo.BoardVO;
 
 @Service
 public class BoardService {
 	
 	@Autowired
-	private BoardMapper boardMapper;
+	private BoardDAO boardDAO;
 	
-	
-	//##insert,delete,update,getById,list##
-	//insert
-	public void insert(BoardVO board) {
-		boardMapper.insert(board);
+	/**
+	 * 게시글 정보를 가져옵니다
+	 * @param params - 강의번호, 게시글번호
+	 * @return BoardVO
+	 */
+	public List<BoardVO> get(Map<String, Object> params) throws Exception {
+		boardDAO.updateCount(params);
+		return boardDAO.get(params);
 	}
 
-	//according to id delete
-	public void delete(HashMap<String, Object> map) {
-		boardMapper.delete(map);
+	/**
+	 * 게시글 목록을 가져옵니다
+	 * @param params - 강의번호, 게시판코드
+	 * @return List<BoardVO>
+	 */
+	public List<BoardVO> getList(Map<String, Object> params) {
+		return boardDAO.getList(params);
 	}
 	
-	public void lecture_delete(int lecture_no) {
-		boardMapper.lecture_delete(lecture_no);
-	}
-	
-	//update after delete
-	public void after_delete(HashMap<String, Object> map) { 
-		boardMapper.after_delete(map); 
-	}
-	
-	public void update(BoardVO board) {
-		boardMapper.update(board);
-	}
-	
-	public void update_nofile(BoardVO board) {
-		boardMapper.update_nofile(board);
+	/**
+	 * 게시글을 생성합니다
+	 * @param board - boardVO
+	 * @throws Exception
+	 */
+	public void insert(BoardVO board) throws Exception {
+		boardDAO.insert(board);
 	}
 
-	//according to id query
-	public BoardVO getById(BoardVO board) {
-		return boardMapper.getById(board);
+	/**
+	 * 게시글을 수정합니다
+	 * @param board - boardVO
+	 * @throws Exception
+	 */
+	public void update(BoardVO board) throws Exception {
+		boardDAO.update(board);
 	}
 
-	//All queries
-	public List<BoardVO> list(BoardVO board){
-		return boardMapper.list(board);
+	/**
+	 * 게시판의 게시글을 삭제합니다.
+	 * @param params - 강의번호, 게시판번호
+	 * @throws Exception
+	 */
+	public void delete(Map<String, Object> params) throws Exception {
+		boardDAO.delete(params);
 	}
 	
-	//search file_nm for file download
-	public String getFileNm(String save_file_nm) {
-		return boardMapper.getFileNm(save_file_nm);
+	/**
+	 * 게시판 댓글을 삭제합니다.
+	 * @param params - 강의번호, 게시판번호
+	 * @throws Exception
+	 */
+	public void deleteComment(Map<String, Object> params) throws Exception {
+		boardDAO.deleteComment(params);
+	}
+	
+	/**
+	 * 게시판 댓글을 수정합니다
+	 * @param board - boardVO
+	 * @throws Exception
+	 */
+	public void updateComment(BoardVO board) throws Exception {
+		boardDAO.updateComment(board);
 	}
 
 }

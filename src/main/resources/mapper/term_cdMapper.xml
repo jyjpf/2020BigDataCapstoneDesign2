@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dictation.mapper.Term_cdMapper"> 
+	
+	<select id="get" parameterType="String" resultType="Term_cdVO">
+
+		select
+			year,
+			term,
+			manage_st_dt,
+			manage_ed_dt,
+			enroll_st_dt,
+			enroll_ed_dt,
+			use_yn,
+			bigo
+		from
+			term_cd
+		where 1=1
+			and year = #{year}
+			and term = #{term}
+
+	</select>
+	
+	<select id="getList" parameterType="int" resultType="Term_cdVO">
+
+		select
+			year,
+			term,
+			manage_st_dt,
+			manage_ed_dt,
+			enroll_st_dt,
+			enroll_ed_dt,
+			use_yn,
+			bigo
+		from
+			term_cd
+
+	</select> 
+
+	<insert id="insert" parameterType="Term_cdVO">
+
+		insert into term_cd(
+			year,
+			term,
+			manage_st_dt,
+			manage_ed_dt,
+			enroll_st_dt,
+			enroll_ed_dt,
+			use_yn,
+			bigo,
+			input_id,
+			input_date,
+			update_id,
+			update_date
+			
+		) values(
+			#{year},
+			#{term},
+			#{manage_st_dt},
+			#{manage_ed_dt},
+			#{enroll_st_dt},
+			#{enroll_ed_dt},
+			#{use_yn},
+			#{bigo},
+			#{input_id},
+			#{input_date},
+			#{update_id},
+			#{update_date}
+		)
+
+	</insert>
+ 
+ 
+	<delete id="delete" parameterType="String">
+		delete from term_cd where year=#{year} and term=#{term}
+	</delete>
+
+
+	<update id="update" parameterType="Term_cdVO">
+
+		update
+			term_cd
+		set
+			manage_st_dt = #{manage_st_dt},
+			manage_ed_dt = #{manage_ed_dt},
+			enroll_st_dt = #{enroll_st_dt},
+			enroll_ed_dt = #{enroll_ed_dt},
+			use_yn = #{use_yn},
+			bigo = #{bigo},
+			update_id = #{update_id},
+			update_date = NOW()
+		where
+			year=#{year} and term=#{term}
+
+	</update>
+
+</mapper>
+

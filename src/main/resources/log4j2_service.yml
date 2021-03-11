@@ -13,6 +13,20 @@ Configutation:
       target: SYSTEM_OUT
       PatternLayout:
         pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+    RollingFile:
+      name: File_Appender
+      fileName: "./logs/dictation.log"
+      filePattern: "./logs/dictation_%d{yyyy-MM-dd}_%i.log.gz"
+      PatternLayout:
+        pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+      Policies:
+        SizeBasedTriggeringPolicy:
+          size: "100MB"
+        TimeBasedTriggeringPolicy:
+          interval: 1
+      DefaultRolloverStrategy:
+        max: 10
+        fileIndex: min
 
   Loggers:
     Root:
@@ -25,3 +39,29 @@ Configutation:
         additivity: false
         level: info
         AppenderRef:
+          - ref: File_Appender
+      - name: jdbc.audit
+        additivity: false
+        level: warn
+        AppenderRef:
+          - ref: File_Appender
+      - name: jdbc.sqlonly
+        additivity: false
+        level: warn
+        AppenderRef:
+          - ref: File_Appender
+      - name: jdbc.sqltiming
+        additivity: false
+        level: info
+        AppenderRef:
+          - ref: File_Appender
+      - name: jdbc.resultsettable
+        additivity: false
+        level: warn
+        AppenderRef:
+          - ref: File_Appender
+      - name: jdbc.resultset
+        additivity: false
+        level: warn
+        AppenderRef:
+          - ref: File_Appender

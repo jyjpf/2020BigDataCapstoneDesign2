@@ -1,43 +1,43 @@
 package com.dictation.service;
 
-import java.util.HashMap;
-import java.util.List;
-
+import com.dictation.mapper.BoardDAO;
+import com.dictation.vo.BoardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dictation.mapper.CommentMapper;
-import com.dictation.vo.CommentVO;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommentService {
+	
 	@Autowired
-	private CommentMapper commentMapper;
-	
-	
-	//##insert,delete,update,getById,list##
-	//insert
-	public void insert(CommentVO comment) {
-		commentMapper.insert(comment);
+	private BoardDAO boardDAO;
+
+	/**
+	 * 게시판에 게시글을 생성합니다
+	 * @param board - boardVO
+	 * @throws Exception
+	 */
+	public void insert(BoardVO board) throws Exception {
+		boardDAO.insertComment(board);
 	}
 
-	//delete
-	public void delete(HashMap<String, Object> map) {
-		commentMapper.delete(map);
-	}
-	
-	//��� ����
-	public void update(CommentVO comment) {
-		commentMapper.update(comment);
-	}
-	
-	public CommentVO getById(CommentVO comment) {
-		return commentMapper.getById(comment);
+	/**
+	 *
+	 * @param board
+	 */
+	public void update(BoardVO board) throws Exception {
+		boardDAO.updateComment(board);
 	}
 
-	//All queries
-	public List<CommentVO> list(CommentVO comment){
-		return commentMapper.list(comment);
+	/**
+	 * 게시판의 게시글을 삭제합니다.
+	 * @param params - 강의번호, 게시판번호
+	 * @throws Exception
+	 */
+	public void delete(Map<String, Object> params) throws Exception {
+		boardDAO.deleteComment(params);
 	}
 
 }

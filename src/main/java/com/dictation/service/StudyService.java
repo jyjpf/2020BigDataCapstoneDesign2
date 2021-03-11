@@ -1,40 +1,29 @@
 package com.dictation.service;
 
 import java.util.List;
+import java.util.Map;
 
 
+import com.dictation.mapper.StudyDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dictation.mapper.StudyMapper;
 import com.dictation.vo.StudyVO;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class StudyService {
 	
 	@Autowired
-	private StudyMapper studyMapper;
-	
-	
-	//##insert,delete,update,getById,list##
-	//insert
-	public void insert(StudyVO study) {
-		studyMapper.insert(study);
-	}	
+	private StudyDAO studyDAO;
 
-	//according to user Of id modify
-	public void update(StudyVO study) {
-		studyMapper.update(study);
+	public int getNextSequence(Map<String, Object> params) {
+		return studyDAO.getNextSequence(params);
 	}
 
-	//according to id query
-	public StudyVO getById(int seq_no) {
-		return studyMapper.getById(seq_no);
-	}
-
-	//All queries
-	public List<StudyVO> list(){
-		return studyMapper.list();
+	public Map<String, Object> insert(StudyVO study) throws Exception {
+		studyDAO.insert(study);
+		return studyDAO.getAnswer(study);
 	}
 
 }
